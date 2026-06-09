@@ -1,8 +1,8 @@
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { capturePayment } from "@/store/shop/order-slice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { capturePayment } from "@/store/shop/order-slice";
+import { Loader2 } from "lucide-react";
 
 function PaypalReturnPage() {
   const dispatch = useDispatch();
@@ -14,7 +14,6 @@ function PaypalReturnPage() {
   useEffect(() => {
     if (paymentId && payerId) {
       const orderId = JSON.parse(sessionStorage.getItem("currentOrderId"));
-
       dispatch(capturePayment({ paymentId, payerId, orderId })).then((data) => {
         if (data?.payload?.success) {
           sessionStorage.removeItem("currentOrderId");
@@ -25,11 +24,15 @@ function PaypalReturnPage() {
   }, [paymentId, payerId, dispatch]);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Processing Payment...Please wait!</CardTitle>
-      </CardHeader>
-    </Card>
+    <div className="flex items-center justify-center min-h-[60vh]">
+      <div className="text-center space-y-4">
+        <Loader2 className="w-8 h-8 animate-spin text-luxury-gold mx-auto" />
+        <p className="font-serif text-xl text-luxury-charcoal">
+          Processing your payment...
+        </p>
+        <p className="text-sm text-luxury-taupe">Please wait a moment</p>
+      </div>
+    </div>
   );
 }
 

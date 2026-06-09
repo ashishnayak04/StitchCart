@@ -1,12 +1,12 @@
 import Address from "@/components/shopping-view/address";
-import img from "../../assets/account.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import UserCartItemsContent from "@/components/shopping-view/cart-items-content";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { createNewOrder } from "@/store/shop/order-slice";
-import { Navigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
+import { Shield, Truck, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function ShoppingCheckout() {
   const { cartItems } = useSelector((state) => state.shopCart);
@@ -15,9 +15,8 @@ function ShoppingCheckout() {
   const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
   const [isPaymentStart, setIsPaymemntStart] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { toast } = useToast();
-
-  console.log(currentSelectedAddress, "cartItems");
 
   const totalCartAmount =
     cartItems && cartItems.items && cartItems.items.length > 0
@@ -33,20 +32,12 @@ function ShoppingCheckout() {
       : 0;
 
   function handleInitiatePaypalPayment() {
-    if (cartItems.length === 0) {
-      toast({
-        title: "Your cart is empty. Please add items to proceed",
-        variant: "destructive",
-      });
-
+    if (!cartItems?.items?.length) {
+      toast({ title: "Your cart is empty", variant: "destructive" });
       return;
     }
     if (currentSelectedAddress === null) {
-      toast({
-        title: "Please select one address to proceed.",
-        variant: "destructive",
-      });
-
+      toast({ title: "Please select an address to proceed.", variant: "destructive" });
       return;
     }
 
@@ -82,7 +73,6 @@ function ShoppingCheckout() {
     };
 
     dispatch(createNewOrder(orderData)).then((data) => {
-      console.log(data, "sangam");
       if (data?.payload?.success) {
         setIsPaymemntStart(true);
       } else {
@@ -96,33 +86,109 @@ function ShoppingCheckout() {
   }
 
   return (
-    <div className="flex flex-col">
-      <div className="relative h-[300px] w-full overflow-hidden">
-        <img src={img} className="h-full w-full object-cover object-center" />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-5 p-5">
-        <Address
-          selectedId={currentSelectedAddress}
-          setCurrentSelectedAddress={setCurrentSelectedAddress}
-        />
-        <div className="flex flex-col gap-4">
-          {cartItems && cartItems.items && cartItems.items.length > 0
-            ? cartItems.items.map((item) => (
-                <UserCartItemsContent cartItem={item} />
-              ))
-            : null}
-          <div className="mt-8 space-y-4">
-            <div className="flex justify-between">
-              <span className="font-bold">Total</span>
-              <span className="font-bold">₹{totalCartAmount}</span>
+    <div className="max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8 py-8">
+      <button
+        onClick={() => navigate(-1)}
+        className="flex items-center gap-2 text-sm text-luxury-taupe hover:text-luxury-charcoal transition-colors mb-8"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Back
+      </button>
+
+      <h1 className="font-serif text-3xl md:text-4xl font-semibold text-luxury-charcoal mb-8">
+        Checkout
+      </h1>
+
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        {/* Left - Shipping & Cart */}
+        <div className="lg:col-span-3 space-y-8">
+          {/* Shipping Address */}
+          <div className="bg-white border border-luxury-beige/50 p-6">
+            <h2 className="font-serif text-xl font-semibold text-luxury-charcoal mb-6">
+              Shipping Address
+            </h2>
+            <Address
+              selectedId={currentSelectedAddress}
+              setCurrentSelectedAddress={setCurrentSelectedAddress}
+            />
+          </div>
+
+          {/* Cart Items */}
+          <div className="bg-white border border-luxury-beige/50 p-6">
+            <h2 className="font-serif text-xl font-semibold text-luxury-charcoal mb-6">
+              Order Items
+            </h2>
+            <div className="divide-y divide-luxury-beige/30">
+              {cartItems && cartItems.items && cartItems.items.length > 0
+                ? cartItems.items.map((item) => (
+                    <UserCartItemsContent key={item._id} cartItem={item} />
+                  ))
+                : null}
             </div>
           </div>
-          <div className="mt-4 w-full">
-            <Button onClick={handleInitiatePaypalPayment} className="w-full">
+        </div>
+
+        {/* Right - Order Summary */}
+        <div className="lg:col-span-2">
+          <div className="bg-white border border-luxury-beige/50 p-6 lg:sticky lg:top-24">
+            <h2 className="font-serif text-xl font-semibold text-luxury-charcoal mb-6">
+              Order Summary
+            </h2>
+
+            <div className="space-y-4 mb-6">
+              {cartItems && cartItems.items && cartItems.items.length > 0
+                ? cartItems.items.map((item, idx) => (
+                    <div key={idx} className="flex justify-between text-sm">
+                      <span className="text-luxury-taupe truncate mr-4">
+                        {item?.title} × {item?.quantity}
+                      </span>
+                      <span className="text-luxury-charcoal font-medium">
+                        ₹
+                        {(
+                          (item?.salePrice > 0 ? item?.salePrice : item?.price) *
+                          item?.quantity
+                        ).toFixed(0)}
+                      </span>
+                    </div>
+                  ))
+                : null}
+            </div>
+
+            <div className="border-t border-luxury-beige/50 pt-4 space-y-2 mb-6">
+              <div className="flex justify-between text-sm text-luxury-taupe">
+                <span>Subtotal</span>
+                <span>₹{totalCartAmount}</span>
+              </div>
+              <div className="flex justify-between text-sm text-luxury-taupe">
+                <span>Shipping</span>
+                <span className="text-luxury-gold">Free</span>
+              </div>
+              <div className="flex justify-between font-serif text-xl font-semibold text-luxury-charcoal pt-2 border-t border-luxury-beige/30">
+                <span>Total</span>
+                <span>₹{totalCartAmount}</span>
+              </div>
+            </div>
+
+            <Button
+              onClick={handleInitiatePaypalPayment}
+              className="w-full bg-luxury-charcoal hover:bg-luxury-brown text-luxury-ivory uppercase tracking-wider mb-4"
+              size="lg"
+            >
               {isPaymentStart
-                ? "Processing Paypal Payment..."
-                : "Checkout with Paypal"}
+                ? "Processing..."
+                : "Checkout with PayPal"}
             </Button>
+
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 text-xs text-luxury-taupe">
+                <Shield className="w-4 h-4" />
+                Secure checkout with PayPal
+              </div>
+              <div className="flex items-center gap-3 text-xs text-luxury-taupe">
+                <Truck className="w-4 h-4" />
+                Free shipping on all orders
+              </div>
+            </div>
           </div>
         </div>
       </div>

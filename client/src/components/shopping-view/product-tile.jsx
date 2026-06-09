@@ -1,77 +1,108 @@
-import { Card, CardContent, CardFooter } from "../ui/card";
-import { Button } from "../ui/button";
-import { brandOptionsMap, categoryOptionsMap } from "@/config";
+import { Heart, ShoppingBag } from "lucide-react";
 import { Badge } from "../ui/badge";
+import { useToast } from "../ui/use-toast";
+import { useState, useEffect } from "react";
 
 function ShoppingProductTile({
   product,
   handleGetProductDetails,
   handleAddtoCart,
 }) {
+  const { toast } = useToast();
+  const [inWishlist, setInWishlist] = useState(false);
+  const hasSale = product?.salePrice > 0;
+  const isOutOfStock = product?.totalStock === 0;
+  const isLowStock = product?.totalStock > 0 && product?.totalStock < 10;
+
+  useEffect(() => {
+    const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+    setInWishlist(wishlist.includes(product?._id));
+  }, [product?._id]);
+
+  function handleWishlistToggle(e) {
+    e.stopPropagation();
+    const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+    if (inWishlist) {
+      const updated = wishlist.filter((id) => id !== product?._id);
+      localStorage.setItem("wishlist", JSON.stringify(updated));
+      setInWishlist(false);
+      toast({ title: "Removed from wishlist" });
+    } else {
+      wishlist.push(product?._id);
+      localStorage.setItem("wishlist", JSON.stringify(wishlist));
+      setInWishlist(true);
+      toast({ title: "Added to wishlist" });
+    }
+  }
+
   return (
-    <Card className="w-full max-w-sm mx-auto">
-      <div onClick={() => handleGetProductDetails(product?._id)}>
-        <div className="relative">
-          <img
-            src={product?.image}
-            alt={product?.title}
-            className="w-full h-[300px] object-cover rounded-t-lg"
-          />
-          {product?.totalStock === 0 ? (
-            <Badge className="absolute top-2 left-2 bg-red-500 hover:bg-red-600">
-              Out Of Stock
-            </Badge>
-          ) : product?.totalStock < 10 ? (
-            <Badge className="absolute top-2 left-2 bg-red-500 hover:bg-red-600">
-              {`Only ${product?.totalStock} items left`}
-            </Badge>
-          ) : product?.salePrice > 0 ? (
-            <Badge className="absolute top-2 left-2 bg-red-500 hover:bg-red-600">
-              Sale
-            </Badge>
+    <div className="group">
+      <div className="relative overflow-hidden bg-luxury-cream mb-4">
+        <button
+          onClick={() => handleGetProductDetails(product?._id)}
+          className="block w-full"
+        >
+          <div className="aspect-square overflow-hidden">
+            <img
+              src={product?.image}
+              alt={product?.title}
+              className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+            />
+          </div>
+        </button>
+
+        <div className="absolute top-3 left-3 flex flex-col gap-2">
+          {isOutOfStock ? (
+            <Badge variant="default">Out of Stock</Badge>
+          ) : isLowStock ? (
+            <Badge variant="limited">Low Stock</Badge>
+          ) : hasSale ? (
+            <Badge variant="premium">Sale</Badge>
           ) : null}
         </div>
-        <CardContent className="p-4">
-          <h2 className="text-xl font-bold mb-2">{product?.title}</h2>
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-[16px] text-muted-foreground">
-              {categoryOptionsMap[product?.category]}
-            </span>
-            <span className="text-[16px] text-muted-foreground">
-              {brandOptionsMap[product?.brand]}
-            </span>
-          </div>
-          <div className="flex justify-between items-center mb-2">
-            <span
-              className={`${
-                product?.salePrice > 0 ? "line-through" : ""
-              } text-lg font-semibold text-primary`}
-            >
-              ₹{product?.price}
-            </span>
-            {product?.salePrice > 0 ? (
-              <span className="text-lg font-semibold text-primary">
-                ₹{product?.salePrice}
-              </span>
-            ) : null}
-          </div>
-        </CardContent>
-      </div>
-      <CardFooter>
-        {product?.totalStock === 0 ? (
-          <Button className="w-full opacity-60 cursor-not-allowed">
-            Out Of Stock
-          </Button>
-        ) : (
-          <Button
+
+        <button
+          onClick={handleWishlistToggle}
+          className="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm flex items-center justify-center opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all hover:bg-white"
+        >
+          <Heart className={`w-4 h-4 ${inWishlist ? "fill-luxury-gold text-luxury-gold" : "text-luxury-charcoal"}`} />
+        </button>
+
+        {!isOutOfStock && (
+          <button
             onClick={() => handleAddtoCart(product?._id, product?.totalStock)}
-            className="w-full"
+            className="absolute bottom-0 left-0 right-0 h-12 bg-luxury-charcoal text-luxury-ivory text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300"
           >
-            Add to cart
-          </Button>
+            <ShoppingBag className="w-4 h-4" />
+            Add to Cart
+          </button>
         )}
-      </CardFooter>
-    </Card>
+      </div>
+
+      <div className="space-y-1.5 px-1">
+        <h3 className="font-serif text-lg font-medium text-luxury-charcoal">
+          {product?.title}
+        </h3>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            {hasSale ? (
+              <>
+                <span className="text-lg font-medium text-luxury-gold">
+                  ₹{product?.salePrice}
+                </span>
+                <span className="text-sm text-luxury-taupe line-through">
+                  ₹{product?.price}
+                </span>
+              </>
+            ) : (
+              <span className="text-lg font-medium text-luxury-charcoal">
+                ₹{product?.price}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 

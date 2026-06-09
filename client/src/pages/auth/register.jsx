@@ -22,44 +22,40 @@ function AuthRegister() {
     event.preventDefault();
     dispatch(registerUser(formData)).then((data) => {
       if (data?.payload?.success) {
-        toast({
-          title: data?.payload?.message,
-        });
+        toast({ title: data?.payload?.message });
         navigate("/auth/login");
       } else {
-        toast({
-          title: data?.payload?.message,
-          variant: "destructive",
-        });
+        toast({ title: data?.payload?.message, variant: "destructive" });
       }
     });
   }
 
-  console.log(formData);
-
   return (
-    <div className="mx-auto w-full max-w-md space-y-6">
+    <div className="space-y-8">
       <div className="text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
-          Create new account
+        <h1 className="font-serif text-3xl font-semibold text-luxury-charcoal">
+          Create Account
         </h1>
-        <p className="mt-2">
-          Already have an account
-          <Link
-            className="font-medium ml-2 text-primary hover:underline"
-            to="/auth/login"
-          >
-            Login
-          </Link>
+        <p className="mt-3 text-sm text-luxury-taupe">
+          Join us and discover timeless elegance
         </p>
       </div>
       <CommonForm
         formControls={registerFormControls}
-        buttonText={"Sign Up"}
+        buttonText="Create Account"
         formData={formData}
         setFormData={setFormData}
         onSubmit={onSubmit}
       />
+      <p className="text-center text-sm text-luxury-taupe">
+        Already have an account?{" "}
+        <Link
+          to="/auth/login"
+          className="font-medium text-luxury-charcoal hover:text-luxury-gold transition-colors"
+        >
+          Sign in
+        </Link>
+      </p>
     </div>
   );
 }

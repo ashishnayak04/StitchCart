@@ -6,18 +6,23 @@ import { Separator } from "../ui/separator";
 
 function ProductFilter({ filters, handleFilter }) {
   return (
-    <div className="bg-background rounded-lg shadow-sm">
-      <div className="p-4 border-b">
-        <h2 className="text-lg font-extrabold">Filters</h2>
-      </div>
-      <div className="p-4 space-y-4">
+    <div className="bg-white border border-luxury-beige/50 p-6 sticky top-24">
+      <h2 className="font-serif text-xl font-semibold text-luxury-charcoal mb-6">
+        Filters
+      </h2>
+      <div className="space-y-6">
         {Object.keys(filterOptions).map((keyItem) => (
-          <Fragment>
+          <Fragment key={keyItem}>
             <div>
-              <h3 className="text-base font-bold">{keyItem}</h3>
-              <div className="grid gap-2 mt-2">
+              <h3 className="text-xs font-medium uppercase tracking-[0.15em] text-luxury-taupe mb-4">
+                {keyItem === "category" ? "Category" : "Brand"}
+              </h3>
+              <div className="space-y-3">
                 {filterOptions[keyItem].map((option) => (
-                  <Label className="flex font-medium items-center gap-2 ">
+                  <Label
+                    key={option.id}
+                    className="flex items-center gap-3 cursor-pointer text-sm text-luxury-charcoal hover:text-luxury-gold transition-colors"
+                  >
                     <Checkbox
                       checked={
                         filters &&

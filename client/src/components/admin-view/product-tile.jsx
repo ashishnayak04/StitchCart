@@ -1,5 +1,5 @@
 import { Button } from "../ui/button";
-import { Card, CardContent, CardFooter } from "../ui/card";
+import { Edit2, Trash2 } from "lucide-react";
 
 function AdminProductTile({
   product,
@@ -8,45 +8,66 @@ function AdminProductTile({
   setCurrentEditedId,
   handleDelete,
 }) {
+  const hasSale = product?.salePrice > 0;
+
   return (
-    <Card className="w-full max-w-sm mx-auto">
-      <div>
-        <div className="relative">
-          <img
-            src={product?.image}
-            alt={product?.title}
-            className="w-full h-[300px] object-cover rounded-t-lg"
-          />
-        </div>
-        <CardContent>
-          <h2 className="text-xl font-bold mb-2 mt-2">{product?.title}</h2>
-          <div className="flex justify-between items-center mb-2">
-            <span
-              className={`${
-                product?.salePrice > 0 ? "line-through" : ""
-              } text-lg font-semibold text-primary`}
-            >
+    <div className="bg-white border border-luxury-beige/50 group">
+      <div className="aspect-square overflow-hidden bg-luxury-cream">
+        <img
+          src={product?.image}
+          alt={product?.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+      </div>
+      <div className="p-4 space-y-2">
+        <h3 className="font-serif text-base font-medium text-luxury-charcoal truncate">
+          {product?.title}
+        </h3>
+        <div className="flex items-center justify-between">
+          {hasSale ? (
+            <div className="flex items-center gap-2">
+              <span className="font-serif font-semibold text-luxury-gold">
+                ₹{product?.salePrice}
+              </span>
+              <span className="text-xs text-luxury-taupe line-through">
+                ₹{product?.price}
+              </span>
+            </div>
+          ) : (
+            <span className="font-serif font-semibold text-luxury-charcoal">
               ₹{product?.price}
             </span>
-            {product?.salePrice > 0 ? (
-              <span className="text-lg font-bold">₹{product?.salePrice}</span>
-            ) : null}
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-between items-center">
+          )}
+          <span className="text-xs text-luxury-taupe">
+            Stock: {product?.totalStock}
+          </span>
+        </div>
+        <div className="flex gap-2 pt-2">
           <Button
+            variant="outline"
+            size="sm"
+            className="flex-1 text-xs"
             onClick={() => {
               setOpenCreateProductsDialog(true);
               setCurrentEditedId(product?._id);
               setFormData(product);
             }}
           >
+            <Edit2 className="w-3 h-3 mr-1" />
             Edit
           </Button>
-          <Button onClick={() => handleDelete(product?._id)}>Delete</Button>
-        </CardFooter>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="flex-1 text-xs text-red-500 hover:text-red-600 hover:bg-red-50"
+            onClick={() => handleDelete(product?._id)}
+          >
+            <Trash2 className="w-3 h-3 mr-1" />
+            Delete
+          </Button>
+        </div>
       </div>
-    </Card>
+    </div>
   );
 }
 

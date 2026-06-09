@@ -18,6 +18,7 @@ import {
 } from "@/store/admin/products-slice";
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Plus, Package } from "lucide-react";
 
 const initialFormData = {
   image: null,
@@ -49,34 +50,25 @@ function AdminProducts() {
 
     currentEditedId !== null
       ? dispatch(
-          editProduct({
-            id: currentEditedId,
-            formData,
-          })
+          editProduct({ id: currentEditedId, formData })
         ).then((data) => {
-          console.log(data, "edit");
-
           if (data?.payload?.success) {
             dispatch(fetchAllProducts());
             setFormData(initialFormData);
             setOpenCreateProductsDialog(false);
             setCurrentEditedId(null);
+            toast({ title: "Product updated successfully" });
           }
         })
       : dispatch(
-          addNewProduct({
-            ...formData,
-            image: uploadedImageUrl,
-          })
+          addNewProduct({ ...formData, image: uploadedImageUrl })
         ).then((data) => {
           if (data?.payload?.success) {
             dispatch(fetchAllProducts());
             setOpenCreateProductsDialog(false);
             setImageFile(null);
             setFormData(initialFormData);
-            toast({
-              title: "Product add successfully",
-            });
+            toast({ title: "Product added successfully" });
           }
         });
   }
@@ -85,6 +77,7 @@ function AdminProducts() {
     dispatch(deleteProduct(getCurrentProductId)).then((data) => {
       if (data?.payload?.success) {
         dispatch(fetchAllProducts());
+        toast({ title: "Product deleted" });
       }
     });
   }
@@ -100,28 +93,53 @@ function AdminProducts() {
     dispatch(fetchAllProducts());
   }, [dispatch]);
 
-  console.log(formData, "productList");
-
   return (
     <Fragment>
-      <div className="mb-5 w-full flex justify-end">
-        <Button onClick={() => setOpenCreateProductsDialog(true)}>
-          Add New Product
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="font-serif text-2xl font-semibold text-luxury-charcoal">
+            Products
+          </h1>
+          <p className="text-sm text-luxury-taupe mt-1">
+            {productList?.length || 0} products
+          </p>
+        </div>
+        <Button
+          onClick={() => setOpenCreateProductsDialog(true)}
+          className="bg-luxury-charcoal hover:bg-luxury-brown text-luxury-ivory"
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          Add Product
         </Button>
       </div>
-      <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
-        {productList && productList.length > 0
-          ? productList.map((productItem) => (
-              <AdminProductTile
-                setFormData={setFormData}
-                setOpenCreateProductsDialog={setOpenCreateProductsDialog}
-                setCurrentEditedId={setCurrentEditedId}
-                product={productItem}
-                handleDelete={handleDelete}
-              />
-            ))
-          : null}
-      </div>
+
+      {productList && productList.length > 0 ? (
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+          {productList.map((productItem) => (
+            <AdminProductTile
+              key={productItem._id}
+              setFormData={setFormData}
+              setOpenCreateProductsDialog={setOpenCreateProductsDialog}
+              setCurrentEditedId={setCurrentEditedId}
+              product={productItem}
+              handleDelete={handleDelete}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-20 border border-dashed border-luxury-beige">
+          <Package className="w-12 h-12 text-luxury-beige mx-auto mb-4" />
+          <p className="text-luxury-taupe">No products yet</p>
+          <Button
+            variant="outline"
+            onClick={() => setOpenCreateProductsDialog(true)}
+            className="mt-4"
+          >
+            Add your first product
+          </Button>
+        </div>
+      )}
+
       <Sheet
         open={openCreateProductsDialog}
         onOpenChange={() => {
@@ -130,30 +148,32 @@ function AdminProducts() {
           setFormData(initialFormData);
         }}
       >
-        <SheetContent side="right" className="overflow-auto">
-          <SheetHeader>
-            <SheetTitle>
+        <SheetContent side="right" className="overflow-auto bg-luxury-ivory w-full sm:max-w-lg">
+          <SheetHeader className="border-b border-luxury-beige/50 pb-4">
+            <SheetTitle className="font-serif text-xl">
               {currentEditedId !== null ? "Edit Product" : "Add New Product"}
             </SheetTitle>
           </SheetHeader>
-          <ProductImageUpload
-            imageFile={imageFile}
-            setImageFile={setImageFile}
-            uploadedImageUrl={uploadedImageUrl}
-            setUploadedImageUrl={setUploadedImageUrl}
-            setImageLoadingState={setImageLoadingState}
-            imageLoadingState={imageLoadingState}
-            isEditMode={currentEditedId !== null}
-          />
-          <div className="py-6">
-            <CommonForm
-              onSubmit={onSubmit}
-              formData={formData}
-              setFormData={setFormData}
-              buttonText={currentEditedId !== null ? "Edit" : "Add"}
-              formControls={addProductFormElements}
-              isBtnDisabled={!isFormValid()}
+          <div className="mt-6">
+            <ProductImageUpload
+              imageFile={imageFile}
+              setImageFile={setImageFile}
+              uploadedImageUrl={uploadedImageUrl}
+              setUploadedImageUrl={setUploadedImageUrl}
+              setImageLoadingState={setImageLoadingState}
+              imageLoadingState={imageLoadingState}
+              isEditMode={currentEditedId !== null}
             />
+            <div className="mt-6">
+              <CommonForm
+                onSubmit={onSubmit}
+                formData={formData}
+                setFormData={setFormData}
+                buttonText={currentEditedId !== null ? "Update" : "Add Product"}
+                formControls={addProductFormElements}
+                isBtnDisabled={!isFormValid()}
+              />
+            </div>
           </div>
         </SheetContent>
       </Sheet>

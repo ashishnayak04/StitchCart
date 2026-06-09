@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import CommonForm from "../common/form";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { addressFormControls } from "@/config";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,6 +10,7 @@ import {
 } from "@/store/shop/address-slice";
 import AddressCard from "./address-card";
 import { useToast } from "../ui/use-toast";
+import { Plus } from "lucide-react";
 
 const initialAddressFormData = {
   address: "",
@@ -23,6 +23,7 @@ const initialAddressFormData = {
 function Address({ setCurrentSelectedAddress, selectedId }) {
   const [formData, setFormData] = useState(initialAddressFormData);
   const [currentEditedId, setCurrentEditedId] = useState(null);
+  const [showForm, setShowForm] = useState(false);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { addressList } = useSelector((state) => state.shopAddress);
@@ -33,11 +34,7 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
 
     if (addressList.length >= 3 && currentEditedId === null) {
       setFormData(initialAddressFormData);
-      toast({
-        title: "You can add max 3 addresses",
-        variant: "destructive",
-      });
-
+      toast({ title: "You can add max 3 addresses", variant: "destructive" });
       return;
     }
 
@@ -53,25 +50,20 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
             dispatch(fetchAllAddresses(user?.id));
             setCurrentEditedId(null);
             setFormData(initialAddressFormData);
-            toast({
-              title: "Address updated successfully",
-            });
+            setShowForm(false);
+            toast({ title: "Address updated successfully" });
           }
         })
-      : dispatch(
-          addNewAddress({
-            ...formData,
-            userId: user?.id,
-          })
-        ).then((data) => {
-          if (data?.payload?.success) {
-            dispatch(fetchAllAddresses(user?.id));
-            setFormData(initialAddressFormData);
-            toast({
-              title: "Address added successfully",
-            });
+      : dispatch(addNewAddress({ ...formData, userId: user?.id })).then(
+          (data) => {
+            if (data?.payload?.success) {
+              dispatch(fetchAllAddresses(user?.id));
+              setFormData(initialAddressFormData);
+              setShowForm(false);
+              toast({ title: "Address added successfully" });
+            }
           }
-        });
+        );
   }
 
   function handleDeleteAddress(getCurrentAddress) {
@@ -80,9 +72,7 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
     ).then((data) => {
       if (data?.payload?.success) {
         dispatch(fetchAllAddresses(user?.id));
-        toast({
-          title: "Address deleted successfully",
-        });
+        toast({ title: "Address deleted successfully" });
       }
     });
   }
@@ -97,6 +87,7 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
       pincode: getCuurentAddress?.pincode,
       notes: getCuurentAddress?.notes,
     });
+    setShowForm(true);
   }
 
   function isFormValid() {
@@ -109,39 +100,51 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
     dispatch(fetchAllAddresses(user?.id));
   }, [dispatch]);
 
-  console.log(addressList, "addressList");
-
   return (
-    <Card>
-      <div className="mb-5 p-3 grid grid-cols-1 sm:grid-cols-2  gap-2">
-        {addressList && addressList.length > 0
-          ? addressList.map((singleAddressItem) => (
-              <AddressCard
-                selectedId={selectedId}
-                handleDeleteAddress={handleDeleteAddress}
-                addressInfo={singleAddressItem}
-                handleEditAddress={handleEditAddress}
-                setCurrentSelectedAddress={setCurrentSelectedAddress}
-              />
-            ))
-          : null}
-      </div>
-      <CardHeader>
-        <CardTitle>
-          {currentEditedId !== null ? "Edit Address" : "Add New Address"}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <CommonForm
-          formControls={addressFormControls}
-          formData={formData}
-          setFormData={setFormData}
-          buttonText={currentEditedId !== null ? "Edit" : "Add"}
-          onSubmit={handleManageAddress}
-          isBtnDisabled={!isFormValid()}
-        />
-      </CardContent>
-    </Card>
+    <div>
+      {addressList && addressList.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          {addressList.map((singleAddressItem) => (
+            <AddressCard
+              key={singleAddressItem._id}
+              selectedId={selectedId}
+              handleDeleteAddress={handleDeleteAddress}
+              addressInfo={singleAddressItem}
+              handleEditAddress={handleEditAddress}
+              setCurrentSelectedAddress={setCurrentSelectedAddress}
+            />
+          ))}
+        </div>
+      )}
+
+      {showForm || (!addressList?.length) ? (
+        <div className="border border-luxury-beige/50 p-6">
+          <h3 className="font-serif text-lg font-semibold text-luxury-charcoal mb-4">
+            {currentEditedId !== null ? "Edit Address" : "Add New Address"}
+          </h3>
+          <CommonForm
+            formControls={addressFormControls}
+            formData={formData}
+            setFormData={setFormData}
+            buttonText={currentEditedId !== null ? "Update" : "Add Address"}
+            onSubmit={handleManageAddress}
+            isBtnDisabled={!isFormValid()}
+          />
+        </div>
+      ) : (
+        <button
+          onClick={() => {
+            setShowForm(true);
+            setCurrentEditedId(null);
+            setFormData(initialAddressFormData);
+          }}
+          className="flex items-center gap-2 text-sm text-luxury-gold hover:text-luxury-brown transition-colors"
+        >
+          <Plus className="w-4 h-4" />
+          Add New Address
+        </button>
+      )}
+    </div>
   );
 }
 

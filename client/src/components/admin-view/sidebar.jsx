@@ -1,11 +1,6 @@
-import {
-  BadgeCheck,
-  ChartNoAxesCombined,
-  LayoutDashboard,
-  ShoppingBasket,
-} from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Package, ChevronRight } from "lucide-react";
 import { Fragment } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
 
 const adminSidebarMenuItems = [
@@ -13,40 +8,51 @@ const adminSidebarMenuItems = [
     id: "dashboard",
     label: "Dashboard",
     path: "/admin/dashboard",
-    icon: <LayoutDashboard />,
+    icon: <LayoutDashboard className="w-5 h-5" />,
   },
   {
     id: "products",
     label: "Products",
     path: "/admin/products",
-    icon: <ShoppingBasket />,
+    icon: <ShoppingBag className="w-5 h-5" />,
   },
   {
     id: "orders",
     label: "Orders",
     path: "/admin/orders",
-    icon: <BadgeCheck />,
+    icon: <Package className="w-5 h-5" />,
   },
 ];
 
 function MenuItems({ setOpen }) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
-    <nav className="mt-8 flex-col flex gap-2">
-      {adminSidebarMenuItems.map((menuItem) => (
-        <div
-          key={menuItem.id}
-          onClick={() => {
-            navigate(menuItem.path);
-            setOpen ? setOpen(false) : null;
-          }}
-          className="flex cursor-pointer text-xl items-center gap-2 rounded-md px-3 py-2 text-muted-foreground hover:bg-muted hover:text-foreground"
-        >
-          {menuItem.icon}
-          <span>{menuItem.label}</span>
-        </div>
-      ))}
+    <nav className="mt-6 space-y-1">
+      {adminSidebarMenuItems.map((menuItem) => {
+        const isActive = location.pathname === menuItem.path;
+        return (
+          <button
+            key={menuItem.id}
+            onClick={() => {
+              navigate(menuItem.path);
+              setOpen && setOpen(false);
+            }}
+            className={`w-full flex items-center justify-between px-4 py-3 text-sm transition-all ${
+              isActive
+                ? "bg-luxury-charcoal text-luxury-ivory"
+                : "text-luxury-taupe hover:bg-luxury-cream hover:text-luxury-charcoal"
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              {menuItem.icon}
+              <span className="font-medium">{menuItem.label}</span>
+            </div>
+            <ChevronRight className={`w-4 h-4 ${isActive ? "opacity-100" : "opacity-0"}`} />
+          </button>
+        );
+      })}
     </nav>
   );
 }
@@ -57,27 +63,32 @@ function AdminSideBar({ open, setOpen }) {
   return (
     <Fragment>
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="left" className="w-64">
-          <div className="flex flex-col h-full">
-            <SheetHeader className="border-b">
-              <SheetTitle className="flex gap-2 mt-5 mb-5">
-                <ChartNoAxesCombined size={30} />
-                <h1 className="text-2xl font-extrabold">Admin Panel</h1>
-              </SheetTitle>
-            </SheetHeader>
+        <SheetContent side="left" className="w-72 bg-luxury-ivory p-0">
+          <SheetHeader className="px-6 pt-6 pb-4 border-b border-luxury-beige/50">
+            <SheetTitle className="font-serif text-xl text-luxury-charcoal">
+              StitchCart
+            </SheetTitle>
+            <p className="text-xs text-luxury-taupe uppercase tracking-wider">Admin Panel</p>
+          </SheetHeader>
+          <div className="px-4">
             <MenuItems setOpen={setOpen} />
           </div>
         </SheetContent>
       </Sheet>
-      <aside className="hidden w-64 flex-col border-r bg-background p-6 lg:flex">
+
+      <aside className="hidden w-64 flex-col border-r border-luxury-beige/50 bg-luxury-ivory lg:flex">
         <div
           onClick={() => navigate("/admin/dashboard")}
-          className="flex cursor-pointer items-center gap-2"
+          className="flex flex-col px-6 pt-6 pb-4 border-b border-luxury-beige/50 cursor-pointer"
         >
-          <ChartNoAxesCombined size={30} />
-          <h1 className="text-2xl font-extrabold">Admin Panel</h1>
+          <h1 className="font-serif text-xl font-semibold text-luxury-charcoal">
+            StitchCart
+          </h1>
+          <p className="text-xs text-luxury-taupe uppercase tracking-wider mt-1">Admin Panel</p>
         </div>
-        <MenuItems />
+        <div className="px-4">
+          <MenuItems />
+        </div>
       </aside>
     </Fragment>
   );
