@@ -37,6 +37,11 @@ function ShoppingOrders() {
     if (orderDetails !== null) setOpenDetailsDialog(true);
   }, [orderDetails]);
 
+  function handleDialogOpenChange(open) {
+    setOpenDetailsDialog(open);
+    if (!open) dispatch(resetOrderDetails());
+  }
+
   const getStatusBadge = (status) => {
     const variants = {
       confirmed: "bg-luxury-gold/10 text-luxury-brown border-luxury-gold/20",
@@ -84,22 +89,13 @@ function ShoppingOrders() {
                       ₹{orderItem?.totalAmount}
                     </TableCell>
                     <TableCell>
-                      <Dialog
-                        open={openDetailsDialog}
-                        onOpenChange={() => {
-                          setOpenDetailsDialog(false);
-                          dispatch(resetOrderDetails());
-                        }}
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        onClick={() => handleFetchOrderDetails(orderItem?._id)}
                       >
-                        <Button
-                          variant="ghost"
-                          size="icon-sm"
-                          onClick={() => handleFetchOrderDetails(orderItem?._id)}
-                        >
-                          <Eye className="w-4 h-4" />
-                        </Button>
-                        <ShoppingOrderDetailsView orderDetails={orderDetails} />
-                      </Dialog>
+                        <Eye className="w-4 h-4" />
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -137,13 +133,6 @@ function ShoppingOrders() {
                     ₹{orderItem?.totalAmount}
                   </span>
                 </div>
-                <Dialog
-                  open={openDetailsDialog}
-                  onOpenChange={() => {
-                    setOpenDetailsDialog(false);
-                    dispatch(resetOrderDetails());
-                  }}
-                >
                   <Button
                     variant="outline"
                     size="sm"
@@ -153,8 +142,6 @@ function ShoppingOrders() {
                     <Eye className="w-4 h-4 mr-2" />
                     View Details
                   </Button>
-                  <ShoppingOrderDetailsView orderDetails={orderDetails} />
-                </Dialog>
               </div>
             ))}
           </div>
@@ -164,6 +151,10 @@ function ShoppingOrders() {
           <p className="text-luxury-taupe">No orders yet</p>
         </div>
       )}
+
+      <Dialog open={openDetailsDialog} onOpenChange={handleDialogOpenChange}>
+        <ShoppingOrderDetailsView orderDetails={orderDetails} />
+      </Dialog>
     </div>
   );
 }

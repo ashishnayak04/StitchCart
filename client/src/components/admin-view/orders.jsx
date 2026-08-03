@@ -36,6 +36,11 @@ function AdminOrdersView() {
     if (orderDetails !== null) setOpenDetailsDialog(true);
   }, [orderDetails]);
 
+  function handleDialogOpenChange(open) {
+    setOpenDetailsDialog(open);
+    if (!open) dispatch(resetOrderDetails());
+  }
+
   const getStatusBadge = (status) => {
     const variants = {
       confirmed: "bg-luxury-gold/10 text-luxury-brown border-luxury-gold/20",
@@ -91,24 +96,13 @@ function AdminOrdersView() {
                         ₹{orderItem?.totalAmount}
                       </TableCell>
                       <TableCell>
-                        <Dialog
-                          open={openDetailsDialog}
-                          onOpenChange={() => {
-                            setOpenDetailsDialog(false);
-                            dispatch(resetOrderDetails());
-                          }}
+                        <Button
+                          variant="ghost"
+                          size="icon-sm"
+                          onClick={() => handleFetchOrderDetails(orderItem?._id)}
                         >
-                          <Button
-                            variant="ghost"
-                            size="icon-sm"
-                            onClick={() =>
-                              handleFetchOrderDetails(orderItem?._id)
-                            }
-                          >
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                          <AdminOrderDetailsView orderDetails={orderDetails} />
-                        </Dialog>
+                          <Eye className="w-4 h-4" />
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -146,24 +140,15 @@ function AdminOrdersView() {
                       ₹{orderItem?.totalAmount}
                     </span>
                   </div>
-                  <Dialog
-                    open={openDetailsDialog}
-                    onOpenChange={() => {
-                      setOpenDetailsDialog(false);
-                      dispatch(resetOrderDetails());
-                    }}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full text-xs uppercase tracking-wider"
+                    onClick={() => handleFetchOrderDetails(orderItem?._id)}
                   >
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="w-full text-xs uppercase tracking-wider"
-                      onClick={() => handleFetchOrderDetails(orderItem?._id)}
-                    >
-                      <Eye className="w-4 h-4 mr-2" />
-                      View Details
-                    </Button>
-                    <AdminOrderDetailsView orderDetails={orderDetails} />
-                  </Dialog>
+                    <Eye className="w-4 h-4 mr-2" />
+                    View Details
+                  </Button>
                 </div>
               ))}
             </div>
@@ -174,6 +159,10 @@ function AdminOrdersView() {
           </div>
         )}
       </div>
+
+      <Dialog open={openDetailsDialog} onOpenChange={handleDialogOpenChange}>
+        <AdminOrderDetailsView orderDetails={orderDetails} />
+      </Dialog>
     </div>
   );
 }
