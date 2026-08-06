@@ -26,11 +26,11 @@ function PaypalReturnPage() {
   return (
     <div className="flex items-center justify-center min-h-[60vh]">
       <div className="text-center space-y-4">
-        <Loader2 className="w-8 h-8 animate-spin text-luxury-gold mx-auto" />
-        <p className="font-serif text-xl text-luxury-charcoal">
+        <Loader2 className="w-8 h-8 animate-spin text-accent mx-auto" />
+        <p className="font-serif text-xl text-foreground">
           Processing your payment...
         </p>
-        <p className="text-sm text-luxury-taupe">Please wait a moment</p>
+        <p className="text-sm text-muted">Please wait a moment</p>
       </div>
     </div>
   );

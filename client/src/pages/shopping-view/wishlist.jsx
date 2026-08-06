@@ -3,6 +3,7 @@ import axios from "axios";
 import { Heart, ShoppingBag, Trash2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 function ShoppingWishlist() {
   const [products, setProducts] = useState([]);
@@ -53,9 +54,9 @@ function ShoppingWishlist() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="animate-pulse">
-              <div className="aspect-square bg-luxury-cream mb-4" />
-              <div className="h-4 bg-luxury-cream rounded w-3/4 mb-2" />
-              <div className="h-4 bg-luxury-cream rounded w-1/2" />
+              <div className="aspect-square bg-surface mb-4" />
+              <div className="h-4 bg-surface rounded w-3/4 mb-2" />
+              <div className="h-4 bg-surface rounded w-1/2" />
             </div>
           ))}
         </div>
@@ -66,30 +67,25 @@ function ShoppingWishlist() {
   return (
     <div className="max-w-[1440px] mx-auto px-4 lg:px-8 py-8">
       <div className="mb-8">
-        <h1 className="font-serif text-3xl md:text-4xl font-semibold text-luxury-charcoal">
-          My Wishlist
-        </h1>
-        <p className="text-sm text-luxury-taupe mt-2">
+        <h1 className="display-md text-foreground">My Wishlist</h1>
+        <p className="text-sm text-muted mt-2">
           {products.length} {products.length === 1 ? "item" : "items"}
         </p>
       </div>
 
       {products.length === 0 ? (
         <div className="text-center py-20">
-          <Heart className="w-16 h-16 mx-auto text-luxury-taupe/40 mb-4" />
-          <h2 className="font-serif text-xl text-luxury-charcoal mb-2">
+          <Heart className="w-16 h-16 mx-auto text-taupe/40 mb-4" />
+          <h2 className="heading text-foreground mb-2">
             Your wishlist is empty
           </h2>
-          <p className="text-luxury-taupe mb-6">
+          <p className="text-muted mb-6">
             Save your favorite items here by tapping the heart icon.
           </p>
-          <button
-            onClick={() => navigate("/shop/listing")}
-            className="inline-flex items-center gap-2 h-12 px-8 bg-luxury-charcoal text-luxury-ivory text-xs uppercase tracking-wider font-medium hover:bg-luxury-charcoal/90 transition-colors"
-          >
-            <ShoppingBag className="w-4 h-4" />
+          <Button onClick={() => navigate("/shop/listing")} size="lg">
+            <ShoppingBag className="w-4 h-4 mr-2" />
             Browse Products
-          </button>
+          </Button>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
@@ -101,39 +97,39 @@ function ShoppingWishlist() {
                 className="group cursor-pointer"
                 onClick={() => navigate(`/shop/listing`)}
               >
-                <div className="relative overflow-hidden bg-luxury-cream mb-4">
+                <div className="relative overflow-hidden bg-surface mb-4">
                   <div className="aspect-square overflow-hidden">
                     <img
                       src={product?.image}
                       alt={product?.title}
-                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                      className="w-full h-full object-cover transition-all duration-700 ease-luxury group-hover:scale-105"
                     />
                   </div>
                   <button
                     onClick={(e) => handleRemoveFromWishlist(e, product._id)}
                     className="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm flex items-center justify-center hover:bg-white transition-all"
                   >
-                    <Trash2 className="w-4 h-4 text-red-500" />
+                    <Trash2 className="w-4 h-4 text-danger" />
                   </button>
                 </div>
                 <div className="space-y-1.5 px-1">
-                  <h3 className="font-serif text-lg font-medium text-luxury-charcoal">
+                  <h3 className="font-serif text-lg font-medium text-foreground">
                     {product?.title}
                   </h3>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       {hasSale ? (
                         <>
-                          <span className="text-lg font-medium text-luxury-gold">
-                            ₹{product?.salePrice}
+                          <span className="text-lg font-medium text-accent">
+                            ${product?.salePrice}
                           </span>
-                          <span className="text-sm text-luxury-taupe line-through">
-                            ₹{product?.price}
+                          <span className="text-sm text-muted line-through">
+                            ${product?.price}
                           </span>
                         </>
                       ) : (
-                        <span className="text-lg font-medium text-luxury-charcoal">
-                          ₹{product?.price}
+                        <span className="text-lg font-medium text-foreground">
+                          ${product?.price}
                         </span>
                       )}
                     </div>

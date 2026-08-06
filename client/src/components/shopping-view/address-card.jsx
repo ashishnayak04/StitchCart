@@ -1,4 +1,3 @@
-import { Button } from "../ui/button";
 import { MapPin, Edit2, Trash2 } from "lucide-react";
 
 function AddressCard({
@@ -17,35 +16,35 @@ function AddressCard({
           ? () => setCurrentSelectedAddress(addressInfo)
           : null
       }
-      className={`border p-5 cursor-pointer transition-all ${
+      className={`border p-5 cursor-pointer transition-all duration-fast ${
         isSelected
-          ? "border-luxury-gold bg-luxury-gold/5"
-          : "border-luxury-beige/50 hover:border-luxury-taupe"
+          ? "border-accent bg-accent/5"
+          : "border-border hover:border-taupe"
       }`}
     >
       <div className="flex items-start gap-3 mb-3">
-        <MapPin className={`w-5 h-5 mt-0.5 ${isSelected ? "text-luxury-gold" : "text-luxury-taupe"}`} />
+        <MapPin className={`w-5 h-5 mt-0.5 ${isSelected ? "text-accent" : "text-muted"}`} />
         <div className="flex-1 space-y-1">
-          <p className="text-sm text-luxury-charcoal font-medium">
+          <p className="text-sm text-foreground font-medium">
             {addressInfo?.address}
           </p>
-          <p className="text-xs text-luxury-taupe">{addressInfo?.city}</p>
-          <p className="text-xs text-luxury-taupe">Pincode: {addressInfo?.pincode}</p>
-          <p className="text-xs text-luxury-taupe">Phone: {addressInfo?.phone}</p>
+          <p className="text-xs text-muted">{addressInfo?.city}</p>
+          <p className="text-xs text-muted">Pincode: {addressInfo?.pincode}</p>
+          <p className="text-xs text-muted">Phone: {addressInfo?.phone}</p>
           {addressInfo?.notes && (
-            <p className="text-xs text-luxury-taupe italic">
+            <p className="text-xs text-muted italic">
               Notes: {addressInfo?.notes}
             </p>
           )}
         </div>
       </div>
-      <div className="flex gap-2 pt-3 border-t border-luxury-beige/30">
+      <div className="flex gap-2 pt-3 border-t border-border">
         <button
           onClick={(e) => {
             e.stopPropagation();
             handleEditAddress(addressInfo);
           }}
-          className="flex items-center gap-1 text-xs text-luxury-taupe hover:text-luxury-charcoal transition-colors"
+          className="flex items-center gap-1 text-xs text-muted hover:text-foreground transition-colors"
         >
           <Edit2 className="w-3 h-3" />
           Edit
@@ -55,7 +54,7 @@ function AddressCard({
             e.stopPropagation();
             handleDeleteAddress(addressInfo);
           }}
-          className="flex items-center gap-1 text-xs text-luxury-taupe hover:text-red-500 transition-colors"
+          className="flex items-center gap-1 text-xs text-muted hover:text-danger transition-colors"
         >
           <Trash2 className="w-3 h-3" />
           Delete

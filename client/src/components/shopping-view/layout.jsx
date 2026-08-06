@@ -4,7 +4,7 @@ import ShoppingFooter from "./footer";
 
 function ShoppingLayout() {
   return (
-    <div className="flex flex-col min-h-screen bg-luxury-ivory">
+    <div className="flex flex-col min-h-screen bg-background">
       <ShoppingHeader />
       <main className="flex-1 pt-20">
         <Outlet />

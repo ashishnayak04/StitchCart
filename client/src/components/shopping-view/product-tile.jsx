@@ -37,7 +37,7 @@ function ShoppingProductTile({
 
   return (
     <div className="group">
-      <div className="relative overflow-hidden bg-luxury-cream mb-4">
+      <div className="relative overflow-hidden bg-surface mb-4">
         <button
           onClick={() => handleGetProductDetails(product?._id)}
           className="block w-full"
@@ -46,7 +46,7 @@ function ShoppingProductTile({
             <img
               src={product?.image}
               alt={product?.title}
-              className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+              className="w-full h-full object-cover transition-all duration-700 ease-luxury group-hover:scale-105"
             />
           </div>
         </button>
@@ -63,15 +63,15 @@ function ShoppingProductTile({
 
         <button
           onClick={handleWishlistToggle}
-          className="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm flex items-center justify-center opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all hover:bg-white"
+          className="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm flex items-center justify-center opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-fast hover:bg-white"
         >
-          <Heart className={`w-4 h-4 ${inWishlist ? "fill-luxury-gold text-luxury-gold" : "text-luxury-charcoal"}`} />
+          <Heart className={`w-4 h-4 ${inWishlist ? "fill-accent text-accent" : "text-espresso"}`} />
         </button>
 
         {!isOutOfStock && (
           <button
             onClick={() => handleAddtoCart(product?._id, product?.totalStock)}
-            className="absolute bottom-0 left-0 right-0 h-12 bg-luxury-charcoal text-luxury-ivory text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300"
+            className="absolute bottom-0 left-0 right-0 h-12 bg-primary text-primary-foreground text-xs uppercase tracking-[0.12em] font-medium flex items-center justify-center gap-2 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-luxury"
           >
             <ShoppingBag className="w-4 h-4" />
             Add to Cart
@@ -80,23 +80,23 @@ function ShoppingProductTile({
       </div>
 
       <div className="space-y-1.5 px-1">
-        <h3 className="font-serif text-lg font-medium text-luxury-charcoal">
+        <h3 className="font-serif text-lg font-medium text-foreground">
           {product?.title}
         </h3>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             {hasSale ? (
               <>
-                <span className="text-lg font-medium text-luxury-gold">
-                  ₹{product?.salePrice}
+                <span className="text-lg font-medium text-accent">
+                  ${product?.salePrice}
                 </span>
-                <span className="text-sm text-luxury-taupe line-through">
-                  ₹{product?.price}
+                <span className="text-sm text-muted line-through">
+                  ${product?.price}
                 </span>
               </>
             ) : (
-              <span className="text-lg font-medium text-luxury-charcoal">
-                ₹{product?.price}
+              <span className="text-lg font-medium text-foreground">
+                ${product?.price}
               </span>
             )}
           </div>

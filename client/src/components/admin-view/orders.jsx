@@ -43,22 +43,20 @@ function AdminOrdersView() {
 
   const getStatusBadge = (status) => {
     const variants = {
-      confirmed: "bg-luxury-gold/10 text-luxury-brown border-luxury-gold/20",
-      pending: "bg-luxury-cream text-luxury-taupe border-luxury-beige",
-      rejected: "bg-red-50 text-red-600 border-red-100",
-      delivered: "bg-green-50 text-green-700 border-green-100",
-      inProcess: "bg-blue-50 text-blue-600 border-blue-100",
-      inShipping: "bg-purple-50 text-purple-600 border-purple-100",
+      confirmed: "bg-accent/10 text-brown border-accent/20",
+      pending: "bg-surface text-muted border-border",
+      rejected: "bg-danger/10 text-danger border-danger/20",
+      delivered: "bg-sage/20 text-success-foreground border-sage/30",
+      inProcess: "bg-clay/10 text-clay border-clay/20",
+      inShipping: "bg-taupe/15 text-taupe border-taupe/25",
     };
-    return variants[status] || "bg-luxury-cream text-luxury-taupe";
+    return variants[status] || "bg-surface text-muted";
   };
 
   return (
-    <div className="bg-white border border-luxury-beige/50">
-      <div className="p-6 border-b border-luxury-beige/50">
-        <h2 className="font-serif text-xl font-semibold text-luxury-charcoal">
-          All Orders
-        </h2>
+    <div className="bg-surface-raised border border-border shadow-1">
+      <div className="p-6 border-b border-border">
+        <h2 className="heading text-foreground">All Orders</h2>
       </div>
       <div className="p-6">
         {orderList && orderList.length > 0 ? (
@@ -93,7 +91,7 @@ function AdminOrdersView() {
                         </Badge>
                       </TableCell>
                       <TableCell className="font-serif font-semibold whitespace-nowrap">
-                        ₹{orderItem?.totalAmount}
+                        ${orderItem?.totalAmount}
                       </TableCell>
                       <TableCell>
                         <Button
@@ -115,10 +113,10 @@ function AdminOrdersView() {
               {orderList.map((orderItem) => (
                 <div
                   key={orderItem._id}
-                  className="border border-luxury-beige/50 p-4 space-y-3"
+                  className="border border-border p-4 space-y-3"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs text-luxury-taupe">
+                    <span className="font-mono text-xs text-muted">
                       #{orderItem?._id?.slice(-8)}
                     </span>
                     <Badge
@@ -129,21 +127,21 @@ function AdminOrdersView() {
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-luxury-taupe">Date</span>
-                    <span className="text-luxury-charcoal">
+                    <span className="text-muted">Date</span>
+                    <span className="text-foreground">
                       {orderItem?.orderDate?.split("T")[0]}
                     </span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-luxury-taupe">Total</span>
-                    <span className="font-serif font-semibold text-luxury-charcoal">
-                      ₹{orderItem?.totalAmount}
+                    <span className="text-muted">Total</span>
+                    <span className="font-serif font-semibold text-foreground">
+                      ${orderItem?.totalAmount}
                     </span>
                   </div>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="w-full text-xs uppercase tracking-wider"
+                    className="w-full text-xs uppercase tracking-[0.12em]"
                     onClick={() => handleFetchOrderDetails(orderItem?._id)}
                   >
                     <Eye className="w-4 h-4 mr-2" />
@@ -155,7 +153,7 @@ function AdminOrdersView() {
           </>
         ) : (
           <div className="text-center py-12">
-            <p className="text-luxury-taupe">No orders yet</p>
+            <p className="text-muted">No orders yet</p>
           </div>
         )}
       </div>

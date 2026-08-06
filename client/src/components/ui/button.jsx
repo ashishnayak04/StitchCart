@@ -5,18 +5,18 @@ import { cva } from "class-variance-authority";
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-xs font-semibold uppercase tracking-[0.08em] transition-colors duration-fast disabled:pointer-events-none disabled:opacity-40",
   {
     variants: {
       variant: {
-        default: "bg-luxury-charcoal text-luxury-ivory hover:bg-luxury-brown px-8 py-3 tracking-wider uppercase text-xs",
-        destructive: "bg-luxury-charcoal text-white hover:bg-red-600 px-8 py-3",
-        outline: "border border-luxury-beige bg-transparent hover:bg-luxury-cream text-luxury-charcoal hover:border-luxury-gold px-8 py-3",
-        secondary: "bg-luxury-cream text-luxury-charcoal hover:bg-luxury-beige px-8 py-3",
-        ghost: "hover:bg-luxury-cream text-luxury-taupe hover:text-luxury-charcoal",
-        link: "text-luxury-charcoal underline-offset-4 hover:underline hover:text-luxury-gold",
-        gold: "bg-luxury-gold text-luxury-ivory hover:bg-luxury-brown px-8 py-3 tracking-wider uppercase text-xs",
-        "outline-gold": "border border-luxury-gold text-luxury-gold bg-transparent hover:bg-luxury-gold hover:text-luxury-ivory px-8 py-3 uppercase text-xs tracking-wider",
+        default: "bg-primary text-primary-foreground hover:bg-primary-hover",
+        destructive: "bg-danger text-danger-foreground hover:bg-danger/90",
+        outline: "border border-border bg-transparent text-foreground hover:bg-surface-hover hover:border-border-strong",
+        secondary: "bg-surface-hover text-foreground hover:bg-beige",
+        ghost: "text-muted hover:bg-surface-hover hover:text-foreground",
+        link: "text-foreground underline-offset-4 hover:underline hover:text-accent-hover",
+        gold: "bg-accent text-accent-foreground hover:bg-accent-hover",
+        "outline-gold": "border border-accent/60 text-accent-hover hover:bg-accent hover:text-accent-foreground",
       },
       size: {
         default: "h-12 px-8 py-3",

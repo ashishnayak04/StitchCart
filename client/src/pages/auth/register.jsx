@@ -33,10 +33,8 @@ function AuthRegister() {
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h1 className="font-serif text-3xl font-semibold text-luxury-charcoal">
-          Create Account
-        </h1>
-        <p className="mt-3 text-sm text-luxury-taupe">
+        <h1 className="display-md text-foreground">Create Account</h1>
+        <p className="mt-3 text-sm text-muted">
           Join us and discover timeless elegance
         </p>
       </div>
@@ -47,11 +45,11 @@ function AuthRegister() {
         setFormData={setFormData}
         onSubmit={onSubmit}
       />
-      <p className="text-center text-sm text-luxury-taupe">
+      <p className="text-center text-sm text-muted">
         Already have an account?{" "}
         <Link
           to="/auth/login"
-          className="font-medium text-luxury-charcoal hover:text-luxury-gold transition-colors"
+          className="font-medium text-foreground hover:text-accent transition-colors"
         >
           Sign in
         </Link>

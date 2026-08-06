@@ -16,7 +16,7 @@ import { Search } from "lucide-react";
 function SearchProducts() {
   const [keyword, setKeyword] = useState("");
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
   const { searchResults } = useSelector((state) => state.shopSearch);
   const { productDetails } = useSelector((state) => state.shopProducts);
@@ -77,28 +77,26 @@ function SearchProducts() {
     <div className="max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8 py-8">
       <div className="max-w-2xl mx-auto mb-12">
         <div className="relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-luxury-taupe" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
           <Input
             value={keyword}
             onChange={(event) => setKeyword(event.target.value)}
-            className="h-14 pl-12 text-lg border-luxury-beige"
+            className="h-14 pl-12 text-lg"
             placeholder="Search products..."
           />
         </div>
       </div>
 
       {keyword.length > 0 && keyword.length <= 3 && (
-        <p className="text-center text-sm text-luxury-taupe mb-8">
+        <p className="text-center text-sm text-muted mb-8">
           Type at least 4 characters to search
         </p>
       )}
 
       {keyword.length >= 4 && searchResults && searchResults.length === 0 ? (
         <div className="text-center py-20">
-          <h2 className="font-serif text-2xl text-luxury-charcoal mb-2">
-            No Results Found
-          </h2>
-          <p className="text-luxury-taupe">
+          <h2 className="heading text-foreground mb-2">No Results Found</h2>
+          <p className="text-muted">
             We couldn't find any products matching "{keyword}"
           </p>
         </div>

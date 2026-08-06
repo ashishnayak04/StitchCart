@@ -118,8 +118,8 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
       )}
 
       {showForm || (!addressList?.length) ? (
-        <div className="border border-luxury-beige/50 p-6">
-          <h3 className="font-serif text-lg font-semibold text-luxury-charcoal mb-4">
+        <div className="border border-border p-6">
+          <h3 className="heading text-foreground mb-4">
             {currentEditedId !== null ? "Edit Address" : "Add New Address"}
           </h3>
           <CommonForm
@@ -138,7 +138,7 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
             setCurrentEditedId(null);
             setFormData(initialAddressFormData);
           }}
-          className="flex items-center gap-2 text-sm text-luxury-gold hover:text-luxury-brown transition-colors"
+          className="flex items-center gap-2 text-sm text-accent hover:text-accent-hover transition-colors"
         >
           <Plus className="w-4 h-4" />
           Add New Address

@@ -21,10 +21,10 @@ function UserCartWrapper({ cartItems, setOpenCartSheet }) {
       : 0;
 
   return (
-    <SheetContent className="sm:max-w-md bg-luxury-ivory">
-      <SheetHeader className="border-b border-luxury-beige/50 pb-4">
+    <SheetContent className="sm:max-w-md bg-surface-raised">
+      <SheetHeader className="border-b border-border pb-4">
         <SheetTitle className="font-serif text-2xl">Shopping Bag</SheetTitle>
-        <p className="text-sm text-luxury-taupe">
+        <p className="text-sm text-muted">
           {cartItems?.length || 0} {cartItems?.length === 1 ? "item" : "items"}
         </p>
       </SheetHeader>
@@ -35,19 +35,19 @@ function UserCartWrapper({ cartItems, setOpenCartSheet }) {
           ))
         ) : (
           <div className="text-center py-12">
-            <ShoppingBag className="w-12 h-12 text-luxury-beige mx-auto mb-4" />
-            <p className="text-sm text-luxury-taupe">Your bag is empty</p>
+            <ShoppingBag className="w-12 h-12 text-beige mx-auto mb-4" />
+            <p className="text-sm text-muted">Your bag is empty</p>
           </div>
         )}
       </div>
       {cartItems && cartItems.length > 0 && (
-        <div className="mt-6 pt-6 border-t border-luxury-beige/50 space-y-4">
+        <div className="mt-6 pt-6 border-t border-border space-y-4">
           <div className="flex justify-between items-center">
-            <span className="text-sm font-medium text-luxury-taupe uppercase tracking-wider">
+            <span className="text-xs font-medium text-muted uppercase tracking-[0.12em]">
               Subtotal
             </span>
-            <span className="font-serif text-xl font-semibold text-luxury-charcoal">
-              ₹{totalCartAmount}
+            <span className="font-serif text-xl font-semibold text-foreground">
+              ${totalCartAmount}
             </span>
           </div>
           <Button
@@ -55,7 +55,7 @@ function UserCartWrapper({ cartItems, setOpenCartSheet }) {
               navigate("/shop/checkout");
               setOpenCartSheet(false);
             }}
-            className="w-full bg-luxury-charcoal hover:bg-luxury-brown text-luxury-ivory uppercase tracking-wider"
+            className="w-full uppercase"
             size="lg"
           >
             Checkout

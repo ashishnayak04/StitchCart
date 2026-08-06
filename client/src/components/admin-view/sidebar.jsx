@@ -39,10 +39,10 @@ function MenuItems({ setOpen }) {
               navigate(menuItem.path);
               setOpen && setOpen(false);
             }}
-            className={`w-full flex items-center justify-between px-4 py-3 text-sm transition-all ${
+            className={`w-full flex items-center justify-between px-4 py-3 text-sm transition-all duration-fast ${
               isActive
-                ? "bg-luxury-charcoal text-luxury-ivory"
-                : "text-luxury-taupe hover:bg-luxury-cream hover:text-luxury-charcoal"
+                ? "bg-primary text-primary-foreground"
+                : "text-muted hover:bg-surface-hover hover:text-foreground"
             }`}
           >
             <div className="flex items-center gap-3">
@@ -63,12 +63,12 @@ function AdminSideBar({ open, setOpen }) {
   return (
     <Fragment>
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="left" className="w-72 bg-luxury-ivory p-0">
-          <SheetHeader className="px-6 pt-6 pb-4 border-b border-luxury-beige/50">
-            <SheetTitle className="font-serif text-xl text-luxury-charcoal">
+        <SheetContent side="left" className="w-72 bg-surface-raised p-0">
+          <SheetHeader className="px-6 pt-6 pb-4 border-b border-border">
+            <SheetTitle className="font-serif text-xl text-foreground">
               StitchCart
             </SheetTitle>
-            <p className="text-xs text-luxury-taupe uppercase tracking-wider">Admin Panel</p>
+            <p className="overline text-muted">Admin Panel</p>
           </SheetHeader>
           <div className="px-4">
             <MenuItems setOpen={setOpen} />
@@ -76,15 +76,15 @@ function AdminSideBar({ open, setOpen }) {
         </SheetContent>
       </Sheet>
 
-      <aside className="hidden w-64 flex-col border-r border-luxury-beige/50 bg-luxury-ivory lg:flex">
+      <aside className="hidden w-64 flex-col border-r border-border bg-surface-raised lg:flex">
         <div
           onClick={() => navigate("/admin/dashboard")}
-          className="flex flex-col px-6 pt-6 pb-4 border-b border-luxury-beige/50 cursor-pointer"
+          className="flex flex-col px-6 pt-6 pb-4 border-b border-border cursor-pointer"
         >
-          <h1 className="font-serif text-xl font-semibold text-luxury-charcoal">
+          <h1 className="font-serif text-xl font-semibold text-foreground">
             StitchCart
           </h1>
-          <p className="text-xs text-luxury-taupe uppercase tracking-wider mt-1">Admin Panel</p>
+          <p className="overline text-muted mt-1">Admin Panel</p>
         </div>
         <div className="px-4">
           <MenuItems />

@@ -5,14 +5,14 @@ function StarRatingComponent({ rating, handleRatingChange }) {
     <button
       key={star}
       className={`p-1 transition-all ${
-        star <= rating ? "text-luxury-gold" : "text-luxury-beige"
+        star <= rating ? "text-accent" : "text-beige"
       }`}
       onClick={handleRatingChange ? () => handleRatingChange(star) : undefined}
       type="button"
     >
       <StarIcon
         className={`w-5 h-5 ${
-          star <= rating ? "fill-luxury-gold" : "fill-transparent"
+          star <= rating ? "fill-accent" : "fill-transparent"
         }`}
       />
     </button>

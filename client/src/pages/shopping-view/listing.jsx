@@ -16,7 +16,7 @@ import {
   fetchAllFilteredProducts,
   fetchProductDetails,
 } from "@/store/shop/products-slice";
-import { ArrowUpDown, Grid3X3, LayoutGrid, SlidersHorizontal } from "lucide-react";
+import { ArrowUpDown, SlidersHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
@@ -130,10 +130,8 @@ function ShoppingListing() {
     <div className="max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8 py-8">
       {/* Page Header */}
       <div className="mb-8">
-        <h1 className="font-serif text-3xl md:text-4xl font-semibold text-luxury-charcoal">
-          All Products
-        </h1>
-        <p className="text-sm text-luxury-taupe mt-2">
+        <h1 className="display-md text-foreground">All Products</h1>
+        <p className="text-sm text-muted mt-2">
           {productList?.length || 0} products
         </p>
       </div>
@@ -147,26 +145,20 @@ function ShoppingListing() {
         {/* Main Content */}
         <div className="flex-1">
           {/* Toolbar */}
-          <div className="flex items-center justify-between mb-6 pb-6 border-b border-luxury-beige/50">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setShowMobileFilters(!showMobileFilters)}
-                className="lg:hidden flex items-center gap-2 text-sm text-luxury-charcoal"
-              >
-                <SlidersHorizontal className="w-4 h-4" />
-                Filters
-              </button>
-              <div className="hidden sm:flex items-center gap-2 text-luxury-taupe">
-                <LayoutGrid className="w-4 h-4" />
-                <Grid3X3 className="w-4 h-4" />
-              </div>
-            </div>
+          <div className="flex items-center justify-between mb-6 pb-6 border-b border-border">
+            <button
+              onClick={() => setShowMobileFilters(!showMobileFilters)}
+              className="lg:hidden flex items-center gap-2 text-sm text-foreground"
+            >
+              <SlidersHorizontal className="w-4 h-4" />
+              Filters
+            </button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="outline"
                   size="sm"
-                  className="flex items-center gap-2 text-xs uppercase tracking-wider"
+                  className="flex items-center gap-2 text-xs uppercase tracking-[0.12em]"
                 >
                   <ArrowUpDown className="w-3 h-3" />
                   Sort by
@@ -210,7 +202,7 @@ function ShoppingListing() {
 
           {(!productList || productList.length === 0) && (
             <div className="text-center py-20">
-              <p className="text-luxury-taupe">No products found matching your filters.</p>
+              <p className="text-muted">No products found matching your filters.</p>
             </div>
           )}
         </div>

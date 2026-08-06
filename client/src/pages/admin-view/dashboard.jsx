@@ -40,10 +40,8 @@ function AdminDashboard() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-serif text-2xl font-semibold text-luxury-charcoal">
-          Dashboard
-        </h1>
-        <p className="text-sm text-luxury-taupe mt-1">
+        <h1 className="heading text-foreground">Dashboard</h1>
+        <p className="text-sm text-muted mt-1">
           Manage your homepage banner images
         </p>
       </div>
@@ -51,16 +49,16 @@ function AdminDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* Upload Section */}
         <div className="md:col-span-1 lg:col-span-1">
-          <div className="bg-white border border-luxury-beige/50 p-6 space-y-4">
+          <div className="bg-surface-raised border border-border p-6 space-y-4 shadow-1">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-luxury-cream rounded-full flex items-center justify-center">
-                <Upload className="w-5 h-5 text-luxury-gold" />
+              <div className="w-10 h-10 bg-surface rounded-full flex items-center justify-center">
+                <Upload className="w-5 h-5 text-accent" />
               </div>
               <div>
-                <h2 className="font-serif text-lg font-semibold text-luxury-charcoal">
+                <h2 className="font-serif text-lg font-semibold text-foreground">
                   Upload Banner
                 </h2>
-                <p className="text-xs text-luxury-taupe">
+                <p className="text-xs text-muted">
                   Add images to homepage slider
                 </p>
               </div>
@@ -77,7 +75,7 @@ function AdminDashboard() {
             <Button
               onClick={handleUploadFeatureImage}
               disabled={!uploadedImageUrl}
-              className="w-full bg-luxury-charcoal hover:bg-luxury-brown text-luxury-ivory uppercase tracking-wider"
+              className="w-full uppercase"
             >
               Upload to Slider
             </Button>
@@ -86,16 +84,16 @@ function AdminDashboard() {
 
         {/* Gallery Section */}
         <div className="md:col-span-2 lg:col-span-2">
-          <div className="bg-white border border-luxury-beige/50 p-6">
+          <div className="bg-surface-raised border border-border p-6 shadow-1">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-luxury-cream rounded-full flex items-center justify-center">
-                <ImageIcon className="w-5 h-5 text-luxury-gold" />
+              <div className="w-10 h-10 bg-surface rounded-full flex items-center justify-center">
+                <ImageIcon className="w-5 h-5 text-accent" />
               </div>
               <div>
-                <h2 className="font-serif text-lg font-semibold text-luxury-charcoal">
+                <h2 className="font-serif text-lg font-semibold text-foreground">
                   Banner Gallery
                 </h2>
-                <p className="text-xs text-luxury-taupe">
+                <p className="text-xs text-muted">
                   {featureImageList?.length || 0} images
                 </p>
               </div>
@@ -103,7 +101,7 @@ function AdminDashboard() {
             {featureImageList && featureImageList.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {featureImageList.map((featureImgItem, idx) => (
-                  <div key={idx} className="relative group aspect-video overflow-hidden bg-luxury-cream">
+                  <div key={idx} className="relative group aspect-video overflow-hidden bg-surface">
                     <img
                       src={featureImgItem.image}
                       alt={`Banner ${idx + 1}`}
@@ -111,7 +109,7 @@ function AdminDashboard() {
                     />
                     <button
                       onClick={() => handleDeleteFeatureImage(featureImgItem._id)}
-                      className="absolute top-2 right-2 w-8 h-8 bg-red-600/80 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                      className="absolute top-2 right-2 w-8 h-8 bg-danger/80 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-danger"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -119,9 +117,9 @@ function AdminDashboard() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12 border border-dashed border-luxury-beige">
-                <ImageIcon className="w-8 h-8 text-luxury-beige mx-auto mb-2" />
-                <p className="text-sm text-luxury-taupe">No banner images yet</p>
+              <div className="text-center py-12 border border-dashed border-border">
+                <ImageIcon className="w-8 h-8 text-beige mx-auto mb-2" />
+                <p className="text-sm text-muted">No banner images yet</p>
               </div>
             )}
           </div>

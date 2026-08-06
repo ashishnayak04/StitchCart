@@ -58,7 +58,7 @@ function ProductImageUpload({
 
   return (
     <div className={`w-full mt-4 ${isCustomStyling ? "" : "max-w-md mx-auto"}`}>
-      <Label className="text-sm font-medium text-luxury-charcoal mb-2 block">
+      <Label className="text-sm font-medium text-foreground mb-2 block">
         Product Image
       </Label>
       <div
@@ -66,7 +66,7 @@ function ProductImageUpload({
         onDrop={handleDrop}
         className={`${
           isEditMode ? "opacity-60" : ""
-        } border-2 border-dashed border-luxury-beige p-6 transition-colors hover:border-luxury-gold`}
+        } border-2 border-dashed border-border p-6 transition-colors hover:border-accent`}
       >
         <Input
           id="image-upload"
@@ -83,22 +83,22 @@ function ProductImageUpload({
               isEditMode ? "cursor-not-allowed" : ""
             } flex flex-col items-center justify-center h-32 cursor-pointer`}
           >
-            <UploadCloud className="w-8 h-8 text-luxury-taupe mb-2" />
-            <span className="text-sm text-luxury-taupe">Drop image here or click to upload</span>
+            <UploadCloud className="w-8 h-8 text-muted mb-2" />
+            <span className="text-sm text-muted">Drop image here or click to upload</span>
           </Label>
         ) : imageLoadingState ? (
           <div className="flex items-center justify-center h-32">
-            <Loader2 className="w-6 h-6 animate-spin text-luxury-gold" />
+            <Loader2 className="w-6 h-6 animate-spin text-accent" />
           </div>
         ) : (
-          <div className="flex items-center justify-between p-3 bg-luxury-cream">
+          <div className="flex items-center justify-between p-3 bg-surface">
             <div className="flex items-center gap-3">
-              <FileIcon className="w-6 h-6 text-luxury-gold" />
-              <span className="text-sm text-luxury-charcoal">{imageFile.name}</span>
+              <FileIcon className="w-6 h-6 text-accent" />
+              <span className="text-sm text-foreground">{imageFile.name}</span>
             </div>
             <button
               onClick={handleRemoveImage}
-              className="text-luxury-taupe hover:text-red-500 transition-colors"
+              className="text-muted hover:text-danger transition-colors"
             >
               <X className="w-4 h-4" />
             </button>

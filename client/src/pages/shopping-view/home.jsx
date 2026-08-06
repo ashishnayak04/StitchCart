@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   fetchAllFilteredProducts,
   fetchProductDetails,
@@ -99,7 +98,6 @@ function ShoppingHome() {
     dispatch(getFeatureImages());
   }, [dispatch]);
 
-  const heroProducts = productList?.slice(0, 4) || [];
   const storyRef = useRef(null);
   const craftRef = useRef(null);
   const emailRef = useRef(null);
@@ -127,7 +125,7 @@ function ShoppingHome() {
         {slides.map((slide, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-all duration-1000 ${
+            className={`absolute inset-0 transition-all duration-1000 ease-luxury ${
               index === currentSlide
                 ? "opacity-100 scale-100"
                 : "opacity-0 scale-105"
@@ -138,7 +136,7 @@ function ShoppingHome() {
               alt={`Slide ${index + 1}`}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-luxury-charcoal/60 via-luxury-charcoal/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-espresso/60 via-espresso/20 to-transparent" />
           </div>
         ))}
 
@@ -146,24 +144,25 @@ function ShoppingHome() {
           <div className="max-w-[1440px] mx-auto px-6 lg:px-12 w-full">
             <div className="max-w-xl animate-fade-in-up">
               <Badge variant="new" className="mb-4 md:mb-6">New Collection</Badge>
-              <h1 className="font-serif text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight mb-4 md:mb-6">
+              <h1 className="display-xl text-white">
                 Timeless
                 <br />
-                <span className="text-luxury-gold">Elegance</span>
+                <span className="text-gold">Elegance</span>
               </h1>
               <p className="text-sm sm:text-base md:text-lg text-white/70 font-light mb-6 md:mb-10 max-w-md leading-relaxed">
                 Discover our latest collection of meticulously crafted pieces designed for the discerning individual.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <Button
-                  className="bg-luxury-ivory text-luxury-charcoal hover:bg-white uppercase tracking-wider h-12 px-8 text-xs sm:text-sm"
+                  size="lg"
                   onClick={() => navigate("/shop/listing")}
                 >
                   Explore Collection
                 </Button>
                 <Button
                   variant="outline"
-                  className="border-luxury-ivory/30 text-luxury-ivory hover:bg-white/10 uppercase tracking-wider h-12 px-8 text-xs sm:text-sm"
+                  size="lg"
+                  className="border-white/30 text-white hover:bg-white/10 hover:border-white/60"
                   onClick={() => scrollToSection(storyRef)}
                 >
                   Our Story
@@ -197,9 +196,9 @@ function ShoppingHome() {
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`w-2 h-2 rounded-full transition-all ${
+              className={`w-2 h-2 rounded-full transition-all duration-fast ${
                 index === currentSlide
-                  ? "bg-luxury-gold w-8"
+                  ? "bg-gold w-8"
                   : "bg-white/40 hover:bg-white/60"
               }`}
             />
@@ -210,13 +209,11 @@ function ShoppingHome() {
       {/* Featured Collections */}
       <section className="py-24 px-6 lg:px-12 max-w-[1440px] mx-auto w-full">
         <div className="text-center mb-16">
-          <span className="text-xs font-medium uppercase tracking-[0.3em] text-luxury-gold">
-            Curated For You
-          </span>
-          <h2 className="font-serif text-4xl md:text-5xl font-semibold text-luxury-charcoal mt-4 mb-4">
+          <span className="overline text-accent">Curated For You</span>
+          <h2 className="display-md text-foreground mt-4 mb-4">
             Featured Collections
           </h2>
-          <div className="h-px w-12 bg-luxury-gold mx-auto" />
+          <div className="h-px w-12 bg-accent mx-auto" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -230,16 +227,16 @@ function ShoppingHome() {
                 <img
                   src={category.image}
                   alt={category.label}
-                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-all duration-700 ease-luxury group-hover:scale-105"
                 />
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-luxury-charcoal/70 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-espresso/70 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-8">
-                <h3 className="font-serif text-3xl text-white font-semibold mb-2">
+                <h3 className="font-serif text-3xl text-white font-medium mb-2">
                   {category.label}
                 </h3>
                 <p className="text-white/60 text-sm mb-4">{category.description}</p>
-                <span className="inline-flex items-center text-xs uppercase tracking-wider text-luxury-gold group-hover:gap-2 transition-all">
+                <span className="inline-flex items-center text-xs uppercase tracking-[0.12em] text-gold group-hover:gap-2 transition-all duration-fast">
                   Discover More <ArrowRight className="w-3 h-3 ml-1" />
                 </span>
               </div>
@@ -258,16 +255,16 @@ function ShoppingHome() {
                 <img
                   src={category.image}
                   alt={category.label}
-                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-all duration-700 ease-luxury group-hover:scale-105"
                 />
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-luxury-charcoal/70 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-espresso/70 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-8">
-                <h3 className="font-serif text-3xl text-white font-semibold mb-2">
+                <h3 className="font-serif text-3xl text-white font-medium mb-2">
                   {category.label}
                 </h3>
                 <p className="text-white/60 text-sm mb-4">{category.description}</p>
-                <span className="inline-flex items-center text-xs uppercase tracking-wider text-luxury-gold group-hover:gap-2 transition-all">
+                <span className="inline-flex items-center text-xs uppercase tracking-[0.12em] text-gold group-hover:gap-2 transition-all duration-fast">
                   Discover More <ArrowRight className="w-3 h-3 ml-1" />
                 </span>
               </div>
@@ -277,7 +274,7 @@ function ShoppingHome() {
       </section>
 
       {/* Brand Story Section */}
-      <section ref={storyRef} className="py-24 bg-luxury-cream">
+      <section ref={storyRef} className="py-24 bg-surface">
         <div className="max-w-[1440px] mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="relative">
             <div className="aspect-square overflow-hidden">
@@ -287,28 +284,27 @@ function ShoppingHome() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-luxury-ivory p-6 hidden lg:flex flex-col justify-center">
-              <span className="text-4xl font-serif font-bold text-luxury-gold">15+</span>
-              <span className="text-xs uppercase tracking-wider text-luxury-taupe mt-1">Years of Craftsmanship</span>
+            <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-surface-raised p-6 hidden lg:flex flex-col justify-center shadow-2">
+              <span className="text-4xl font-serif font-medium text-accent">15+</span>
+              <span className="overline text-muted mt-1">Years of Craftsmanship</span>
             </div>
           </div>
           <div className="space-y-6">
-            <span className="text-xs font-medium uppercase tracking-[0.3em] text-luxury-gold">
-              Our Heritage
-            </span>
-            <h2 className="font-serif text-4xl md:text-5xl font-semibold text-luxury-charcoal leading-tight">
+            <span className="overline text-accent">Our Heritage</span>
+            <h2 className="display-lg text-foreground">
               Crafted with Purpose,<br />Designed for Life
             </h2>
-            <div className="h-px w-12 bg-luxury-gold" />
-            <p className="text-luxury-taupe leading-relaxed">
+            <div className="h-px w-12 bg-accent" />
+            <p className="text-muted leading-relaxed">
               At StitchCart, we believe that true luxury lies in the details. Every piece in our collection is thoughtfully designed and meticulously crafted using the finest materials, ensuring that each garment not only looks exceptional but feels extraordinary.
             </p>
-            <p className="text-luxury-taupe leading-relaxed">
+            <p className="text-muted leading-relaxed">
               From our ateliers to your wardrobe, we are committed to timeless design, uncompromising quality, and sustainable practices that honor both people and planet.
             </p>
             <Button
               variant="outline"
-              className="border-luxury-charcoal text-luxury-charcoal hover:bg-luxury-charcoal hover:text-luxury-ivory uppercase tracking-wider mt-4"
+              size="lg"
+              className="mt-4"
               onClick={() => toast({ title: "Our Heritage", description: "StitchCart was founded on the belief that true luxury is timeless. Each piece is crafted with care, designed to be cherished for generations." })}
             >
               Discover Our Story
@@ -321,16 +317,14 @@ function ShoppingHome() {
       <section className="py-24 px-6 lg:px-12 max-w-[1440px] mx-auto w-full">
         <div className="flex items-end justify-between mb-12">
           <div>
-            <span className="text-xs font-medium uppercase tracking-[0.3em] text-luxury-gold">
-              Editor's Pick
-            </span>
-            <h2 className="font-serif text-4xl md:text-5xl font-semibold text-luxury-charcoal mt-4">
+            <span className="overline text-accent">Editor&apos;s Pick</span>
+            <h2 className="display-md text-foreground mt-4">
               Featured Products
             </h2>
           </div>
           <Link
             to="/shop/listing"
-            className="hidden md:flex items-center text-sm uppercase tracking-wider text-luxury-taupe hover:text-luxury-charcoal transition-colors"
+            className="hidden md:flex items-center text-xs uppercase tracking-[0.12em] text-muted hover:text-foreground transition-colors"
           >
             View All <ArrowRight className="w-4 h-4 ml-2" />
           </Link>
@@ -350,7 +344,7 @@ function ShoppingHome() {
         <div className="text-center mt-12 md:hidden">
           <Link
             to="/shop/listing"
-            className="inline-flex items-center text-sm uppercase tracking-wider text-luxury-charcoal border-b border-luxury-charcoal pb-1"
+            className="inline-flex items-center text-xs uppercase tracking-[0.12em] text-foreground border-b border-foreground pb-1"
           >
             View All Products <ArrowRight className="w-4 h-4 ml-2" />
           </Link>
@@ -358,9 +352,9 @@ function ShoppingHome() {
       </section>
 
       {/* Brand Strip */}
-      <section className="py-16 border-y border-luxury-beige/50 bg-luxury-ivory">
+      <section className="py-16 border-y border-border bg-surface-raised">
         <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
-          <p className="text-center text-xs font-medium uppercase tracking-[0.3em] text-luxury-taupe mb-10">
+          <p className="overline text-center text-muted mb-10">
             Featured Brands
           </p>
           <div className="grid grid-cols-3 md:grid-cols-6 gap-8 items-center">
@@ -370,7 +364,7 @@ function ShoppingHome() {
                 onClick={() => handleNavigateToListingPage(brand, "brand")}
                 className="text-center group"
               >
-                <p className="font-serif text-lg md:text-xl text-luxury-taupe group-hover:text-luxury-charcoal transition-colors">
+                <p className="font-serif text-lg md:text-xl text-muted group-hover:text-foreground transition-colors">
                   {brand.label}
                 </p>
               </button>
@@ -380,30 +374,29 @@ function ShoppingHome() {
       </section>
 
       {/* Editorial Section - Alternating */}
-      <section ref={craftRef} className="py-24 bg-luxury-ivory">
+      <section ref={craftRef} className="py-24 bg-background">
         <div className="max-w-[1440px] mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="space-y-6 order-2 lg:order-1">
-            <span className="text-xs font-medium uppercase tracking-[0.3em] text-luxury-gold">
-              The Art of Detail
-            </span>
-            <h2 className="font-serif text-4xl md:text-5xl font-semibold text-luxury-charcoal leading-tight">
+            <span className="overline text-accent">The Art of Detail</span>
+            <h2 className="display-lg text-foreground">
               Where Craftsmanship<br />Meets Design
             </h2>
-            <div className="h-px w-12 bg-luxury-gold" />
-            <p className="text-luxury-taupe leading-relaxed">
+            <div className="h-px w-12 bg-accent" />
+            <p className="text-muted leading-relaxed">
               Every stitch tells a story. Our master artisans bring decades of experience to each piece, ensuring impeccable construction and finish that stands the test of time.
             </p>
             <ul className="space-y-3">
               {["Premium Italian fabrics", "Hand-finished details", "Ethically produced"].map((item) => (
-                <li key={item} className="flex items-center gap-3 text-sm text-luxury-charcoal">
-                  <span className="w-1 h-1 bg-luxury-gold rounded-full" />
+                <li key={item} className="flex items-center gap-3 text-sm text-foreground">
+                  <span className="w-1 h-1 bg-accent rounded-full" />
                   {item}
                 </li>
               ))}
             </ul>
             <Button
               variant="outline"
-              className="border-luxury-charcoal text-luxury-charcoal hover:bg-luxury-charcoal hover:text-luxury-ivory uppercase tracking-wider mt-4"
+              size="lg"
+              className="mt-4"
               onClick={() => scrollToSection(craftRef)}
             >
               Learn About Our Craft
@@ -422,15 +415,13 @@ function ShoppingHome() {
       </section>
 
       {/* Newsletter */}
-      <section className="py-24 bg-luxury-charcoal">
+      <section className="py-24 bg-espresso">
         <div className="max-w-[600px] mx-auto px-6 text-center space-y-8">
-          <span className="text-xs font-medium uppercase tracking-[0.3em] text-luxury-gold">
-            Stay Connected
-          </span>
-          <h2 className="font-serif text-3xl md:text-4xl font-semibold text-luxury-ivory">
+          <span className="overline text-gold">Stay Connected</span>
+          <h2 className="display-md text-ivory">
             Join Our World of<br />Timeless Elegance
           </h2>
-          <p className="text-luxury-beige/60 text-sm leading-relaxed">
+          <p className="text-ivory/60 text-sm leading-relaxed">
             Be the first to discover new collections, exclusive drops, and behind-the-scenes stories from our ateliers.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
@@ -438,16 +429,18 @@ function ShoppingHome() {
               ref={emailRef}
               type="email"
               placeholder="Enter your email"
-              className="flex-1 h-12 bg-transparent border border-luxury-beige/30 px-4 text-sm text-luxury-ivory placeholder:text-luxury-beige/40 focus:outline-none focus:border-luxury-gold transition-colors"
+              className="flex-1 h-12 bg-transparent border border-ivory/30 px-4 text-sm text-ivory placeholder:text-ivory/40 focus:outline-none focus:border-gold transition-colors"
             />
             <Button
+              variant="gold"
+              size="lg"
               onClick={handleSubscribe}
-              className="bg-luxury-gold text-luxury-charcoal hover:bg-luxury-gold/90 uppercase tracking-wider h-12 px-6 flex-shrink-0 w-full sm:w-auto"
+              className="flex-shrink-0 w-full sm:w-auto"
             >
               Subscribe
             </Button>
           </div>
-          <p className="text-xs text-luxury-beige/30">
+          <p className="text-xs text-ivory/30">
             By subscribing, you agree to our Privacy Policy. Unsubscribe at any time.
           </p>
         </div>

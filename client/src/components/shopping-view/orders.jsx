@@ -44,12 +44,12 @@ function ShoppingOrders() {
 
   const getStatusBadge = (status) => {
     const variants = {
-      confirmed: "bg-luxury-gold/10 text-luxury-brown border-luxury-gold/20",
-      pending: "bg-luxury-cream text-luxury-taupe border-luxury-beige",
-      rejected: "bg-red-50 text-red-600 border-red-100",
-      delivered: "bg-green-50 text-green-700 border-green-100",
+      confirmed: "bg-accent/10 text-brown border-accent/20",
+      pending: "bg-surface text-muted border-border",
+      rejected: "bg-danger/10 text-danger border-danger/20",
+      delivered: "bg-sage/20 text-success-foreground border-sage/30",
     };
-    return variants[status] || "bg-luxury-cream text-luxury-taupe";
+    return variants[status] || "bg-surface text-muted";
   };
 
   return (
@@ -86,7 +86,7 @@ function ShoppingOrders() {
                       </Badge>
                     </TableCell>
                     <TableCell className="font-serif font-semibold whitespace-nowrap">
-                      ₹{orderItem?.totalAmount}
+                      ${orderItem?.totalAmount}
                     </TableCell>
                     <TableCell>
                       <Button
@@ -108,10 +108,10 @@ function ShoppingOrders() {
             {orderList.map((orderItem) => (
               <div
                 key={orderItem._id}
-                className="border border-luxury-beige/50 p-4 space-y-3"
+                className="border border-border p-4 space-y-3"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs text-luxury-taupe">
+                  <span className="font-mono text-xs text-muted">
                     #{orderItem?._id?.slice(-8)}
                   </span>
                   <Badge
@@ -122,21 +122,21 @@ function ShoppingOrders() {
                   </Badge>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-luxury-taupe">Date</span>
-                  <span className="text-luxury-charcoal">
+                  <span className="text-muted">Date</span>
+                  <span className="text-foreground">
                     {orderItem?.orderDate?.split("T")[0]}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-luxury-taupe">Total</span>
-                  <span className="font-serif font-semibold text-luxury-charcoal">
-                    ₹{orderItem?.totalAmount}
+                  <span className="text-muted">Total</span>
+                  <span className="font-serif font-semibold text-foreground">
+                    ${orderItem?.totalAmount}
                   </span>
                 </div>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="w-full text-xs uppercase tracking-wider"
+                    className="w-full text-xs uppercase tracking-[0.12em]"
                     onClick={() => handleFetchOrderDetails(orderItem?._id)}
                   >
                     <Eye className="w-4 h-4 mr-2" />
@@ -148,7 +148,7 @@ function ShoppingOrders() {
         </>
       ) : (
         <div className="text-center py-12">
-          <p className="text-luxury-taupe">No orders yet</p>
+          <p className="text-muted">No orders yet</p>
         </div>
       )}
 

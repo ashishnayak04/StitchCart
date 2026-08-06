@@ -97,16 +97,14 @@ function AdminProducts() {
     <Fragment>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="font-serif text-2xl font-semibold text-luxury-charcoal">
-            Products
-          </h1>
-          <p className="text-sm text-luxury-taupe mt-1">
+          <h1 className="heading text-foreground">Products</h1>
+          <p className="text-sm text-muted mt-1">
             {productList?.length || 0} products
           </p>
         </div>
         <Button
           onClick={() => setOpenCreateProductsDialog(true)}
-          className="bg-luxury-charcoal hover:bg-luxury-brown text-luxury-ivory"
+          className="uppercase"
         >
           <Plus className="w-4 h-4 mr-2" />
           Add Product
@@ -127,9 +125,9 @@ function AdminProducts() {
           ))}
         </div>
       ) : (
-        <div className="text-center py-20 border border-dashed border-luxury-beige">
-          <Package className="w-12 h-12 text-luxury-beige mx-auto mb-4" />
-          <p className="text-luxury-taupe">No products yet</p>
+        <div className="text-center py-20 border border-dashed border-border">
+          <Package className="w-12 h-12 text-beige mx-auto mb-4" />
+          <p className="text-muted">No products yet</p>
           <Button
             variant="outline"
             onClick={() => setOpenCreateProductsDialog(true)}
@@ -148,8 +146,8 @@ function AdminProducts() {
           setFormData(initialFormData);
         }}
       >
-        <SheetContent side="right" className="overflow-auto bg-luxury-ivory w-full sm:max-w-lg">
-          <SheetHeader className="border-b border-luxury-beige/50 pb-4">
+        <SheetContent side="right" className="overflow-auto bg-surface-raised w-full sm:max-w-lg">
+          <SheetHeader className="border-b border-border pb-4">
             <SheetTitle className="font-serif text-xl">
               {currentEditedId !== null ? "Edit Product" : "Add New Product"}
             </SheetTitle>

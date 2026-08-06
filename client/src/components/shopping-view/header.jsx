@@ -25,7 +25,7 @@ import { fetchCartItems } from "@/store/shop/cart-slice";
 function MenuItems() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
 
   function handleNavigate(getCurrentMenuItem) {
     sessionStorage.removeItem("filters");
@@ -50,7 +50,7 @@ function MenuItems() {
         <button
           key={menuItem.id}
           onClick={() => handleNavigate(menuItem)}
-          className="text-sm font-medium text-luxury-taupe hover:text-luxury-charcoal transition-colors uppercase tracking-wider"
+          className="text-xs font-medium text-muted hover:text-foreground transition-colors uppercase tracking-[0.12em]"
         >
           {menuItem.label}
         </button>
@@ -78,14 +78,14 @@ function HeaderRightContent() {
     <div className="flex items-center gap-4">
       <button
         onClick={() => navigate("/shop/search")}
-        className="text-luxury-taupe hover:text-luxury-charcoal transition-colors"
+        className="text-muted hover:text-foreground transition-colors"
       >
         <Search className="w-5 h-5" />
       </button>
 
       <button
         onClick={() => navigate("/shop/wishlist")}
-        className="text-luxury-taupe hover:text-luxury-charcoal transition-colors"
+        className="text-muted hover:text-foreground transition-colors"
       >
         <Heart className="w-5 h-5" />
       </button>
@@ -93,11 +93,11 @@ function HeaderRightContent() {
       <Sheet open={openCartSheet} onOpenChange={setOpenCartSheet}>
         <button
           onClick={() => setOpenCartSheet(true)}
-          className="relative text-luxury-taupe hover:text-luxury-charcoal transition-colors"
+          className="relative text-muted hover:text-foreground transition-colors"
         >
           <ShoppingBag className="w-5 h-5" />
           {cartItems?.items?.length > 0 && (
-            <span className="absolute -top-2 -right-2 w-4 h-4 bg-luxury-charcoal text-luxury-ivory text-[9px] font-medium flex items-center justify-center">
+            <span className="absolute -top-2 -right-2 w-4 h-4 bg-primary text-primary-foreground text-[9px] font-medium flex items-center justify-center rounded-full">
               {cartItems?.items?.length}
             </span>
           )}
@@ -116,14 +116,14 @@ function HeaderRightContent() {
         <DropdownMenuTrigger asChild>
           <button className="outline-none">
             <Avatar className="w-8 h-8 cursor-pointer">
-              <AvatarFallback className="bg-luxury-charcoal text-luxury-ivory text-xs">
+              <AvatarFallback className="bg-primary text-primary-foreground text-xs">
                 {user?.userName?.[0]?.toUpperCase() || "U"}
               </AvatarFallback>
             </Avatar>
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48 mt-2">
-          <div className="px-3 py-2 text-xs text-luxury-taupe">
+          <div className="px-3 py-2 text-xs text-muted">
             {user?.userName}
           </div>
           <DropdownMenuSeparator />
@@ -155,13 +155,13 @@ function ShoppingHeader() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
-          ? "bg-luxury-ivory/95 backdrop-blur-md luxury-shadow"
+          ? "bg-surface-raised/95 backdrop-blur-md shadow-1"
           : "bg-transparent"
       }`}
     >
       <div className="max-w-[1440px] mx-auto flex h-20 items-center justify-between px-6 lg:px-12">
         <Link to="/shop/home" className="flex-shrink-0">
-          <h1 className="font-serif text-2xl font-bold text-luxury-charcoal tracking-tight">
+          <h1 className="font-serif text-2xl font-semibold text-foreground tracking-tight">
             StitchCart
           </h1>
         </Link>

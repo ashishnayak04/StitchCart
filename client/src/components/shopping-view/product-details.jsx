@@ -1,4 +1,4 @@
-import { StarIcon, Heart, Share2, ShoppingBag, Check } from "lucide-react";
+import { Heart, ShoppingBag, Check } from "lucide-react";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent } from "../ui/dialog";
@@ -127,7 +127,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
       <DialogContent className="sm:max-w-5xl max-w-[95vw] p-0 max-h-[85vh] overflow-y-auto">
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Image Gallery */}
-          <div className="aspect-square overflow-hidden bg-luxury-cream">
+          <div className="aspect-square overflow-hidden bg-surface">
             <img
               src={productDetails?.image}
               alt={productDetails?.title}
@@ -142,16 +142,16 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                 {hasSale && (
                   <Badge variant="premium" className="mb-3">Sale</Badge>
                 )}
-                <h1 className="font-serif text-2xl md:text-3xl font-semibold text-luxury-charcoal leading-tight">
+                <h1 className="display-md text-foreground leading-tight">
                   {productDetails?.title}
                 </h1>
               </div>
-              <button onClick={handleWishlistToggle} className="text-luxury-taupe hover:text-luxury-charcoal transition-colors">
-                <Heart className={`w-5 h-5 ${inWishlist ? "fill-luxury-gold text-luxury-gold" : ""}`} />
+              <button onClick={handleWishlistToggle} className="text-muted hover:text-foreground transition-colors">
+                <Heart className={`w-5 h-5 ${inWishlist ? "fill-accent text-accent" : ""}`} />
               </button>
             </div>
 
-            <p className="text-sm text-luxury-taupe leading-relaxed mb-6">
+            <p className="text-sm text-muted leading-relaxed mb-6">
               {productDetails?.description}
             </p>
 
@@ -159,16 +159,16 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
             <div className="flex items-baseline gap-3 mb-6">
               {hasSale ? (
                 <>
-                  <span className="text-3xl font-serif font-semibold text-luxury-gold">
-                    ₹{productDetails?.salePrice}
+                  <span className="text-3xl font-serif font-semibold text-accent">
+                    ${productDetails?.salePrice}
                   </span>
-                  <span className="text-lg text-luxury-taupe line-through">
-                    ₹{productDetails?.price}
+                  <span className="text-lg text-muted line-through">
+                    ${productDetails?.price}
                   </span>
                 </>
               ) : (
-                <span className="text-3xl font-serif font-semibold text-luxury-charcoal">
-                  ₹{productDetails?.price}
+                <span className="text-3xl font-serif font-semibold text-foreground">
+                  ${productDetails?.price}
                 </span>
               )}
             </div>
@@ -178,7 +178,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
               <div className="flex">
                 <StarRatingComponent rating={averageReview} />
               </div>
-              <span className="text-sm text-luxury-taupe">
+              <span className="text-sm text-muted">
                 ({averageReview.toFixed(1)})
               </span>
             </div>
@@ -189,8 +189,8 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
             <div className="space-y-3 mb-6">
               {["Premium materials", "Expert craftsmanship", "Free shipping"].map(
                 (detail) => (
-                  <div key={detail} className="flex items-center gap-3 text-sm text-luxury-taupe">
-                    <Check className="w-4 h-4 text-luxury-gold" />
+                  <div key={detail} className="flex items-center gap-3 text-sm text-muted">
+                    <Check className="w-4 h-4 text-accent" />
                     {detail}
                   </div>
                 )
@@ -205,7 +205,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                 </Button>
               ) : (
                 <Button
-                  className="w-full bg-luxury-charcoal hover:bg-luxury-brown text-luxury-ivory uppercase tracking-wider"
+                  className="w-full uppercase"
                   size="lg"
                   onClick={() =>
                     handleAddToCart(
@@ -221,22 +221,20 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
             </div>
 
             {/* Reviews Section */}
-            <div className="mt-8 pt-6 border-t border-luxury-beige/50">
-              <h3 className="font-serif text-lg font-semibold text-luxury-charcoal mb-4">
-                Customer Reviews
-              </h3>
+            <div className="mt-8 pt-6 border-t border-border">
+              <h3 className="heading text-foreground mb-4">Customer Reviews</h3>
               <div className="max-h-[200px] overflow-y-auto space-y-4 mb-4">
                 {reviews && reviews.length > 0 ? (
                   reviews.map((reviewItem, idx) => (
                     <div key={idx} className="flex gap-3">
                       <Avatar className="w-8 h-8 flex-shrink-0">
-                        <AvatarFallback className="bg-luxury-charcoal text-luxury-ivory text-xs">
+                        <AvatarFallback className="bg-primary text-primary-foreground text-xs">
                           {reviewItem?.userName?.[0]?.toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium text-luxury-charcoal">
+                          <span className="text-sm font-medium text-foreground">
                             {reviewItem?.userName}
                           </span>
                           <div className="flex">
@@ -245,18 +243,18 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                             />
                           </div>
                         </div>
-                        <p className="text-sm text-luxury-taupe">
+                        <p className="text-sm text-muted">
                           {reviewItem.reviewMessage}
                         </p>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <p className="text-sm text-luxury-taupe">No reviews yet</p>
+                  <p className="text-sm text-muted">No reviews yet</p>
                 )}
               </div>
 
-              <div className="space-y-3 pt-4 border-t border-luxury-beige/30">
+              <div className="space-y-3 pt-4 border-t border-border">
                 <Label>Write a Review</Label>
                 <div className="flex">
                   <StarRatingComponent
@@ -273,7 +271,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                 <Button
                   onClick={handleAddReview}
                   disabled={reviewMsg.trim() === "" || rating === 0}
-                  className="w-full bg-luxury-charcoal hover:bg-luxury-brown text-luxury-ivory uppercase tracking-wider text-xs"
+                  className="w-full uppercase text-xs"
                   size="sm"
                 >
                   Submit Review

@@ -40,30 +40,28 @@ function AdminOrderDetailsView({ orderDetails }) {
 
   const getStatusBadge = (status) => {
     const variants = {
-      confirmed: "bg-luxury-gold/10 text-luxury-brown border-luxury-gold/20",
-      pending: "bg-luxury-cream text-luxury-taupe border-luxury-beige",
-      rejected: "bg-red-50 text-red-600 border-red-100",
-      delivered: "bg-green-50 text-green-700 border-green-100",
-      inProcess: "bg-blue-50 text-blue-600 border-blue-100",
-      inShipping: "bg-purple-50 text-purple-600 border-purple-100",
+      confirmed: "bg-accent/10 text-brown border-accent/20",
+      pending: "bg-surface text-muted border-border",
+      rejected: "bg-danger/10 text-danger border-danger/20",
+      delivered: "bg-sage/20 text-success-foreground border-sage/30",
+      inProcess: "bg-clay/10 text-clay border-clay/20",
+      inShipping: "bg-taupe/15 text-taupe border-taupe/25",
     };
-    return variants[status] || "bg-luxury-cream text-luxury-taupe";
+    return variants[status] || "bg-surface text-muted";
   };
 
   if (!orderDetails) return null;
 
   return (
-    <DialogContent className="sm:max-w-[600px] bg-luxury-ivory max-h-[80vh] overflow-y-auto">
+    <DialogContent className="sm:max-w-[600px] bg-surface-raised max-h-[80vh] overflow-y-auto">
       <div className="space-y-6">
         <div className="flex items-start gap-4">
-          <div className="w-12 h-12 bg-luxury-cream rounded-full flex items-center justify-center">
-            <Package className="w-6 h-6 text-luxury-gold" />
+          <div className="w-12 h-12 bg-surface rounded-full flex items-center justify-center">
+            <Package className="w-6 h-6 text-accent" />
           </div>
           <div>
-            <h2 className="font-serif text-xl font-semibold text-luxury-charcoal">
-              Order Details
-            </h2>
-            <p className="text-sm text-luxury-taupe font-mono">
+            <h2 className="heading text-foreground">Order Details</h2>
+            <p className="text-sm text-muted font-mono">
               #{orderDetails?._id}
             </p>
           </div>
@@ -72,25 +70,25 @@ function AdminOrderDetailsView({ orderDetails }) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <Label>Order Date</Label>
-            <p className="text-sm text-luxury-charcoal mt-1">
+            <p className="text-sm text-foreground mt-1">
               {orderDetails?.orderDate?.split("T")[0]}
             </p>
           </div>
           <div>
             <Label>Total</Label>
-            <p className="text-sm font-serif font-semibold text-luxury-charcoal mt-1">
-              ₹{orderDetails?.totalAmount}
+            <p className="text-sm font-serif font-semibold text-foreground mt-1">
+              ${orderDetails?.totalAmount}
             </p>
           </div>
           <div>
             <Label>Payment</Label>
-            <p className="text-sm text-luxury-charcoal mt-1 capitalize">
+            <p className="text-sm text-foreground mt-1 capitalize">
               {orderDetails?.paymentMethod}
             </p>
           </div>
           <div>
             <Label>Payment Status</Label>
-            <p className="text-sm text-luxury-charcoal mt-1 capitalize">
+            <p className="text-sm text-foreground mt-1 capitalize">
               {orderDetails?.paymentStatus}
             </p>
           </div>
@@ -110,17 +108,15 @@ function AdminOrderDetailsView({ orderDetails }) {
         <Separator />
 
         <div>
-          <h3 className="font-serif text-lg font-semibold text-luxury-charcoal mb-4">
-            Items
-          </h3>
+          <h3 className="heading text-foreground mb-4">Items</h3>
           <div className="space-y-3">
             {orderDetails?.cartItems?.map((item, idx) => (
               <div
                 key={idx}
-                className="flex items-center justify-between py-2 border-b border-luxury-beige/30 last:border-0"
+                className="flex items-center justify-between py-2 border-b border-border last:border-0"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-luxury-cream overflow-hidden">
+                  <div className="w-12 h-12 bg-surface overflow-hidden">
                     <img
                       src={item.image}
                       alt={item.title}
@@ -128,11 +124,11 @@ function AdminOrderDetailsView({ orderDetails }) {
                     />
                   </div>
                   <div>
-                    <p className="text-sm text-luxury-charcoal font-medium">{item.title}</p>
-                    <p className="text-xs text-luxury-taupe">Qty: {item.quantity}</p>
+                    <p className="text-sm text-foreground font-medium">{item.title}</p>
+                    <p className="text-xs text-muted">Qty: {item.quantity}</p>
                   </div>
                 </div>
-                <span className="text-sm font-medium">₹{item.price}</span>
+                <span className="text-sm font-medium">${item.price}</span>
               </div>
             ))}
           </div>
@@ -141,11 +137,9 @@ function AdminOrderDetailsView({ orderDetails }) {
         <Separator />
 
         <div>
-          <h3 className="font-serif text-lg font-semibold text-luxury-charcoal mb-3">
-            Shipping
-          </h3>
-          <div className="text-sm text-luxury-taupe space-y-1">
-            <p className="text-luxury-charcoal font-medium">{user?.userName}</p>
+          <h3 className="heading text-foreground mb-3">Shipping</h3>
+          <div className="text-sm text-muted space-y-1">
+            <p className="text-foreground font-medium">{user?.userName}</p>
             <p>{orderDetails?.addressInfo?.address}</p>
             <p>{orderDetails?.addressInfo?.city}</p>
             <p>Pincode: {orderDetails?.addressInfo?.pincode}</p>
@@ -156,9 +150,7 @@ function AdminOrderDetailsView({ orderDetails }) {
         <Separator />
 
         <div>
-          <h3 className="font-serif text-lg font-semibold text-luxury-charcoal mb-3">
-            Update Status
-          </h3>
+          <h3 className="heading text-foreground mb-3">Update Status</h3>
           <CommonForm
             formControls={[
               {

@@ -30,10 +30,8 @@ function AuthLogin() {
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h1 className="font-serif text-3xl font-semibold text-luxury-charcoal">
-          Welcome Back
-        </h1>
-        <p className="mt-3 text-sm text-luxury-taupe">
+        <h1 className="display-md text-foreground">Welcome Back</h1>
+        <p className="mt-3 text-sm text-muted">
           Sign in to your account to continue
         </p>
       </div>
@@ -44,11 +42,11 @@ function AuthLogin() {
         setFormData={setFormData}
         onSubmit={onSubmit}
       />
-      <p className="text-center text-sm text-luxury-taupe">
+      <p className="text-center text-sm text-muted">
         Don&apos;t have an account?{" "}
         <Link
           to="/auth/register"
-          className="font-medium text-luxury-charcoal hover:text-luxury-gold transition-colors"
+          className="font-medium text-foreground hover:text-accent transition-colors"
         >
           Create one
         </Link>

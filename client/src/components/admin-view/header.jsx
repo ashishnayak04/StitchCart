@@ -11,7 +11,7 @@ function AdminHeader({ setOpen }) {
   }
 
   return (
-    <header className="flex items-center justify-between px-6 py-4 bg-luxury-ivory border-b border-luxury-beige/50">
+    <header className="flex items-center justify-between px-6 py-4 bg-surface-raised border-b border-border">
       <Button
         onClick={() => setOpen(true)}
         variant="ghost"
@@ -25,7 +25,7 @@ function AdminHeader({ setOpen }) {
         onClick={handleLogout}
         variant="ghost"
         size="sm"
-        className="flex items-center gap-2 text-luxury-taupe hover:text-luxury-charcoal"
+        className="flex items-center gap-2 text-muted hover:text-foreground"
       >
         <LogOut className="w-4 h-4" />
         <span className="text-sm">Sign Out</span>
