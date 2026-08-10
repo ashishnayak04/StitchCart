@@ -2,12 +2,14 @@
 
 StitchCart is a full-stack fashion & apparel e-commerce platform (MERN stack). This document details every implemented feature, grouped by functional module.
 
+> **v2 note:** This document now also covers Phase 0 (platform hardening) and Phase 1 (payments & money) features.
+
 ## Table of Contents
 
 1. [Authentication & Authorization](#1-authentication--authorization)
 2. [Customer (Shop) Features](#2-customer-shop-features)
 3. [Shopping Cart](#3-shopping-cart)
-4. [Checkout & Payments (PayPal)](#4-checkout--payments-paypal)
+4. [Checkout & Payments](#4-checkout--payments)
 5. [Orders](#5-orders)
 6. [Address Book](#6-address-book)
 7. [Product Reviews](#7-product-reviews)
@@ -15,6 +17,10 @@ StitchCart is a full-stack fashion & apparel e-commerce platform (MERN stack). T
 9. [Wishlist](#9-wishlist)
 10. [Admin Panel](#10-admin-panel)
 11. [Cross-Cutting Features](#11-cross-cutting-features)
+12. [Coupons & Discounts](#12-coupons--discounts)
+13. [Tax, Shipping & Invoices](#13-tax-shipping--invoices)
+14. [Refunds & Cancellation](#14-refunds--cancellation)
+15. [Platform Hardening (Phase 0)](#15-platform-hardening-phase-0)
 
 ---
 
@@ -61,21 +67,24 @@ Persisted per-user cart stored in MongoDB.
 
 ---
 
-## 4. Checkout & Payments (PayPal)
+## 4. Checkout & Payments
+
+Checkout supports two payment methods: **PayPal** and **Stripe (cards)**, both in USD.
 
 | Feature | Description | Endpoint |
 | --- | --- | --- |
-| Create order | Creates a PayPal payment (USD) from the cart items, persists the order with `pending` status, and returns the PayPal approval URL + order id. | `POST /api/shop/order/create` |
+| Create order (PayPal) | Creates a PayPal payment (USD) from the cart items, persists the order with `pending` status, and returns the PayPal approval URL + order id. | `POST /api/shop/order/create` |
 | PayPal redirect | Customer is redirected to PayPal (`return_url: /shop/paypal-return`). | — |
-| Capture payment | Confirms the payment with PayPal, marks the order `paid` / `confirmed`, decrements product stock, and deletes the user's cart. | `POST /api/shop/order/capture` |
+| Capture payment (PayPal) | Confirms the payment with PayPal, marks the order `paid` / `confirmed`, decrements product stock, and deletes the user's cart. | `POST /api/shop/order/capture` |
+| Create order (Stripe) | Creates a Stripe Checkout Session, persists the order as `pending`, returns the hosted checkout URL. | `POST /api/shop/order/create-stripe` |
+| Stripe return | Verifies the Stripe session, confirms the order (`paid`/`confirmed`), decrements stock, clears cart, emails invoice. | `GET /api/shop/order/stripe-return/:orderId/:sessionId` |
 | Payment success | Confirmation screen shown after a successful capture. | `GET /shop/payment-success` |
 
 **Checkout flow**
-1. User reviews cart → `createOrder`
-2. Frontend redirects browser to `approvalURL` (PayPal)
-3. PayPal redirects back to `/shop/paypal-return?paymentId=...&PayerID=...`
-4. Frontend calls `capturePayment` with `{ paymentId, payerId, orderId }`
-5. Cart is cleared, stock is decremented, order is confirmed
+1. User reviews cart → selects payment method → `createOrder` (PayPal) or `createStripeOrder`
+2. Frontend redirects browser to PayPal approval URL or Stripe hosted Checkout
+3. PayPal redirects back to `/shop/paypal-return`; Stripe redirects back to `/shop/payment-success`
+4. Payment is captured/confirmed, cart is cleared, stock is decremented, invoice email is sent
 
 ---
 
@@ -152,3 +161,51 @@ Accessible at `/admin/*` for users with the `admin` role.
 - **Loading skeletons** — placeholders while data loads.
 - **Error / guard pages** — 404 `Not Found` and `Unauthorized` pages.
 - **Image gallery** — product images served from Cloudinary CDN.
+
+---
+
+## 12. Coupons & Discounts
+
+| Feature | Description | Endpoint |
+| --- | --- | --- |
+| Create coupon | Admin creates a coupon (code, type, value, min cart, expiry, usage limit). | `POST /api/admin/coupons/add` |
+| List coupons | Admin lists all coupons. | `GET /api/admin/coupons/get` |
+| Edit coupon | Admin edits a coupon. | `PUT /api/admin/coupons/edit/:id` |
+| Toggle / delete coupon | Admin toggles active state or deletes a coupon. | `PUT /api/admin/coupons/toggle/:id`, `DELETE /api/admin/coupons/delete/:id` |
+| Validate coupon | Customer applies a coupon code; server validates min-cart, expiry, usage, and returns the discounted amount. | `POST /api/shop/coupon/validate` |
+
+**Coupon model fields**: `code` (unique, uppercase), `description`, `discountType` (`percent` | `fixed`), `discountValue`, `minimumCartValue`, `expirationDate`, `usageLimit`, `usedCount`, `isActive`.
+
+---
+
+## 13. Tax, Shipping & Invoices
+
+- **Order pricing breakdown** — orders store `subtotalAmount`, `shippingAmount`, `taxAmount`, `discountAmount`, and `totalAmount`.
+- **Shipping** — flat-rate shipping applied when configured (`SHIPPING_FLAT_RATE`, default `$0` = free).
+- **Tax** — US sales tax computed from `US_TAX_RATE` (e.g. `0.08`) applied to the post-discount subtotal.
+- **Invoice email** — every confirmed order sends an HTML receipt/invoice to the customer email via SMTP (`SMTP_*` env vars, nodemailer).
+
+---
+
+## 14. Refunds & Cancellation
+
+| Feature | Description | Endpoint |
+| --- | --- | --- |
+| Request cancellation | User cancels a paid/unshipped order; server issues refund (Stripe/PayPal), restores stock, marks `cancelled`. | `POST /api/shop/order/cancel/:id` |
+| Refund order | Admin initiates/records a refund for an order. | `POST /api/admin/orders/refund/:id` |
+| Refund listing | Admin lists orders with refunds. | `GET /api/admin/orders/refunds` |
+
+**Order refund fields**: `refundStatus` (`none` | `requested` | `approved` | `processed`), `refundReason`, `refundAmount`, `refundedAt`.
+
+---
+
+## 15. Platform Hardening (Phase 0)
+
+- **Centralized secrets** — JWT secret read from `JWT_SECRET` env (no hardcoded values).
+- **Server-side role enforcement** — `authMiddleware` (JWT) + `adminMiddleware` (`role === "admin"`) applied to all admin and feature routes.
+- **Security headers** — Helmet enabled.
+- **Rate limiting** — `express-rate-limit` on `/api` (configurable via `RATE_LIMIT_WINDOW_MS` / `RATE_LIMIT_MAX`).
+- **Configurable CORS** — origins from `CORS_ORIGIN` (default `http://localhost:5173`).
+- **Pagination** — `GET /api/shop/products/get`, `GET /api/admin/products/get`, `GET /api/admin/orders/get` accept `page` & `limit` and return `{ data, total, totalPages, page, limit }`.
+- **Deployment** — `.env.example` documents every environment variable for reproducible runs.
+- **Bug fixes** — undefined `error` references in catch blocks replaced with `e`.

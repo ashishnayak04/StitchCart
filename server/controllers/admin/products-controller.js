@@ -67,10 +67,22 @@ const addProduct = async (req, res) => {
 
 const fetchAllProducts = async (req, res) => {
   try {
-    const listOfProducts = await Product.find({});
+    const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
+    const limit = Math.max(parseInt(req.query.limit, 10) || 20, 1);
+    const skip = (page - 1) * limit;
+
+    const [listOfProducts, total] = await Promise.all([
+      Product.find({}).sort({ createdAt: -1 }).skip(skip).limit(limit),
+      Product.countDocuments({}),
+    ]);
+
     res.status(200).json({
       success: true,
       data: listOfProducts,
+      total,
+      totalPages: Math.ceil(total / limit),
+      page,
+      limit,
     });
   } catch (e) {
     console.log(e);

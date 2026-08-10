@@ -42,6 +42,20 @@ export const updateOrderStatus = createAsyncThunk(
   }
 );
 
+export const refundOrder = createAsyncThunk(
+  "/order/refundOrder",
+  async ({ id, refundReason }) => {
+    const response = await axios.post(
+      `http://localhost:9000/api/admin/orders/refund/${id}`,
+      {
+        refundReason,
+      }
+    );
+
+    return response.data;
+  }
+);
+
 const adminOrderSlice = createSlice({
   name: "adminOrderSlice",
   initialState,

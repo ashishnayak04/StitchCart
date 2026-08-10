@@ -1,4 +1,4 @@
-import { LayoutDashboard, ShoppingBag, Package, ChevronRight } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Package, Tag, ChevronRight } from "lucide-react";
 import { Fragment } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
@@ -21,6 +21,12 @@ const adminSidebarMenuItems = [
     label: "Orders",
     path: "/admin/orders",
     icon: <Package className="w-5 h-5" />,
+  },
+  {
+    id: "coupons",
+    label: "Coupons",
+    path: "/admin/coupons",
+    icon: <Tag className="w-5 h-5" />,
   },
 ];
 

@@ -6,9 +6,10 @@
 | --- | --- |
 | Product name | StitchCart |
 | Type | Fashion & apparel e-commerce platform |
-| Version | 1.0.0 |
+| Version | 2.0.0 |
 | Stack | MERN (MongoDB, Express, React, Node.js) |
-| Status | Implemented (v1) |
+| Status | In progress — v2 feature rollout (see §9) |
+| Market | Global / US (USD pricing, Stripe + PayPal, US sales tax) |
 
 ---
 
@@ -26,6 +27,22 @@ StitchCart is a full-stack online store for fashion and apparel. It lets custome
 - No multi-vendor / marketplace support.
 - No in-app wallet or COD — PayPal only.
 - No admin user creation UI (roles seeded manually).
+
+---
+
+## 1b. v2 — Product Direction (supersedes v1 non-goals)
+
+StitchCart is evolving from a project into a **self-contained commerce product**: a customer should be able to complete the entire shopping lifecycle — discovery, purchase, support, and post-purchase management — without leaving the platform.
+
+The v2 feature set is delivered in phases (§9). In scope:
+
+- **Payments & money**: Stripe (cards) + PayPal, coupons, US sales tax + shipping, emailed invoices/receipts, refunds, order cancellation with auto-refund.
+- **Account & auth**: email verification, password reset, OAuth, profile editing, default address, guest checkout, persisted wishlist.
+- **Notifications**: transactional email, SMS, in-app notification center.
+- **Admin operations**: analytics dashboard, customer management, review moderation, coupon/refund management, exports, admin users, audit log.
+- **Trust & support**: FAQ/help center, live chat, support tickets, editable policy pages.
+- **Engagement**: loyalty points, recently viewed, recommendations, size guide, product variants, SEO, PWA.
+- **Platform hardening**: centralize secrets, server-side role enforcement, security headers/rate limiting/validation, pagination, tests, Docker deployment.
 
 ---
 
@@ -170,3 +187,41 @@ StitchCart is a full-stack online store for fashion and apparel. It lets custome
 | Cancellation flow | `cancel_url` route (`/shop/paypal-cancel`) is referenced but not implemented in the SPA. |
 | Pagination | Product listing has no pagination/infinite scroll for large catalogs. |
 | Payments | Only PayPal; no card (Stripe/razorpay) or COD options. |
+
+---
+
+## 9. v2 Roadmap (implementation phases)
+
+Delivered two phases at a time.
+
+### Phase 0 — Platform hardening (foundation)
+- Centralize JWT secret to `.env`; unify env naming.
+- Server-side role enforcement on all admin/feature routes (JWT + `role: admin`).
+- Security headers (Helmet), rate limiting, input validation; configurable CORS.
+- Pagination on shop products, admin products, and admin orders.
+- Deployment-ready env configuration (`.env.example`).
+
+### Phase 1 — Payments & money
+- Stripe Checkout (cards) added alongside PayPal; user selects method at checkout.
+- Coupons / promo codes (percent/fixed, min-cart, expiry, usage limits) + admin management UI.
+- US sales tax + shipping calculated at checkout and stored on the order.
+- Emailed invoice/receipt on every confirmed order.
+- Refund flow (user requests, admin approves, money returned) + admin management.
+- Order cancellation with automatic refund + stock restore.
+
+### Phase 2 — Account & auth
+- Email verification, forgot/reset password.
+- Google OAuth login, profile editing + avatar.
+- Default address, guest checkout, persisted wishlist, reorder.
+
+### Phase 3 — Notifications
+- Transactional email (confirmed/shipped/delivered/refunded), SMS (Twilio), in-app notification center.
+
+### Phase 4 — Admin analytics & operations
+- Revenue/order/top-product dashboards, customer management, review moderation, coupon/refund UI, bulk CSV import, admin users + roles, exports, audit log.
+
+### Phase 5 — Trust & support
+- FAQ/help center, live chat, support tickets linked to orders, editable policy pages.
+
+### Phase 6 — Engagement & catalog depth
+- Loyalty points, recently viewed, comparison, recommendations, size guide + fit finder, variants, search autocomplete, SEO/sitemap, PWA, order tracking timeline, returns/exchange.

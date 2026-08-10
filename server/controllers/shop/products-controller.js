@@ -2,7 +2,14 @@ const Product = require("../../models/Product");
 
 const getFilteredProducts = async (req, res) => {
   try {
-    const { category = [], brand = [], sortBy = "price-lowtohigh", ids } = req.query;
+    const {
+      category = [],
+      brand = [],
+      sortBy = "price-lowtohigh",
+      ids,
+      page = 1,
+      limit = 12,
+    } = req.query;
 
     let filters = {};
 
@@ -44,14 +51,25 @@ const getFilteredProducts = async (req, res) => {
         break;
     }
 
-    const products = await Product.find(filters).sort(sort);
+    const currentPage = Math.max(parseInt(page, 10) || 1, 1);
+    const pageSize = Math.max(parseInt(limit, 10) || 12, 1);
+    const skip = (currentPage - 1) * pageSize;
+
+    const [products, total] = await Promise.all([
+      Product.find(filters).sort(sort).skip(skip).limit(pageSize),
+      Product.countDocuments(filters),
+    ]);
 
     res.status(200).json({
       success: true,
       data: products,
+      total,
+      totalPages: Math.ceil(total / pageSize),
+      page: currentPage,
+      limit: pageSize,
     });
   } catch (e) {
-    console.log(error);
+    console.log(e);
     res.status(500).json({
       success: false,
       message: "Some error occured",
@@ -75,7 +93,7 @@ const getProductDetails = async (req, res) => {
       data: product,
     });
   } catch (e) {
-    console.log(error);
+    console.log(e);
     res.status(500).json({
       success: false,
       message: "Some error occured",

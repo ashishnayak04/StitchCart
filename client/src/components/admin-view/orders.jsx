@@ -45,10 +45,9 @@ function AdminOrdersView() {
     const variants = {
       confirmed: "bg-accent/10 text-brown border-accent/20",
       pending: "bg-surface text-muted border-border",
-      rejected: "bg-danger/10 text-danger border-danger/20",
+      shipped: "bg-clay/10 text-clay border-clay/20",
       delivered: "bg-sage/20 text-success-foreground border-sage/30",
-      inProcess: "bg-clay/10 text-clay border-clay/20",
-      inShipping: "bg-taupe/15 text-taupe border-taupe/25",
+      cancelled: "bg-danger/10 text-danger border-danger/20",
     };
     return variants[status] || "bg-surface text-muted";
   };

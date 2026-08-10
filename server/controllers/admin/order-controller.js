@@ -1,19 +1,136 @@
+const paypal = require("../../helpers/paypal");
+const { getStripeClient } = require("../../helpers/stripe");
 const Order = require("../../models/Order");
 
 const getAllOrdersOfAllUsers = async (req, res) => {
   try {
-    const orders = await Order.find({});
+    const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
+    const limit = Math.max(parseInt(req.query.limit, 10) || 20, 1);
+    const skip = (page - 1) * limit;
 
-    if (!orders.length) {
-      return res.status(404).json({
-        success: false,
-        message: "No orders found!",
-      });
-    }
+    const [orders, total] = await Promise.all([
+      Order.find({}).sort({ orderDate: -1 }).skip(skip).limit(limit),
+      Order.countDocuments({}),
+    ]);
 
     res.status(200).json({
       success: true,
       data: orders,
+      total,
+      totalPages: Math.ceil(total / limit),
+      page,
+      limit,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      success: false,
+      message: "Some error occured!",
+    });
+  }
+};
+
+const getRefundedOrders = async (req, res) => {
+  try {
+    const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
+    const limit = Math.max(parseInt(req.query.limit, 10) || 20, 1);
+    const skip = (page - 1) * limit;
+
+    const filter = { refundStatus: { $ne: "none" } };
+    const [orders, total] = await Promise.all([
+      Order.find(filter).sort({ orderDate: -1 }).skip(skip).limit(limit),
+      Order.countDocuments(filter),
+    ]);
+
+    res.status(200).json({
+      success: true,
+      data: orders,
+      total,
+      totalPages: Math.ceil(total / limit),
+      page,
+      limit,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      success: false,
+      message: "Some error occured!",
+    });
+  }
+};
+
+const refundOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { refundReason } = req.body;
+
+    const order = await Order.findById(id);
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found!",
+      });
+    }
+
+    if (order.refundStatus === "processed") {
+      return res.status(400).json({
+        success: false,
+        message: "Order has already been refunded",
+      });
+    }
+
+    if (order.paymentStatus !== "paid") {
+      return res.status(400).json({
+        success: false,
+        message: "Order has not been paid, no refund needed",
+      });
+    }
+
+    let refundProcessed = false;
+
+    try {
+      if (order.paymentMethod === "stripe" && order.stripePaymentIntentId) {
+        await getStripeClient().refunds.create({
+          payment_intent: order.stripePaymentIntentId,
+        });
+        refundProcessed = true;
+      } else if (order.paymentMethod === "paypal" && order.paymentId) {
+        const payment = await new Promise((resolve, reject) => {
+          paypal.payment.get(order.paymentId, (err, info) => {
+            if (err) return reject(err);
+            resolve(info);
+          });
+        });
+        const sale = payment?.transactions?.[0]?.related_resources?.[0]?.sale;
+        if (sale) {
+          await new Promise((resolve, reject) => {
+            paypal.sale.refund(sale.id, {}, (err, info) => {
+              if (err) return reject(err);
+              resolve(info);
+            });
+          });
+          refundProcessed = true;
+        }
+      }
+    } catch (refundError) {
+      console.log("Refund failed:", refundError);
+    }
+
+    order.refundStatus = refundProcessed ? "processed" : "requested";
+    order.refundReason = refundReason || order.refundReason || "Admin refund";
+    order.refundAmount = order.totalAmount;
+    if (refundProcessed) order.refundedAt = new Date();
+    order.orderStatus = refundProcessed ? "cancelled" : order.orderStatus;
+    order.orderUpdateDate = new Date();
+
+    await order.save();
+
+    res.status(200).json({
+      success: true,
+      message: refundProcessed
+        ? "Refund processed successfully"
+        : "Refund request recorded",
+      data: order,
     });
   } catch (e) {
     console.log(e);
@@ -55,6 +172,21 @@ const updateOrderStatus = async (req, res) => {
     const { id } = req.params;
     const { orderStatus } = req.body;
 
+    const allowedStatuses = [
+      "pending",
+      "confirmed",
+      "shipped",
+      "delivered",
+      "cancelled",
+    ];
+
+    if (!allowedStatuses.includes(orderStatus)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid order status",
+      });
+    }
+
     const order = await Order.findById(id);
 
     if (!order) {
@@ -64,7 +196,10 @@ const updateOrderStatus = async (req, res) => {
       });
     }
 
-    await Order.findByIdAndUpdate(id, { orderStatus });
+    await Order.findByIdAndUpdate(id, {
+      orderStatus,
+      orderUpdateDate: new Date(),
+    });
 
     res.status(200).json({
       success: true,
@@ -83,4 +218,6 @@ module.exports = {
   getAllOrdersOfAllUsers,
   getOrderDetailsForAdmin,
   updateOrderStatus,
+  refundOrder,
+  getRefundedOrders,
 };

@@ -1,27 +1,55 @@
-import { useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
 import { DialogContent } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
-import { Package } from "lucide-react";
+import { useToast } from "../ui/use-toast";
+import { cancelOrder, getAllOrdersByUserId } from "@/store/shop/order-slice";
+import { Package, XCircle } from "lucide-react";
 
 function ShoppingOrderDetailsView({ orderDetails }) {
   const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const { toast } = useToast();
+  const [isCancelling, setIsCancelling] = useState(false);
 
   const getStatusBadge = (status) => {
     const variants = {
       confirmed: "bg-accent/10 text-brown border-accent/20",
       pending: "bg-surface text-muted border-border",
-      rejected: "bg-danger/10 text-danger border-danger/20",
+      shipped: "bg-clay/10 text-clay border-clay/20",
       delivered: "bg-sage/20 text-success-foreground border-sage/30",
+      cancelled: "bg-danger/10 text-danger border-danger/20",
     };
     return variants[status] || "bg-surface text-muted";
   };
 
+  const canCancel =
+    orderDetails &&
+    !["cancelled", "shipped", "delivered"].includes(orderDetails?.orderStatus);
+
+  function handleCancelOrder() {
+    setIsCancelling(true);
+    dispatch(cancelOrder(orderDetails?._id)).then((data) => {
+      setIsCancelling(false);
+      if (data?.payload?.success) {
+        dispatch(getAllOrdersByUserId(user?.id));
+        toast({ title: data?.payload?.message });
+      } else {
+        toast({
+          title: data?.payload?.message || "Failed to cancel order",
+          variant: "destructive",
+        });
+      }
+    });
+  }
+
   if (!orderDetails) return null;
 
   return (
-    <DialogContent className="sm:max-w-[600px] bg-surface-raised">
+    <DialogContent className="sm:max-w-[600px] bg-surface-raised max-h-[80vh] overflow-y-auto">
       <div className="space-y-6">
         <div className="flex items-start gap-4">
           <div className="w-12 h-12 bg-surface rounded-full flex items-center justify-center">
@@ -123,6 +151,20 @@ function ShoppingOrderDetailsView({ orderDetails }) {
             )}
           </div>
         </div>
+
+        {canCancel ? (
+          <div>
+            <Button
+              variant="outline"
+              className="w-full uppercase border-danger/30 text-danger hover:bg-danger/5"
+              disabled={isCancelling}
+              onClick={handleCancelOrder}
+            >
+              <XCircle className="w-4 h-4 mr-2" />
+              {isCancelling ? "Cancelling..." : "Cancel Order"}
+            </Button>
+          </div>
+        ) : null}
       </div>
     </DialogContent>
   );

@@ -4,14 +4,16 @@ import { DialogContent } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
 import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllOrdersForAdmin,
   getOrderDetailsForAdmin,
   updateOrderStatus,
+  refundOrder,
 } from "@/store/admin/order-slice";
 import { useToast } from "../ui/use-toast";
-import { Package } from "lucide-react";
+import { Package, RotateCcw } from "lucide-react";
 
 const initialFormData = {
   status: "",
@@ -34,6 +36,26 @@ function AdminOrderDetailsView({ orderDetails }) {
         dispatch(getAllOrdersForAdmin());
         setFormData(initialFormData);
         toast({ title: data?.payload?.message });
+      } else {
+        toast({
+          title: data?.payload?.message || "Failed to update status",
+          variant: "destructive",
+        });
+      }
+    });
+  }
+
+  function handleRefund() {
+    dispatch(refundOrder({ id: orderDetails?._id })).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(getOrderDetailsForAdmin(orderDetails?._id));
+        dispatch(getAllOrdersForAdmin());
+        toast({ title: data?.payload?.message });
+      } else {
+        toast({
+          title: data?.payload?.message || "Failed to process refund",
+          variant: "destructive",
+        });
       }
     });
   }
@@ -42,10 +64,9 @@ function AdminOrderDetailsView({ orderDetails }) {
     const variants = {
       confirmed: "bg-accent/10 text-brown border-accent/20",
       pending: "bg-surface text-muted border-border",
-      rejected: "bg-danger/10 text-danger border-danger/20",
+      shipped: "bg-clay/10 text-clay border-clay/20",
       delivered: "bg-sage/20 text-success-foreground border-sage/30",
-      inProcess: "bg-clay/10 text-clay border-clay/20",
-      inShipping: "bg-taupe/15 text-taupe border-taupe/25",
+      cancelled: "bg-danger/10 text-danger border-danger/20",
     };
     return variants[status] || "bg-surface text-muted";
   };
@@ -103,7 +124,32 @@ function AdminOrderDetailsView({ orderDetails }) {
               </Badge>
             </div>
           </div>
+          <div>
+            <Label>Refund</Label>
+            <div className="mt-1">
+              <Badge
+                variant="outline"
+                className={
+                  orderDetails?.refundStatus === "processed"
+                    ? "bg-accent/10 text-accent border-accent/20"
+                    : "bg-surface text-muted border-border"
+                }
+              >
+                {orderDetails?.refundStatus || "none"}
+              </Badge>
+            </div>
+          </div>
         </div>
+
+        {orderDetails?.couponCode ? (
+          <div className="text-sm text-muted">
+            Coupon applied:{" "}
+            <span className="font-medium text-accent uppercase">
+              {orderDetails.couponCode}
+            </span>{" "}
+            (−${orderDetails?.discountAmount?.toFixed?.(2) ?? orderDetails?.discountAmount})
+          </div>
+        ) : null}
 
         <Separator />
 
@@ -134,6 +180,31 @@ function AdminOrderDetailsView({ orderDetails }) {
           </div>
         </div>
 
+        <div className="text-sm space-y-1">
+          <div className="flex justify-between text-muted">
+            <span>Subtotal</span>
+            <span>${orderDetails?.subtotalAmount?.toFixed?.(2) ?? orderDetails?.subtotalAmount}</span>
+          </div>
+          {orderDetails?.discountAmount > 0 && (
+            <div className="flex justify-between text-accent">
+              <span>Discount</span>
+              <span>−${orderDetails?.discountAmount?.toFixed?.(2) ?? orderDetails?.discountAmount}</span>
+            </div>
+          )}
+          <div className="flex justify-between text-muted">
+            <span>Shipping</span>
+            <span>${orderDetails?.shippingAmount?.toFixed?.(2) ?? orderDetails?.shippingAmount}</span>
+          </div>
+          <div className="flex justify-between text-muted">
+            <span>Tax</span>
+            <span>${orderDetails?.taxAmount?.toFixed?.(2) ?? orderDetails?.taxAmount}</span>
+          </div>
+          <div className="flex justify-between font-medium text-foreground pt-1">
+            <span>Total</span>
+            <span>${orderDetails?.totalAmount?.toFixed?.(2) ?? orderDetails?.totalAmount}</span>
+          </div>
+        </div>
+
         <Separator />
 
         <div>
@@ -159,10 +230,10 @@ function AdminOrderDetailsView({ orderDetails }) {
                 componentType: "select",
                 options: [
                   { id: "pending", label: "Pending" },
-                  { id: "inProcess", label: "In Process" },
-                  { id: "inShipping", label: "In Shipping" },
+                  { id: "confirmed", label: "Confirmed" },
+                  { id: "shipped", label: "Shipped" },
                   { id: "delivered", label: "Delivered" },
-                  { id: "rejected", label: "Rejected" },
+                  { id: "cancelled", label: "Cancelled" },
                 ],
               },
             ]}
@@ -172,6 +243,20 @@ function AdminOrderDetailsView({ orderDetails }) {
             onSubmit={handleUpdateStatus}
           />
         </div>
+
+        {orderDetails?.paymentStatus === "paid" &&
+        orderDetails?.refundStatus !== "processed" ? (
+          <div>
+            <Button
+              variant="outline"
+              className="w-full uppercase"
+              onClick={handleRefund}
+            >
+              <RotateCcw className="w-4 h-4 mr-2" />
+              Refund Order
+            </Button>
+          </div>
+        ) : null}
       </div>
     </DialogContent>
   );

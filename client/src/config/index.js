@@ -181,8 +181,7 @@ export const sortOptions = [
   { id: "title-ztoa", label: "Title: Z to A" },
 ];
 
-export const addressFormControls = [
-  {
+export const addressFormControls = [  {
     label: "Address",
     name: "address",
     componentType: "input",
@@ -215,5 +214,58 @@ export const addressFormControls = [
     name: "notes",
     componentType: "textarea",
     placeholder: "Enter any additional notes",
+  },
+];
+
+export const couponFormControls = [
+  {
+    label: "Coupon Code",
+    name: "code",
+    componentType: "input",
+    type: "text",
+    placeholder: "e.g. SUMMER20",
+  },
+  {
+    label: "Description",
+    name: "description",
+    componentType: "textarea",
+    placeholder: "Coupon description",
+  },
+  {
+    label: "Discount Type",
+    name: "discountType",
+    componentType: "select",
+    options: [
+      { id: "percent", label: "Percentage (%)" },
+      { id: "fixed", label: "Fixed amount ($)" },
+    ],
+  },
+  {
+    label: "Discount Value",
+    name: "discountValue",
+    componentType: "input",
+    type: "number",
+    placeholder: "e.g. 20 (for 20%)",
+  },
+  {
+    label: "Minimum Cart Value",
+    name: "minimumCartValue",
+    componentType: "input",
+    type: "number",
+    placeholder: "Minimum cart total (0 = none)",
+  },
+  {
+    label: "Expiration Date",
+    name: "expirationDate",
+    componentType: "input",
+    type: "date",
+    placeholder: "",
+  },
+  {
+    label: "Usage Limit",
+    name: "usageLimit",
+    componentType: "input",
+    type: "number",
+    placeholder: "Max redemptions (0 = unlimited)",
   },
 ];
