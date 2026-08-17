@@ -27,15 +27,15 @@ function AdminProductTile({
           {hasSale ? (
             <div className="flex items-center gap-2">
               <span className="font-serif font-semibold text-accent">
-                ${product?.salePrice}
+                ₹{product?.salePrice}
               </span>
               <span className="text-xs text-muted line-through">
-                ${product?.price}
+                ₹{product?.price}
               </span>
             </div>
           ) : (
             <span className="font-serif font-semibold text-foreground">
-              ${product?.price}
+              ₹{product?.price}
             </span>
           )}
           <span className="text-xs text-muted">

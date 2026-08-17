@@ -1,4 +1,5 @@
 const Coupon = require("../../models/Coupon");
+const { logAction } = require("./audit-log-controller");
 
 const addCoupon = async (req, res) => {
   try {
@@ -38,6 +39,7 @@ const addCoupon = async (req, res) => {
     });
 
     await coupon.save();
+    logAction(req.user?.id, "CREATE_COUPON", "Coupon", coupon._id.toString(), { code: coupon.code }, req.ip);
 
     res.status(201).json({
       success: true,
@@ -102,6 +104,7 @@ const editCoupon = async (req, res) => {
     coupon.usageLimit = usageLimit ?? coupon.usageLimit;
 
     await coupon.save();
+    logAction(req.user?.id, "UPDATE_COUPON", "Coupon", coupon._id.toString(), { code: coupon.code }, req.ip);
 
     res.status(200).json({
       success: true,
@@ -155,6 +158,7 @@ const deleteCoupon = async (req, res) => {
       });
     }
 
+    logAction(req.user?.id, "DELETE_COUPON", "Coupon", id, { code: coupon?.code }, req.ip);
     res.status(200).json({
       success: true,
       message: "Coupon deleted successfully",

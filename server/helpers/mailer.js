@@ -16,9 +16,9 @@ const buildOrderInvoiceHtml = (order, userEmail) => {
       (item) => `
       <tr>
         <td style="padding:8px;border-bottom:1px solid #eee;">${item.title} × ${item.quantity}</td>
-        <td style="padding:8px;border-bottom:1px solid #eee;text-align:right;">$${(
+        <td style="padding:8px;border-bottom:1px solid #eee;text-align:right;">₹{(
           Number(item.price) * item.quantity
-        ).toFixed(2)}</td>
+        ).toLocaleString("en-IN", { maximumFractionDigits: 2 })}</td>
       </tr>`
     )
     .join("");
@@ -29,8 +29,9 @@ const buildOrderInvoiceHtml = (order, userEmail) => {
       <p style="color:#666;margin-top:0;">Invoice for Order #${order._id}</p>
       <hr style="border:none;border-top:1px solid #eee;" />
       <p>Hi there,</p>
-      <p>Thank you for your order. Your payment of <strong>$${order.totalAmount.toFixed(
-        2
+      <p>Thank you for your order. Your payment of <strong>₹{order.totalAmount.toLocaleString(
+        "en-IN",
+        { maximumFractionDigits: 2 }
       )}</strong> has been received. Here is your receipt:</p>
       <table style="width:100%;border-collapse:collapse;">
         <thead>
@@ -42,26 +43,31 @@ const buildOrderInvoiceHtml = (order, userEmail) => {
         <tbody>${rows}</tbody>
       </table>
       <table style="width:100%;margin-top:16px;">
-        <tr><td>Subtotal</td><td style="text-align:right;">$${order.subtotalAmount.toFixed(
-          2
+        <tr><td>Subtotal</td><td style="text-align:right;">₹{order.subtotalAmount.toLocaleString(
+          "en-IN",
+          { maximumFractionDigits: 2 }
         )}</td></tr>
         ${
           order.discountAmount
-            ? `<tr><td>Discount${order.couponCode ? ` (${order.couponCode})` : ""}</td><td style="text-align:right;">-$${order.discountAmount.toFixed(
-                2
+            ? `<tr><td>Discount${order.couponCode ? ` (${order.couponCode})` : ""}</td><td style="text-align:right;">-₹${order.discountAmount.toLocaleString(
+                "en-IN",
+                { maximumFractionDigits: 2 }
               )}</td></tr>`
             : ""
         }
-        <tr><td>Shipping</td><td style="text-align:right;">$${order.shippingAmount.toFixed(
-          2
+        <tr><td>Shipping</td><td style="text-align:right;">₹{order.shippingAmount.toLocaleString(
+          "en-IN",
+          { maximumFractionDigits: 2 }
         )}</td></tr>
-        <tr><td>Tax</td><td style="text-align:right;">$${order.taxAmount.toFixed(
-          2
+        <tr><td>GST</td><td style="text-align:right;">₹{order.taxAmount.toLocaleString(
+          "en-IN",
+          { maximumFractionDigits: 2 }
         )}</td></tr>
         <tr style="font-weight:bold;font-size:16px;">
           <td style="padding-top:8px;border-top:2px solid #ddd;">Total</td>
-          <td style="text-align:right;padding-top:8px;border-top:2px solid #ddd;">$${order.totalAmount.toFixed(
-            2
+          <td style="text-align:right;padding-top:8px;border-top:2px solid #ddd;">₹{order.totalAmount.toLocaleString(
+            "en-IN",
+            { maximumFractionDigits: 2 }
           )}</td>
         </tr>
       </table>

@@ -108,11 +108,15 @@ function ProductCard({ product }) {
         <span className="pointer-events-none absolute inset-0 overflow-hidden">
           <span className="absolute top-0 left-0 h-full w-1/3 -translate-x-[250%] bg-gradient-to-r from-transparent via-ivory/50 to-transparent skew-x-12 transition-transform duration-slow ease-luxury group-hover:translate-x-[500%]" />
         </span>
-        {product.onSale && (
-          <span className="absolute top-3 left-3 bg-clay text-clay-foreground text-[10px] uppercase tracking-[0.14em] px-2.5 py-1">
+        {product.badge ? (
+          <span className="absolute top-3 left-3 bg-espresso text-ivory text-[10px] uppercase tracking-[0.14em] font-semibold px-2.5 py-1 shadow-1 border border-ivory/20">
+            {product.badge}
+          </span>
+        ) : product.onSale ? (
+          <span className="absolute top-3 left-3 bg-clay text-clay-foreground text-[10px] uppercase tracking-[0.14em] font-semibold px-2.5 py-1">
             Sale
           </span>
-        )}
+        ) : null}
         <WishlistButton
           active={wished}
           onClick={() => setWished((w) => !w)}
@@ -134,11 +138,11 @@ function ProductCard({ product }) {
         <div className="flex items-center justify-between mt-4 pt-4 border-t border-beige">
           <div className="flex items-baseline gap-2.5">
             <span className="font-serif text-xl text-accent">
-              ${product.price}
+              ₹{product.price.toLocaleString("en-IN")}
             </span>
             {product.originalPrice && (
               <span className="text-sm text-muted line-through">
-                ${product.originalPrice}
+                ₹{product.originalPrice.toLocaleString("en-IN")}
               </span>
             )}
           </div>
@@ -195,6 +199,7 @@ ProductCard.propTypes = {
     onSale: PropTypes.bool.isRequired,
     rating: PropTypes.number.isRequired,
     reviews: PropTypes.number.isRequired,
+    badge: PropTypes.string,
     image: PropTypes.string.isRequired,
   }).isRequired,
 };
@@ -247,7 +252,7 @@ function FeaturedProducts() {
             to="/shop/listing"
             className="hidden md:inline-flex items-center text-xs uppercase tracking-[0.16em] text-muted hover:text-espresso transition-colors duration-fast"
           >
-            View all 900+ pieces <ArrowRight className="w-4 h-4 ml-2" />
+            View all 1,200+ styles <ArrowRight className="w-4 h-4 ml-2" />
           </Link>
         </div>
 

@@ -1,13 +1,8 @@
+import { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import AuthLayout from "./components/auth/layout";
 import AuthLogin from "./pages/auth/login";
 import AuthRegister from "./pages/auth/register";
-import AdminLayout from "./components/admin-view/layout";
-import AdminDashboard from "./pages/admin-view/dashboard";
-import AdminProducts from "./pages/admin-view/products";
-import AdminOrders from "./pages/admin-view/orders";
-import AdminCoupons from "./pages/admin-view/coupons";
-import AdminFeatures from "./pages/admin-view/features";
 import ShoppingLayout from "./components/shopping-view/layout";
 import NotFound from "./pages/not-found";
 import ShoppingHome from "./pages/shopping-view/home";
@@ -20,11 +15,43 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { checkAuth } from "./store/auth-slice";
 import { Skeleton } from "@/components/ui/skeleton";
-import PaypalReturnPage from "./pages/shopping-view/paypal-return";
-import PaymentSuccessPage from "./pages/shopping-view/payment-success";
-import SearchProducts from "./pages/shopping-view/search";
-import ShoppingWishlist from "./pages/shopping-view/wishlist";
 import Landing from "./pages/landing";
+
+const AdminLayout = lazy(() => import("./components/admin-view/layout"));
+const AdminDashboard = lazy(() => import("./pages/admin-view/dashboard"));
+const AdminProducts = lazy(() => import("./pages/admin-view/products"));
+const AdminOrders = lazy(() => import("./pages/admin-view/orders"));
+const AdminCoupons = lazy(() => import("./pages/admin-view/coupons"));
+const AdminAnalytics = lazy(() => import("./pages/admin-view/analytics"));
+const AdminCustomers = lazy(() => import("./pages/admin-view/customers"));
+const AdminReviews = lazy(() => import("./pages/admin-view/reviews-moderation"));
+const AdminSupport = lazy(() => import("./pages/admin-view/support-tickets"));
+const AdminFAQ = lazy(() => import("./pages/admin-view/faq-admin"));
+const AdminPolicies = lazy(() => import("./pages/admin-view/policies-admin"));
+const AdminAudit = lazy(() => import("./pages/admin-view/audit-log"));
+const AdminVariants = lazy(() => import("./pages/admin-view/variants"));
+const AdminCategories = lazy(() => import("./pages/admin-view/categories"));
+const AdminBrands = lazy(() => import("./pages/admin-view/brands"));
+const AdminInventory = lazy(() => import("./pages/admin-view/inventory"));
+const AdminReturns = lazy(() => import("./pages/admin-view/returns"));
+const AdminUsers = lazy(() => import("./pages/admin-view/users"));
+const PaypalReturnPage = lazy(() => import("./pages/shopping-view/paypal-return"));
+const PaypalCancelPage = lazy(() => import("./pages/shopping-view/paypal-cancel"));
+const PaymentSuccessPage = lazy(() => import("./pages/shopping-view/payment-success"));
+const SearchProducts = lazy(() => import("./pages/shopping-view/search"));
+const ShoppingWishlist = lazy(() => import("./pages/shopping-view/wishlist"));
+const ForgotPassword = lazy(() => import("./pages/auth/forgot-password"));
+const ResetPassword = lazy(() => import("./pages/auth/reset-password"));
+const VerifyEmail = lazy(() => import("./pages/auth/verify-email"));
+const ShoppingNotifications = lazy(() => import("./pages/shopping-view/notifications"));
+const ShoppingSupport = lazy(() => import("./pages/shopping-view/support"));
+const ShoppingSupportTicket = lazy(() => import("./pages/shopping-view/support-ticket"));
+const ShoppingFAQ = lazy(() => import("./pages/shopping-view/faq"));
+const ShoppingPolicy = lazy(() => import("./pages/shopping-view/policy"));
+const ShoppingOrderTracking = lazy(() => import("./pages/shopping-view/order-tracking"));
+const ShoppingLoyalty = lazy(() => import("./pages/shopping-view/loyalty"));
+const ShoppingProfile = lazy(() => import("./pages/shopping-view/profile"));
+const ShoppingReturns = lazy(() => import("./pages/shopping-view/returns"));
 
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
@@ -37,8 +64,6 @@ function App() {
   }, [dispatch]);
 
   if (isLoading) return <Skeleton className="w-full max-w-[800px] bg-black h-[600px]" />;
-
-  console.log(isLoading, user);
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">
@@ -61,6 +86,9 @@ function App() {
         >
           <Route path="login" element={<AuthLogin />} />
           <Route path="register" element={<AuthRegister />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="reset-password" element={<ResetPassword />} />
+          <Route path="verify-email" element={<VerifyEmail />} />
         </Route>
         <Route
           path="/admin"
@@ -74,7 +102,19 @@ function App() {
           <Route path="products" element={<AdminProducts />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="coupons" element={<AdminCoupons />} />
-          <Route path="features" element={<AdminFeatures />} />
+          <Route path="analytics" element={<AdminAnalytics />} />
+          <Route path="customers" element={<AdminCustomers />} />
+          <Route path="reviews" element={<AdminReviews />} />
+          <Route path="support" element={<AdminSupport />} />
+          <Route path="faq" element={<AdminFAQ />} />
+          <Route path="policies" element={<AdminPolicies />} />
+          <Route path="audit" element={<AdminAudit />} />
+          <Route path="variants" element={<AdminVariants />} />
+          <Route path="categories" element={<AdminCategories />} />
+          <Route path="brands" element={<AdminBrands />} />
+          <Route path="inventory" element={<AdminInventory />} />
+          <Route path="returns" element={<AdminReturns />} />
+          <Route path="users" element={<AdminUsers />} />
         </Route>
         <Route
           path="/shop"
@@ -89,9 +129,19 @@ function App() {
           <Route path="checkout" element={<ShoppingCheckout />} />
           <Route path="account" element={<ShoppingAccount />} />
           <Route path="paypal-return" element={<PaypalReturnPage />} />
+          <Route path="paypal-cancel" element={<PaypalCancelPage />} />
           <Route path="payment-success" element={<PaymentSuccessPage />} />
           <Route path="search" element={<SearchProducts />} />
           <Route path="wishlist" element={<ShoppingWishlist />} />
+          <Route path="notifications" element={<ShoppingNotifications />} />
+          <Route path="support" element={<ShoppingSupport />} />
+          <Route path="support/:ticketId" element={<ShoppingSupportTicket />} />
+          <Route path="faq" element={<ShoppingFAQ />} />
+          <Route path="policy/:slug" element={<ShoppingPolicy />} />
+          <Route path="order-tracking/:orderId" element={<ShoppingOrderTracking />} />
+          <Route path="loyalty" element={<ShoppingLoyalty />} />
+          <Route path="profile" element={<ShoppingProfile />} />
+          <Route path="returns/:orderId" element={<ShoppingReturns />} />
         </Route>
         <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />

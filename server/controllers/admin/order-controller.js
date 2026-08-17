@@ -1,6 +1,7 @@
 const paypal = require("../../helpers/paypal");
 const { getStripeClient } = require("../../helpers/stripe");
 const Order = require("../../models/Order");
+const { logAction } = require("./audit-log-controller");
 
 const getAllOrdersOfAllUsers = async (req, res) => {
   try {
@@ -124,6 +125,7 @@ const refundOrder = async (req, res) => {
     order.orderUpdateDate = new Date();
 
     await order.save();
+    logAction(req.user?.id, "REFUND_ORDER", "Order", order._id.toString(), { refundStatus: order.refundStatus, refundReason }, req.ip);
 
     res.status(200).json({
       success: true,
@@ -170,47 +172,40 @@ const getOrderDetailsForAdmin = async (req, res) => {
 const updateOrderStatus = async (req, res) => {
   try {
     const { id } = req.params;
-    const { orderStatus } = req.body;
+    const { orderStatus, trackingNumber, trackingUrl, note } = req.body;
 
-    const allowedStatuses = [
-      "pending",
-      "confirmed",
-      "shipped",
-      "delivered",
-      "cancelled",
-    ];
-
+    const allowedStatuses = ["pending", "confirmed", "shipped", "delivered", "cancelled"];
     if (!allowedStatuses.includes(orderStatus)) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid order status",
-      });
+      return res.status(400).json({ success: false, message: "Invalid order status" });
     }
 
     const order = await Order.findById(id);
-
     if (!order) {
-      return res.status(404).json({
-        success: false,
-        message: "Order not found!",
-      });
+      return res.status(404).json({ success: false, message: "Order not found!" });
     }
 
-    await Order.findByIdAndUpdate(id, {
-      orderStatus,
-      orderUpdateDate: new Date(),
-    });
+    order.orderStatus = orderStatus;
+    order.orderUpdateDate = new Date();
 
-    res.status(200).json({
-      success: true,
-      message: "Order status is updated successfully!",
-    });
+    if (!order.statusHistory) order.statusHistory = [];
+    order.statusHistory.push({ status: orderStatus, date: new Date(), note: note || "" });
+
+    if (orderStatus === "shipped") {
+      if (trackingNumber) order.trackingNumber = trackingNumber;
+      if (trackingUrl) order.trackingUrl = trackingUrl;
+      order.shippedAt = new Date();
+    }
+    if (orderStatus === "delivered") {
+      order.deliveredAt = new Date();
+    }
+
+    await order.save();
+    logAction(req.user?.id, "UPDATE_ORDER_STATUS", "Order", order._id.toString(), { orderStatus, trackingNumber }, req.ip);
+
+    res.status(200).json({ success: true, message: "Order status updated", data: order });
   } catch (e) {
     console.log(e);
-    res.status(500).json({
-      success: false,
-      message: "Some error occured!",
-    });
+    res.status(500).json({ success: false, message: "Some error occured!" });
   }
 };
 

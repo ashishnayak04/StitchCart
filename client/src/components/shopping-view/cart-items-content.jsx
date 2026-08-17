@@ -95,7 +95,7 @@ function UserCartItemsContent({ cartItem }) {
       </div>
       <div className="flex flex-col items-end justify-between">
         <span className="font-serif font-semibold text-foreground">
-          $
+          ₹
           {(
             (cartItem?.salePrice > 0 ? cartItem?.salePrice : cartItem?.price) *
             cartItem?.quantity

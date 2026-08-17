@@ -19,6 +19,28 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: "user",
   },
+  avatar: {
+    type: String,
+    default: "",
+  },
+  phone: {
+    type: String,
+    default: "",
+  },
+  isEmailVerified: {
+    type: Boolean,
+    default: false,
+  },
+  emailVerificationToken: String,
+  emailVerificationExpires: Date,
+  passwordResetToken: String,
+  passwordResetExpires: Date,
+  googleId: String,
+  defaultAddressId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Address",
+    default: null,
+  },
 });
 
 const User = mongoose.model("User", UserSchema);

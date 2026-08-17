@@ -120,12 +120,12 @@ const createOrder = async (req, res) => {
               name: item.title,
               sku: item.productId,
               price: item.price.toFixed(2),
-              currency: "USD",
+              currency: "INR",
               quantity: item.quantity,
             })),
           },
           amount: {
-            currency: "USD",
+            currency: "INR",
             total: pricing.totalAmount.toFixed(2),
           },
           description: "description",
@@ -229,7 +229,7 @@ const createStripeOrder = async (req, res) => {
 
     const lineItems = cartItems.map((item) => ({
       price_data: {
-        currency: "usd",
+        currency: "inr",
         product_data: {
           name: item.title,
           images: item.image ? [item.image] : [],

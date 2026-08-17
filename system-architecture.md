@@ -13,7 +13,8 @@ StitchCart is a classic **three-tier web application** built on the MERN stack:
 - **Database** — MongoDB (via Mongoose ODM)
 
 Third-party integrations:
-- **PayPal** (`paypal-rest-sdk`) — payment processing
+- **PayPal** (`paypal-rest-sdk`) — payment processing (INR)
+- **Stripe** (`stripe`) — card/UPI/net-banking checkout via Checkout Sessions (INR)
 - **Cloudinary** — image storage/CDN (multer for upload parsing)
 
 ```
@@ -24,9 +25,9 @@ Third-party integrations:
              │ HTTP / JSON / httpOnly cookie (JWT)
              ▼
 ┌──────────────────────────┐        ┌──────────────┐
-│   Express API  :5000      │───────▶│  PayPal      │
-│  (REST, JWT guard)        │        └──────────────┘
-└──────┬───────────────────┘
+│   Express API  :9000      │───────▶│  PayPal      │
+│  (REST, JWT guard)        │        │  Stripe      │
+└──────┬───────────────────┘        └──────────────┘
        │ Mongoose ODM
        ▼
 ┌──────────────────────────┐        ┌──────────────┐
@@ -102,7 +103,7 @@ Express app
  ├── /api/shop/products/*   → shop products routes → shop products-controller
  ├── /api/shop/cart/*       → cart routes → cart-controller
  ├── /api/shop/address/*    → address routes → address-controller
- ├── /api/shop/order/*      → order routes → order-controller (PayPal)
+  ├── /api/shop/order/*      → order routes → order-controller (PayPal + Stripe)
  ├── /api/shop/search/*     → search routes → search-controller
  ├── /api/shop/review/*     → review routes → product-review-controller
  └── /api/common/feature/*  → feature routes → feature-controller
@@ -114,6 +115,9 @@ Express app
 | --- | --- |
 | `helpers/cloudinary.js` | Configures Cloudinary SDK, multer in-memory storage, `imageUploadUtil`. |
 | `helpers/paypal.js` | Configures `paypal-rest-sdk` from env vars. |
+| `helpers/stripe.js` | Configures the Stripe SDK from `STRIPE_SECRET_KEY`. |
+| `helpers/pricing.js` | Computes subtotal, coupon discount, GST, shipping, and total for an order. |
+| `helpers/mailer.js` | Builds and sends HTML invoice/receipt emails via SMTP (nodemailer). |
 
 ### Authentication
 
@@ -251,7 +255,7 @@ All models live in `server/models/`.
 3. Controller upserts the item into the user's cart document.
 
 ### 5.3 Order placement (PayPal)
-1. `createOrder` builds the PayPal `create_payment_json` (items, USD amount, return/cancel URLs) and calls `paypal.payment.create`.
+1. `createOrder` builds the PayPal `create_payment_json` (items, INR amount, return/cancel URLs) and calls `paypal.payment.create`.
 2. The order is persisted with `paymentStatus: pending` and the `approval_url` is returned.
 3. After PayPal approval, the browser hits `/shop/paypal-return`.
 4. `capturePayment` verifies the order, sets `paid`/`confirmed`, decrements stock per item, and deletes the cart.
@@ -265,7 +269,7 @@ All models live in `server/models/`.
 
 ## 6. API Surface
 
-Base URL: `http://localhost:5000/api`
+Base URL: `http://localhost:9000/api`
 
 | Method | Path | Auth | Description |
 | --- | --- | --- | --- |
@@ -315,7 +319,8 @@ MONGO_URI=
 JWT_SECRET / CLIENT_SECRET_KEY
 CLOUDINARY_CLOUD_NAME / CLOUDINARY_API_KEY / CLOUDINARY_API_SECRET
 PAYPAL_MODE / PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET
-PORT=5000
+STRIPE_SECRET_KEY
+PORT=9000
 ```
 
 - **CORS** is locked to `http://localhost:5173` (Vite dev).

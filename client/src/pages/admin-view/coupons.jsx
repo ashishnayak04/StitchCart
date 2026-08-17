@@ -157,13 +157,13 @@ function AdminCoupons() {
                 <span>
                   {coupon.discountType === "percent"
                     ? `${coupon.discountValue}% off`
-                    : `$${coupon.discountValue} off`}
+                    : `₹${coupon.discountValue} off`}
                 </span>
               </div>
 
               <div className="text-xs text-muted space-y-1 mb-4">
                 {coupon.minimumCartValue > 0 && (
-                  <p>Min. cart: ${coupon.minimumCartValue}</p>
+                  <p>Min. cart: ₹{coupon.minimumCartValue}</p>
                 )}
                 {coupon.expirationDate && (
                   <p>Expires: {new Date(coupon.expirationDate).toLocaleDateString()}</p>

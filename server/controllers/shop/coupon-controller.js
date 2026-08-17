@@ -49,8 +49,9 @@ const validateCoupon = async (req, res) => {
     if (amount < coupon.minimumCartValue) {
       return res.status(400).json({
         success: false,
-        message: `Minimum cart value of $${coupon.minimumCartValue.toFixed(
-          2
+        message: `Minimum cart value of ₹${coupon.minimumCartValue.toLocaleString(
+          "en-IN",
+          { maximumFractionDigits: 2 }
         )} required for this coupon`,
       });
     }

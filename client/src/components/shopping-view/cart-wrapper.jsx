@@ -47,7 +47,7 @@ function UserCartWrapper({ cartItems, setOpenCartSheet }) {
               Subtotal
             </span>
             <span className="font-serif text-xl font-semibold text-foreground">
-              ${totalCartAmount}
+              ₹{totalCartAmount}
             </span>
           </div>
           <Button

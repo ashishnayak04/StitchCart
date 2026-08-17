@@ -8,6 +8,10 @@ const AddressSchema = new mongoose.Schema(
     pincode: String,
     phone: String,
     notes: String,
+    isDefault: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

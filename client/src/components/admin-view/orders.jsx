@@ -90,7 +90,7 @@ function AdminOrdersView() {
                         </Badge>
                       </TableCell>
                       <TableCell className="font-serif font-semibold whitespace-nowrap">
-                        ${orderItem?.totalAmount}
+                        ₹{orderItem?.totalAmount}
                       </TableCell>
                       <TableCell>
                         <Button
@@ -134,7 +134,7 @@ function AdminOrdersView() {
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted">Total</span>
                     <span className="font-serif font-semibold text-foreground">
-                      ${orderItem?.totalAmount}
+                      ₹{orderItem?.totalAmount}
                     </span>
                   </div>
                   <Button

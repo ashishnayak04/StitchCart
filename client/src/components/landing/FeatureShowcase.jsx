@@ -31,11 +31,11 @@ function SearchMock() {
     >
       <div className="flex items-center gap-3 border-b border-beige pb-4">
         <Search className="w-4 h-4 text-accent" />
-        <span className="text-sm text-espresso">summer blazer</span>
+        <span className="text-sm text-espresso">camel cashmere crewneck</span>
         <span className="ml-auto text-[10px] text-muted">0.4s</span>
       </div>
       <div className="flex flex-wrap gap-2">
-        {["Men", "Zara", "Under $200", "In stock"].map((pill) => (
+        {["Knitwear", "Ralph Lauren", "Under ₹15,000", "In stock"].map((pill) => (
           <span
             key={pill}
             className="text-[11px] uppercase tracking-[0.1em] px-3 py-1.5 border border-border bg-surface-hover text-espresso"
@@ -47,18 +47,18 @@ function SearchMock() {
       <div className="flex items-center gap-4 pt-2">
         <div className="w-16 aspect-[4/5] bg-beige/50 overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=200&q=80"
-            alt="Blazer result"
+            src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=200&q=80"
+            alt="Knitwear result"
             loading="lazy"
             className="w-full h-full object-cover"
           />
         </div>
         <div>
-          <p className="overline text-muted mb-1">Zara · Men</p>
+          <p className="overline text-muted mb-1">Ralph Lauren · Knitwear</p>
           <p className="font-serif text-espresso font-medium">
-            Tailored Wool Blazer
+            Camel Cashmere Crewneck
           </p>
-          <p className="text-accent font-serif text-lg mt-1">$189</p>
+          <p className="text-accent font-serif text-lg mt-1">₹12,499</p>
         </div>
         <div className="ml-auto flex gap-1.5">
           <span className="w-8 h-8 flex items-center justify-center border border-border text-taupe">
@@ -182,31 +182,31 @@ function ReceiptMock() {
       <div className="py-5 space-y-3 border-b border-dashed border-beige text-sm">
         <div className="flex justify-between">
           <span className="text-muted">Subtotal</span>
-          <span className="text-espresso">$214.00</span>
+          <span className="text-espresso">₹6,000.00</span>
         </div>
         <div className="flex justify-between">
           <span className="text-muted flex items-center gap-1.5">
             <BadgePercent className="w-3.5 h-3.5 text-accent" />
             Coupon STITCH20
           </span>
-          <span className="text-sage">−$42.80</span>
+          <span className="text-sage">−₹1,200.00</span>
         </div>
         <div className="flex justify-between">
           <span className="text-muted">Shipping</span>
           <span className="text-sage">Free</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-muted">Tax (USD)</span>
-          <span className="text-espresso">$10.70</span>
+          <span className="text-muted">GST (18%)</span>
+          <span className="text-espresso">₹864.00</span>
         </div>
       </div>
 
       <div className="flex justify-between items-center pt-5">
         <span className="overline text-espresso">Total</span>
-        <span className="font-serif text-2xl text-accent">$181.90</span>
+        <span className="font-serif text-2xl text-accent">₹5,664.00</span>
       </div>
       <p className="text-[10px] uppercase tracking-[0.16em] text-muted mt-4">
-        Paid securely via Stripe · Refundable
+        Paid securely via Razorpay · Refundable
       </p>
     </motion.div>
   );
@@ -217,7 +217,7 @@ const FEATURES = [
     index: "01",
     kicker: "Search & Filter",
     title: "Find exactly what you're after.",
-    copy: "Smart search, layered filters and honest sorting across 900+ pieces. Filter by category, brand, price or size — then sort by rating, price or freshness.",
+    copy: "Smart search, layered filters and honest sorting across 1,200+ styles. Filter by category, brand, price or size — then sort by rating, price or freshness.",
     bullets: [
       { icon: Search, label: "Smart search across products & brands" },
       { icon: SlidersHorizontal, label: "Multi-filter: category, brand, price, size" },
@@ -242,11 +242,11 @@ const FEATURES = [
     index: "03",
     kicker: "Transparent Checkout",
     title: "What you see is what you pay.",
-    copy: "Coupon codes apply instantly and your full breakdown — subtotal, discount, shipping, tax, total — is laid out before you commit. USD pricing, always.",
+    copy: "Coupon codes apply instantly and your full breakdown — subtotal, discount, shipping, GST, total — is laid out before you commit. INR pricing, always.",
     bullets: [
       { icon: BadgePercent, label: "Coupon codes applied in real time" },
       { icon: History, label: "Full price breakdown, always visible" },
-      { icon: Check, label: "One clear USD total — no surprises" },
+      { icon: Check, label: "One clear ₹ total — no surprises" },
     ],
     visual: <ReceiptMock />,
   },

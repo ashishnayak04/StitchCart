@@ -1,33 +1,34 @@
 import { motion } from "framer-motion";
 
-const TECH = ["MERN Stack", "Cloudinary CDN", "Redux Toolkit", "Role-based Auth", "Node + Express", "React 18"];
+const TECH_PIPELINE = [
+  "React 18 & Vite",
+  "Node.js & Express REST API",
+  "MongoDB Atlas ODM",
+  "Redux Toolkit State Cache",
+  "Cloudinary Media Pipeline",
+  "Stripe & PayPal INR Checkout",
+  "Role-Based JWT Security",
+  "Radix UI Primitives",
+];
 
 function TechStrip() {
   return (
-    <section className="py-14 bg-background">
+    <section className="py-12 bg-surface border-t border-border">
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-center gap-6 flex-wrap">
-        <p className="overline text-taupe">Built on</p>
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.6 }}
-          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06 } } }}
-          className="flex flex-wrap items-center justify-center gap-3"
-        >
-          {TECH.map((t) => (
-            <motion.span
-              key={t}
-              variants={{
-                hidden: { opacity: 0, y: 14 },
-                show: { opacity: 1, y: 0 },
-              }}
-              transition={{ duration: 0.45, ease: "easeOut" }}
-              className="text-[11px] uppercase tracking-[0.14em] px-4 py-2 border border-border text-taupe hover:text-espresso hover:border-accent/50 transition-colors duration-fast"
+        <p className="overline text-accent text-xs">
+          Built on Modern MERN Architecture
+        </p>
+
+        <div className="flex flex-wrap items-center justify-center gap-2.5">
+          {TECH_PIPELINE.map((tech) => (
+            <span
+              key={tech}
+              className="text-[11px] uppercase tracking-[0.14em] px-3.5 py-1.5 border border-border bg-surface-raised text-brown/90 hover:border-accent hover:text-espresso transition-colors font-mono"
             >
-              {t}
-            </motion.span>
+              {tech}
+            </span>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

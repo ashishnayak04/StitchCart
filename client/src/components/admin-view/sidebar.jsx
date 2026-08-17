@@ -1,4 +1,4 @@
-import { LayoutDashboard, ShoppingBag, Package, Tag, ChevronRight } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Package, Tag, ChevronRight, BarChart3, Users, Star, MessageSquare, HelpCircle, FileText, ClipboardList, Layers, FolderTree, Building2, Warehouse, RotateCcw, Shield } from "lucide-react";
 import { Fragment } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
@@ -27,6 +27,84 @@ const adminSidebarMenuItems = [
     label: "Coupons",
     path: "/admin/coupons",
     icon: <Tag className="w-5 h-5" />,
+  },
+  {
+    id: "analytics",
+    label: "Analytics",
+    path: "/admin/analytics",
+    icon: <BarChart3 className="w-5 h-5" />,
+  },
+  {
+    id: "users",
+    label: "Users",
+    path: "/admin/users",
+    icon: <Shield className="w-5 h-5" />,
+  },
+  {
+    id: "customers",
+    label: "Customers",
+    path: "/admin/customers",
+    icon: <Users className="w-5 h-5" />,
+  },
+  {
+    id: "reviews",
+    label: "Reviews",
+    path: "/admin/reviews",
+    icon: <Star className="w-5 h-5" />,
+  },
+  {
+    id: "support",
+    label: "Support",
+    path: "/admin/support",
+    icon: <MessageSquare className="w-5 h-5" />,
+  },
+  {
+    id: "faq",
+    label: "FAQ",
+    path: "/admin/faq",
+    icon: <HelpCircle className="w-5 h-5" />,
+  },
+  {
+    id: "policies",
+    label: "Policies",
+    path: "/admin/policies",
+    icon: <FileText className="w-5 h-5" />,
+  },
+  {
+    id: "audit",
+    label: "Audit Log",
+    path: "/admin/audit",
+    icon: <ClipboardList className="w-5 h-5" />,
+  },
+  {
+    id: "categories",
+    label: "Categories",
+    path: "/admin/categories",
+    icon: <FolderTree className="w-5 h-5" />,
+  },
+  {
+    id: "brands",
+    label: "Brands",
+    path: "/admin/brands",
+    icon: <Building2 className="w-5 h-5" />,
+  },
+  {
+    id: "variants",
+    label: "Variants",
+    path: "/admin/variants",
+    icon: <Layers className="w-5 h-5" />,
+  },
+  {
+    id: "inventory",
+    label: "Inventory",
+    path: "/admin/inventory",
+    icon: <Warehouse className="w-5 h-5" />,
+  },
+  {
+    id: "returns",
+    label: "Returns",
+    path: "/admin/returns",
+    icon: <RotateCcw className="w-5 h-5" />,
   },
 ];
 

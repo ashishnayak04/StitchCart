@@ -160,15 +160,15 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
               {hasSale ? (
                 <>
                   <span className="text-3xl font-serif font-semibold text-accent">
-                    ${productDetails?.salePrice}
+                    ₹{productDetails?.salePrice}
                   </span>
                   <span className="text-lg text-muted line-through">
-                    ${productDetails?.price}
+                    ₹{productDetails?.price}
                   </span>
                 </>
               ) : (
                 <span className="text-3xl font-serif font-semibold text-foreground">
-                  ${productDetails?.price}
+                  ₹{productDetails?.price}
                 </span>
               )}
             </div>

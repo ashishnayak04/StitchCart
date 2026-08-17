@@ -42,6 +42,26 @@ const OrderSchema = new mongoose.Schema(
     refundReason: String,
     refundAmount: Number,
     refundedAt: Date,
+    trackingNumber: String,
+    trackingUrl: String,
+    shippedAt: Date,
+    deliveredAt: Date,
+    statusHistory: [
+      {
+        status: String,
+        date: { type: Date, default: Date.now },
+        note: String,
+      },
+    ],
+    returnStatus: {
+      type: String,
+      enum: ["none", "requested", "approved", "received", "refunded"],
+      default: "none",
+    },
+    returnReason: String,
+    returnRequestedAt: Date,
+    returnResolvedAt: Date,
+    loyaltyPointsEarned: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

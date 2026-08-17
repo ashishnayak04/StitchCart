@@ -20,7 +20,7 @@ function BrandStrip() {
       tweenRef.current = gsap.to(trackRef.current, {
         xPercent: -50,
         ease: "none",
-        duration: 30,
+        duration: 32,
         repeat: -1,
       });
     }, root);
@@ -30,7 +30,7 @@ function BrandStrip() {
 
   const handleEnter = () => {
     if (tweenRef.current) {
-      tweenRef.current.timeScale(0.25);
+      tweenRef.current.timeScale(0.2);
     }
   };
   const handleLeave = () => {
@@ -44,9 +44,9 @@ function BrandStrip() {
       ref={root}
       className="py-16 bg-surface-raised border-y border-border overflow-hidden"
     >
-      <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
-        <p className="overline text-muted text-center mb-8">
-          Filter by the brands you trust
+      <div className="max-w-[1440px] mx-auto px-6 lg:px-12 text-center mb-8">
+        <p className="overline text-accent text-xs">
+          Heritage Houses &amp; Contemporary Labels
         </p>
       </div>
 
@@ -55,20 +55,25 @@ function BrandStrip() {
         onMouseLeave={handleLeave}
         className="relative"
       >
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-28 z-10 bg-gradient-to-r from-surface-raised to-transparent" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-28 z-10 bg-gradient-to-l from-surface-raised to-transparent" />
+        {/* Left/Right Fading Gradients */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-32 z-10 bg-gradient-to-r from-surface-raised to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-32 z-10 bg-gradient-to-l from-surface-raised to-transparent" />
 
         <div className="flex overflow-hidden">
-          <div ref={trackRef} data-track className="flex shrink-0 items-center gap-20 pr-20 whitespace-nowrap">
+          <div
+            ref={trackRef}
+            data-track
+            className="flex shrink-0 items-center gap-16 sm:gap-24 pr-16 sm:pr-24 whitespace-nowrap"
+          >
             {[...BRANDS, ...BRANDS].map((brand, i) => (
               <Link
                 key={`${brand.id}-${i}`}
                 to="/shop/listing"
-                className={`font-serif text-2xl sm:text-3xl text-taupe hover:text-espresso transition-colors duration-base ${brand.style} group`}
+                className={`font-serif text-2xl sm:text-3xl text-taupe hover:text-espresso transition-colors duration-base ${brand.style} group flex flex-col items-center`}
               >
-                {brand.label}
-                <span className="block text-[10px] uppercase tracking-[0.24em] text-muted opacity-0 group-hover:opacity-100 transition-opacity duration-fast">
-                  shop {brand.label.toLowerCase()}
+                <span>{brand.label}</span>
+                <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-muted opacity-0 group-hover:opacity-100 transition-opacity duration-fast">
+                  {brand.tag}
                 </span>
               </Link>
             ))}
@@ -77,7 +82,7 @@ function BrandStrip() {
       </div>
 
       <p className="text-center text-[11px] uppercase tracking-[0.2em] text-taupe/70 mt-8">
-        Pause on hover — filter the shop instantly
+        Hover to inspect brand collections · Direct filter links
       </p>
     </section>
   );

@@ -121,15 +121,15 @@ function ShoppingWishlist() {
                       {hasSale ? (
                         <>
                           <span className="text-lg font-medium text-accent">
-                            ${product?.salePrice}
+                            ₹{product?.salePrice}
                           </span>
                           <span className="text-sm text-muted line-through">
-                            ${product?.price}
+                            ₹{product?.price}
                           </span>
                         </>
                       ) : (
                         <span className="text-lg font-medium text-foreground">
-                          ${product?.price}
+                          ₹{product?.price}
                         </span>
                       )}
                     </div>

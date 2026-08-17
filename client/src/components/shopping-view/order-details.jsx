@@ -73,7 +73,7 @@ function ShoppingOrderDetailsView({ orderDetails }) {
           <div>
             <Label>Total Amount</Label>
             <p className="text-sm font-serif font-semibold text-foreground mt-1">
-              ${orderDetails?.totalAmount}
+              ₹{orderDetails?.totalAmount}
             </p>
           </div>
           <div>
@@ -129,7 +129,7 @@ function ShoppingOrderDetailsView({ orderDetails }) {
                   </div>
                 </div>
                 <span className="text-sm font-medium text-foreground">
-                  ${item.price}
+                  ₹{item.price}
                 </span>
               </div>
             ))}

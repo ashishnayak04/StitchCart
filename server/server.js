@@ -23,6 +23,41 @@ const shopCouponRouter = require("./routes/shop/coupon-routes");
 
 const commonFeatureRouter = require("./routes/common/feature-routes");
 
+// Phase 2 - Auth extras
+const authExtraRouter = require("./routes/auth/auth-extra-routes");
+const wishlistRouter = require("./routes/shop/wishlist-routes");
+const recentlyViewedRouter = require("./routes/shop/recently-viewed-routes");
+const loyaltyRouter = require("./routes/shop/loyalty-routes");
+const reorderRouter = require("./routes/shop/reorder-routes");
+const variantRouter = require("./routes/shop/variant-routes");
+const trackingRouter = require("./routes/shop/tracking-routes");
+const returnRouter = require("./routes/shop/return-routes");
+
+// Phase 3 - Notifications
+const notificationRouter = require("./routes/shop/notification-routes");
+
+// Phase 4 - Admin
+const analyticsRouter = require("./routes/admin/analytics-routes");
+const reviewModRouter = require("./routes/admin/review-moderation-routes");
+const adminSupportRouter = require("./routes/admin/support-routes");
+const adminFaqRouter = require("./routes/admin/faq-routes");
+const adminPolicyRouter = require("./routes/admin/policy-routes");
+const auditRouter = require("./routes/admin/audit-routes");
+const adminVariantRouter = require("./routes/admin/variant-routes");
+const exportRouter = require("./routes/admin/export-routes");
+const adminCategoryRouter = require("./routes/admin/category-routes");
+const adminBrandRouter = require("./routes/admin/brand-routes");
+const adminInventoryRouter = require("./routes/admin/inventory-routes");
+const adminReturnAdminRouter = require("./routes/admin/return-admin-routes");
+const adminUserMgmtRouter = require("./routes/admin/user-management-routes");
+const shopCategoryRouter = require("./routes/shop/category-routes");
+const shopBrandRouter = require("./routes/shop/brand-routes");
+
+// Phase 5 - Support
+const supportRouter = require("./routes/shop/support-routes");
+const faqRouter = require("./routes/shop/faq-routes");
+const policyRouter = require("./routes/shop/policy-routes");
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -89,6 +124,35 @@ app.use("/api/shop/review", shopReviewRouter);
 app.use("/api/shop/coupon", shopCouponRouter);
 
 app.use("/api/common/feature", commonFeatureRouter);
+
+app.use("/api/auth", authExtraRouter);
+app.use("/api/shop/wishlist", wishlistRouter);
+app.use("/api/shop/recently-viewed", recentlyViewedRouter);
+app.use("/api/shop/loyalty", loyaltyRouter);
+app.use("/api/shop/reorder", reorderRouter);
+app.use("/api/shop/variants", variantRouter);
+app.use("/api/shop/tracking", trackingRouter);
+app.use("/api/shop/returns", returnRouter);
+app.use("/api/shop/notifications", notificationRouter);
+app.use("/api/shop/support", supportRouter);
+app.use("/api/shop/faq", faqRouter);
+app.use("/api/shop/policies", policyRouter);
+
+app.use("/api/admin/analytics", analyticsRouter);
+app.use("/api/admin/reviews", reviewModRouter);
+app.use("/api/admin/support", adminSupportRouter);
+app.use("/api/admin/faq", adminFaqRouter);
+app.use("/api/admin/policies", adminPolicyRouter);
+app.use("/api/admin/audit", auditRouter);
+app.use("/api/admin/variants", adminVariantRouter);
+app.use("/api/admin/export", exportRouter);
+app.use("/api/admin/categories", adminCategoryRouter);
+app.use("/api/admin/brands", adminBrandRouter);
+app.use("/api/admin/inventory", adminInventoryRouter);
+app.use("/api/admin/returns", adminReturnAdminRouter);
+app.use("/api/admin/users", adminUserMgmtRouter);
+app.use("/api/shop/categories", shopCategoryRouter);
+app.use("/api/shop/brands", shopBrandRouter);
 
 /* ===============================
    Server Start

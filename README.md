@@ -1,6 +1,6 @@
 # StitchCart
 
-A full-stack e-commerce platform for fashion and apparel, built with the MERN stack (MongoDB, Express, React, Node.js).
+A full-stack e-commerce platform for Indian ethnic and contemporary fashion, built with the MERN stack (MongoDB, Express, React, Node.js).
 
 ## Features
 
@@ -10,7 +10,7 @@ A full-stack e-commerce platform for fashion and apparel, built with the MERN st
 - Product details with image gallery and reviews
 - Shopping cart management
 - Wishlist functionality
-- Secure checkout with PayPal integration
+- Secure checkout with PayPal + Stripe, billed in INR
 - Order tracking and history
 
 ### Authentication
@@ -26,7 +26,7 @@ A full-stack e-commerce platform for fashion and apparel, built with the MERN st
 ### Tech Highlights
 - **Frontend**: React 18, Vite, Redux Toolkit, React Router v6, Tailwind CSS, Radix UI
 - **Backend**: Express.js, Mongoose ODM, JWT, bcryptjs
-- **Payments**: PayPal REST SDK
+- **Payments**: PayPal REST SDK + Stripe (INR, GST applied at checkout)
 - **Media**: Cloudinary integration for image uploads
 - **Styling**: Tailwind CSS with custom luxury theme
 
@@ -38,7 +38,7 @@ A full-stack e-commerce platform for fashion and apparel, built with the MERN st
 | Server   | Node.js, Express.js                             |
 | Database | MongoDB with Mongoose ODM                       |
 | Auth     | JWT (JSON Web Tokens), bcryptjs                 |
-| Payments | PayPal REST SDK                                 |
+| Payments | PayPal REST SDK + Stripe (INR)                |
 | Storage  | Cloudinary (image uploads)                      |
 | UI       | Radix UI primitives, Lucide icons               |
 
@@ -50,6 +50,7 @@ A full-stack e-commerce platform for fashion and apparel, built with the MERN st
 - MongoDB connection string (local or Atlas)
 - Cloudinary account
 - PayPal developer credentials
+- Stripe secret key
 
 ### Environment Variables
 
@@ -63,6 +64,7 @@ CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
 PAYPAL_CLIENT_ID=your_paypal_client_id
 PAYPAL_CLIENT_SECRET=your_paypal_client_secret
+STRIPE_SECRET_KEY=your_stripe_secret_key
 ```
 
 ### Installation
@@ -87,7 +89,7 @@ npm run dev
 npm run dev
 ```
 
-The server runs on `http://localhost:5000` and the client on `http://localhost:5173`.
+The server runs on `http://localhost:9000` and the client on `http://localhost:5173`.
 
 ## Project Structure
 

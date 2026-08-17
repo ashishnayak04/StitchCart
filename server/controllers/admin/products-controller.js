@@ -1,5 +1,6 @@
 const { imageUploadUtil } = require("../../helpers/cloudinary");
 const Product = require("../../models/Product");
+const { logAction } = require("./audit-log-controller");
 
 const handleImageUpload = async (req, res) => {
   try {
@@ -50,6 +51,7 @@ const addProduct = async (req, res) => {
     });
 
     await newlyCreatedProduct.save();
+    logAction(req.user?.id, "CREATE_PRODUCT", "Product", newlyCreatedProduct._id.toString(), { title }, req.ip);
     res.status(201).json({
       success: true,
       data: newlyCreatedProduct,
@@ -128,6 +130,7 @@ const editProduct = async (req, res) => {
     findProduct.averageReview = averageReview || findProduct.averageReview;
 
     await findProduct.save();
+    logAction(req.user?.id, "UPDATE_PRODUCT", "Product", findProduct._id.toString(), { title }, req.ip);
     res.status(200).json({
       success: true,
       data: findProduct,
@@ -153,6 +156,7 @@ const deleteProduct = async (req, res) => {
         message: "Product not found",
       });
 
+    logAction(req.user?.id, "DELETE_PRODUCT", "Product", id, { title: product?.title }, req.ip);
     res.status(200).json({
       success: true,
       message: "Product delete successfully",

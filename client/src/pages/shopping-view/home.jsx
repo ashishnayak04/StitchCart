@@ -17,19 +17,23 @@ import bannerOne from "../../assets/banner-1.webp";
 import bannerThree from "../../assets/banner-3.webp";
 
 const categories = [
-  { id: "men", label: "Men", image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800&q=80", description: "Tailored sophistication" },
-  { id: "women", label: "Women", image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&q=80", description: "Elegant refinement" },
-  { id: "accessories", label: "Accessories", image: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=800&q=80", description: "The perfect finish" },
-  { id: "footwear", label: "Footwear", image: "https://images.unsplash.com/photo-1595341888016-a392ef81b7de?w=800&q=80", description: "Walk with confidence" },
+  { id: "men", label: "Men's Edit", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80", description: "Sharp shirts, clean pants, quiet-money fits" },
+  { id: "women", label: "Women's Edit", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80", description: "Silk, sculpted tailoring & clean luxury" },
+  { id: "kids", label: "Kids Edit", image: "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&q=80", description: "Mini versions of the rich look" },
+  { id: "trousers", label: "Pants & Chinos", image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&q=80", description: "Pleated wools & tailored chinos" },
+  { id: "shirts", label: "Shirts & Formals", image: "https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?w=800&q=80", description: "Oxford cottons & luxury poplins" },
+  { id: "watches", label: "Luxury Watches", image: "https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?w=800&q=80", description: "Automatics & chronographs" },
+  { id: "shoes", label: "Shoes & Sneakers", image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&q=80", description: "Court classics & statement kicks" },
+  { id: "accessories", label: "Luxury Accessories", image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&q=80", description: "Sunglasses, belts & bags" },
 ];
 
 const brands = [
+  { id: "raymond", label: "Raymond" },
+  { id: "gucci", label: "Gucci" },
+  { id: "ralph-lauren", label: "Ralph Lauren" },
+  { id: "hugo-boss", label: "Hugo Boss" },
+  { id: "armani", label: "Armani Exchange" },
   { id: "nike", label: "Nike" },
-  { id: "adidas", label: "Adidas" },
-  { id: "puma", label: "Puma" },
-  { id: "levi", label: "Levi's" },
-  { id: "zara", label: "Zara" },
-  { id: "h&m", label: "H&M" },
 ];
 
 function ShoppingHome() {
@@ -143,14 +147,16 @@ function ShoppingHome() {
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-[1440px] mx-auto px-6 lg:px-12 w-full">
             <div className="max-w-xl animate-fade-in-up">
-              <Badge variant="new" className="mb-4 md:mb-6">New Collection</Badge>
+              <Badge variant="new" className="mb-4 md:mb-6">New Rich Drop · Live Now</Badge>
               <h1 className="display-xl text-white">
-                Timeless
+                Rich.
                 <br />
-                <span className="text-gold">Elegance</span>
+                <span className="text-gold">Clean. Effortless.</span>
               </h1>
               <p className="text-sm sm:text-base md:text-lg text-white/70 font-light mb-6 md:mb-10 max-w-md leading-relaxed">
-                Discover our latest collection of meticulously crafted pieces designed for the discerning individual.
+                Sharp shirts, tailored pants, luxury watches, heritage sneakers
+                and quiet accessories — curated for men, women &amp; kids who
+                dress for the super-rich aesthetic.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <Button
@@ -209,61 +215,34 @@ function ShoppingHome() {
       {/* Featured Collections */}
       <section className="py-24 px-6 lg:px-12 max-w-[1440px] mx-auto w-full">
         <div className="text-center mb-16">
-          <span className="overline text-accent">Curated For You</span>
+          <span className="overline text-accent">The Rich Drop</span>
           <h2 className="display-md text-foreground mt-4 mb-4">
             Featured Collections
           </h2>
           <div className="h-px w-12 bg-accent mx-auto" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {categories.slice(0, 2).map((category) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {categories.map((category) => (
             <div
               key={category.id}
               onClick={() => handleNavigateToListingPage(category, "category")}
               className="group relative overflow-hidden cursor-pointer"
             >
-              <div className="aspect-[4/5] overflow-hidden">
+              <div className="aspect-[3/4] overflow-hidden">
                 <img
                   src={category.image}
                   alt={category.label}
+                  loading="lazy"
                   className="w-full h-full object-cover transition-all duration-700 ease-luxury group-hover:scale-105"
                 />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-espresso/70 via-transparent to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-8">
-                <h3 className="font-serif text-3xl text-white font-medium mb-2">
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <h3 className="font-serif text-2xl text-white font-medium mb-1.5">
                   {category.label}
                 </h3>
-                <p className="text-white/60 text-sm mb-4">{category.description}</p>
-                <span className="inline-flex items-center text-xs uppercase tracking-[0.12em] text-gold group-hover:gap-2 transition-all duration-fast">
-                  Discover More <ArrowRight className="w-3 h-3 ml-1" />
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-          {categories.slice(2).map((category) => (
-            <div
-              key={category.id}
-              onClick={() => handleNavigateToListingPage(category, "category")}
-              className="group relative overflow-hidden cursor-pointer"
-            >
-              <div className="aspect-[3/2] overflow-hidden">
-                <img
-                  src={category.image}
-                  alt={category.label}
-                  className="w-full h-full object-cover transition-all duration-700 ease-luxury group-hover:scale-105"
-                />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-espresso/70 via-transparent to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-8">
-                <h3 className="font-serif text-3xl text-white font-medium mb-2">
-                  {category.label}
-                </h3>
-                <p className="text-white/60 text-sm mb-4">{category.description}</p>
+                <p className="text-white/60 text-sm mb-3">{category.description}</p>
                 <span className="inline-flex items-center text-xs uppercase tracking-[0.12em] text-gold group-hover:gap-2 transition-all duration-fast">
                   Discover More <ArrowRight className="w-3 h-3 ml-1" />
                 </span>
@@ -279,7 +258,7 @@ function ShoppingHome() {
           <div className="relative">
             <div className="aspect-square overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&q=80"
+                src="https://images.unsplash.com/photo-1559268950-2d7ceb2efa3a?w=800&q=80"
                 alt="Our Story"
                 className="w-full h-full object-cover"
               />
@@ -292,14 +271,19 @@ function ShoppingHome() {
           <div className="space-y-6">
             <span className="overline text-accent">Our Heritage</span>
             <h2 className="display-lg text-foreground">
-              Crafted with Purpose,<br />Designed for Life
+              The Rich Aesthetic,<br />Crafted to Perfection
             </h2>
             <div className="h-px w-12 bg-accent" />
             <p className="text-muted leading-relaxed">
-              At StitchCart, we believe that true luxury lies in the details. Every piece in our collection is thoughtfully designed and meticulously crafted using the finest materials, ensuring that each garment not only looks exceptional but feels extraordinary.
+              At StitchCart, rich isn&apos;t loud — it&apos;s clean. Every shirt, pant,
+              watch and pair of sneakers in our drop is chosen for an
+              effortless, super-rich finish: premium fabrics, honest
+              construction and silhouettes that never go out of style.
             </p>
             <p className="text-muted leading-relaxed">
-              From our ateliers to your wardrobe, we are committed to timeless design, uncompromising quality, and sustainable practices that honor both people and planet.
+              From our ateliers to your wardrobe, we curate complete looks for
+              men, women and kids — so dressing like the money is already made
+              is just one checkout away.
             </p>
             <Button
               variant="outline"
@@ -379,14 +363,17 @@ function ShoppingHome() {
           <div className="space-y-6 order-2 lg:order-1">
             <span className="overline text-accent">The Art of Detail</span>
             <h2 className="display-lg text-foreground">
-              Where Craftsmanship<br />Meets Design
+              Where Clean Design<br />Meets Quiet Luxury
             </h2>
             <div className="h-px w-12 bg-accent" />
             <p className="text-muted leading-relaxed">
-              Every stitch tells a story. Our master artisans bring decades of experience to each piece, ensuring impeccable construction and finish that stands the test of time.
+              Every piece in the drop — from tailored pants and oxford shirts
+              to automatic watches and court sneakers — is refined to feel
+              expensive without trying. Clean lines, premium materials, zero
+              noise.
             </p>
             <ul className="space-y-3">
-              {["Premium Italian fabrics", "Hand-finished details", "Ethically produced"].map((item) => (
+              {["Hand-finished tailoring & clean fits", "Luxury watches & premium leather", "Curated looks for men, women & kids"].map((item) => (
                 <li key={item} className="flex items-center gap-3 text-sm text-foreground">
                   <span className="w-1 h-1 bg-accent rounded-full" />
                   {item}
@@ -405,7 +392,7 @@ function ShoppingHome() {
           <div className="relative order-1 lg:order-2">
             <div className="aspect-[4/5] overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=800&q=80"
+                src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=800&q=80"
                 alt="Craftsmanship"
                 className="w-full h-full object-cover"
               />
@@ -417,12 +404,13 @@ function ShoppingHome() {
       {/* Newsletter */}
       <section className="py-24 bg-espresso">
         <div className="max-w-[600px] mx-auto px-6 text-center space-y-8">
-          <span className="overline text-gold">Stay Connected</span>
+          <span className="overline text-gold">The Rich Drop</span>
           <h2 className="display-md text-ivory">
-            Join Our World of<br />Timeless Elegance
+            First Access to New<br />Drops &amp; Rare Pieces
           </h2>
           <p className="text-ivory/60 text-sm leading-relaxed">
-            Be the first to discover new collections, exclusive drops, and behind-the-scenes stories from our ateliers.
+            Be first to shop the weekly rich drop — watches, sneakers, shirts
+            and tailored pants before they sell out. Quiet, clean, considered.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
             <input

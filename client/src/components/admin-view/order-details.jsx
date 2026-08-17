@@ -98,7 +98,7 @@ function AdminOrderDetailsView({ orderDetails }) {
           <div>
             <Label>Total</Label>
             <p className="text-sm font-serif font-semibold text-foreground mt-1">
-              ${orderDetails?.totalAmount}
+              ₹{orderDetails?.totalAmount}
             </p>
           </div>
           <div>
@@ -147,7 +147,7 @@ function AdminOrderDetailsView({ orderDetails }) {
             <span className="font-medium text-accent uppercase">
               {orderDetails.couponCode}
             </span>{" "}
-            (−${orderDetails?.discountAmount?.toFixed?.(2) ?? orderDetails?.discountAmount})
+            (−₹{orderDetails?.discountAmount?.toFixed?.(2) ?? orderDetails?.discountAmount})
           </div>
         ) : null}
 
@@ -174,7 +174,7 @@ function AdminOrderDetailsView({ orderDetails }) {
                     <p className="text-xs text-muted">Qty: {item.quantity}</p>
                   </div>
                 </div>
-                <span className="text-sm font-medium">${item.price}</span>
+                <span className="text-sm font-medium">₹{item.price}</span>
               </div>
             ))}
           </div>
@@ -183,25 +183,25 @@ function AdminOrderDetailsView({ orderDetails }) {
         <div className="text-sm space-y-1">
           <div className="flex justify-between text-muted">
             <span>Subtotal</span>
-            <span>${orderDetails?.subtotalAmount?.toFixed?.(2) ?? orderDetails?.subtotalAmount}</span>
+            <span>₹{orderDetails?.subtotalAmount?.toFixed?.(2) ?? orderDetails?.subtotalAmount}</span>
           </div>
           {orderDetails?.discountAmount > 0 && (
             <div className="flex justify-between text-accent">
               <span>Discount</span>
-              <span>−${orderDetails?.discountAmount?.toFixed?.(2) ?? orderDetails?.discountAmount}</span>
+              <span>−₹{orderDetails?.discountAmount?.toFixed?.(2) ?? orderDetails?.discountAmount}</span>
             </div>
           )}
           <div className="flex justify-between text-muted">
             <span>Shipping</span>
-            <span>${orderDetails?.shippingAmount?.toFixed?.(2) ?? orderDetails?.shippingAmount}</span>
+            <span>₹{orderDetails?.shippingAmount?.toFixed?.(2) ?? orderDetails?.shippingAmount}</span>
           </div>
           <div className="flex justify-between text-muted">
-            <span>Tax</span>
-            <span>${orderDetails?.taxAmount?.toFixed?.(2) ?? orderDetails?.taxAmount}</span>
+            <span>GST</span>
+            <span>₹{orderDetails?.taxAmount?.toFixed?.(2) ?? orderDetails?.taxAmount}</span>
           </div>
           <div className="flex justify-between font-medium text-foreground pt-1">
             <span>Total</span>
-            <span>${orderDetails?.totalAmount?.toFixed?.(2) ?? orderDetails?.totalAmount}</span>
+            <span>₹{orderDetails?.totalAmount?.toFixed?.(2) ?? orderDetails?.totalAmount}</span>
           </div>
         </div>
 

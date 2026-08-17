@@ -188,9 +188,9 @@ function ShoppingCheckout() {
                     : "border-border hover:border-primary/40"
                 }`}
               >
-                <p className="font-medium text-foreground">Card (Stripe)</p>
+                <p className="font-medium text-foreground">UPI, Cards & NetBanking</p>
                 <p className="text-xs text-muted mt-1">
-                  Visa, Mastercard, Amex — secure hosted checkout
+                  UPI, Visa, Mastercard, RuPay — secure hosted checkout
                 </p>
               </button>
               <button
@@ -203,7 +203,7 @@ function ShoppingCheckout() {
               >
                 <p className="font-medium text-foreground">PayPal</p>
                 <p className="text-xs text-muted mt-1">
-                  Pay with your PayPal balance or linked account
+                  Pay with your PayPal balance or linked account in INR
                 </p>
               </button>
             </div>
@@ -223,7 +223,7 @@ function ShoppingCheckout() {
                         {item?.title} × {item?.quantity}
                       </span>
                       <span className="text-foreground font-medium">
-                        $
+                        ₹
                         {(
                           (item?.salePrice > 0 ? item?.salePrice : item?.price) *
                           item?.quantity
@@ -239,7 +239,7 @@ function ShoppingCheckout() {
               {appliedCoupon ? (
                 <div className="flex items-center justify-between bg-accent/10 border border-accent/20 px-3 py-2">
                   <span className="text-sm font-medium text-accent">
-                    {appliedCoupon.code} applied (−${appliedCoupon.discountAmount.toFixed(2)})
+                    {appliedCoupon.code} applied (−₹{appliedCoupon.discountAmount.toFixed(2)})
                   </span>
                   <button
                     onClick={handleRemoveCoupon}
@@ -270,12 +270,12 @@ function ShoppingCheckout() {
             <div className="border-t border-border pt-4 space-y-2 mb-6">
               <div className="flex justify-between text-sm text-muted">
                 <span>Subtotal</span>
-                <span>${subtotalAmount.toFixed(2)}</span>
+                <span>₹{subtotalAmount.toFixed(2)}</span>
               </div>
               {discountAmount > 0 ? (
                 <div className="flex justify-between text-sm text-accent">
                   <span>Discount</span>
-                  <span>−${discountAmount.toFixed(2)}</span>
+                  <span>−₹{discountAmount.toFixed(2)}</span>
                 </div>
               ) : null}
               <div className="flex justify-between text-sm text-muted">
@@ -284,7 +284,7 @@ function ShoppingCheckout() {
               </div>
               <div className="flex justify-between font-serif text-xl font-semibold text-foreground pt-2 border-t border-border">
                 <span>Total</span>
-                <span>${totalAmount.toFixed(2)}</span>
+                <span>₹{totalAmount.toFixed(2)}</span>
               </div>
             </div>
 
@@ -298,7 +298,7 @@ function ShoppingCheckout() {
                 ? "Processing..."
                 : paymentMethod === "paypal"
                 ? "Checkout with PayPal"
-                : "Checkout with Card"}
+                : "Checkout with UPI / Card"}
             </Button>
 
             <div className="space-y-3">

@@ -11,19 +11,27 @@ function ShoppingFooter() {
           <div className="space-y-4">
             <h3 className="font-serif text-xl font-semibold">StitchCart</h3>
             <p className="text-sm text-ivory/60 leading-relaxed">
-              Timeless elegance, meticulously crafted. Discover refined fashion for those who appreciate the art of dressing well.
+              Modern old-money fashion — tailored blazers, cashmere knits and
+              quiet-luxury staples from heritage houses, all priced in INR.
             </p>
           </div>
           <div className="space-y-4">
             <h4 className="overline text-gold">Shop</h4>
             <ul className="space-y-3">
-              {["Men", "Women", "Kids", "Accessories", "Footwear"].map((item) => (
-                <li key={item}>
+              {[
+                { label: "Blazers & Tailoring", id: "blazers" },
+                { label: "Knitwear", id: "knitwear" },
+                { label: "Shirts & Formals", id: "shirts" },
+                { label: "Dresses & Skirts", id: "dresses" },
+                { label: "Trousers & Chinos", id: "trousers" },
+                { label: "Coats & Outerwear", id: "outerwear" },
+              ].map((cat) => (
+                <li key={cat.id}>
                   <Link
-                    to={`/shop/listing?category=${item.toLowerCase()}`}
+                    to={`/shop/listing?category=${cat.id}`}
                     className="text-sm text-ivory/60 hover:text-ivory transition-colors"
                   >
-                    {item}
+                    {cat.label}
                   </Link>
                 </li>
               ))}
