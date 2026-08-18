@@ -25,7 +25,7 @@ const INITIAL_CART = [
     price: 18999,
     quantity: 1,
     size: "40R",
-    image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop&q=85",
+    image: "/products/wool-atelier-suit.jpg",
   },
   {
     id: "c2",
@@ -34,7 +34,7 @@ const INITIAL_CART = [
     price: 3999,
     quantity: 1,
     size: "M / 39",
-    image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500&auto=format&fit=crop&q=85",
+    image: "/products/oxford-formal-shirt.jpg",
   },
 ];
 
