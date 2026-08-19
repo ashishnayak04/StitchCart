@@ -4,13 +4,16 @@ import axios from "axios";
 const initialState = {
   orderList: [],
   orderDetails: null,
+  total: 0,
+  totalPages: 1,
 };
 
 export const getAllOrdersForAdmin = createAsyncThunk(
   "/order/getAllOrdersForAdmin",
-  async () => {
+  async ({ page = 1, limit = 15, search = "", status = "" } = {}) => {
+    // We should allow parameters to be passed to the API
     const response = await axios.get(
-      `http://localhost:9000/api/admin/orders/get`
+      `http://localhost:9000/api/admin/orders/get?page=${page}&limit=${limit}&search=${search}&status=${status}`
     );
 
     return response.data;
@@ -30,11 +33,14 @@ export const getOrderDetailsForAdmin = createAsyncThunk(
 
 export const updateOrderStatus = createAsyncThunk(
   "/order/updateOrderStatus",
-  async ({ id, orderStatus }) => {
+  async ({ id, orderStatus, trackingNumber, trackingUrl, note }) => {
     const response = await axios.put(
       `http://localhost:9000/api/admin/orders/update/${id}`,
       {
         orderStatus,
+        trackingNumber,
+        trackingUrl,
+        note
       }
     );
 
@@ -74,10 +80,14 @@ const adminOrderSlice = createSlice({
       .addCase(getAllOrdersForAdmin.fulfilled, (state, action) => {
         state.isLoading = false;
         state.orderList = action.payload.data;
+        state.total = action.payload.total;
+        state.totalPages = action.payload.totalPages;
       })
       .addCase(getAllOrdersForAdmin.rejected, (state) => {
         state.isLoading = false;
         state.orderList = [];
+        state.total = 0;
+        state.totalPages = 1;
       })
       .addCase(getOrderDetailsForAdmin.pending, (state) => {
         state.isLoading = true;

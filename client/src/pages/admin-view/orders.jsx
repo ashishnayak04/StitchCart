@@ -6,7 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 export default function AdminOrders() {
   const dispatch = useDispatch();
-  const { listOfOrders, total, totalPages } = useSelector((s) => s.adminOrder);
+  const { orderList, total, totalPages } = useSelector((s) => s.adminOrder);
   const { toast } = useToast();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -77,7 +77,7 @@ export default function AdminOrders() {
             <th className="py-3 px-3">Order ID</th><th className="py-3 px-3">Customer</th><th className="py-3 px-3">Items</th><th className="py-3 px-3">Total</th><th className="py-3 px-3">Status</th><th className="py-3 px-3">Payment</th><th className="py-3 px-3">Date</th><th className="py-3 px-3">Action</th>
           </tr></thead>
           <tbody>
-            {(listOfOrders || []).map((o) => (
+            {(orderList || []).map((o) => (
               <tr key={o._id} className="border-b hover:bg-gray-50 cursor-pointer" onClick={() => openDetails(o)}>
                 <td className="py-3 px-3 font-mono text-xs">{o._id.slice(-8)}</td>
                 <td className="py-3 px-3">{o.userId?.userName || o.addressInfo?.phone || "-"}</td>

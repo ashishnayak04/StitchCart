@@ -55,16 +55,26 @@ function ShoppingFooter() {
           <div className="space-y-4">
             <h4 className="overline text-gold">Support</h4>
             <ul className="space-y-3">
-              {["Contact Us", "Shipping & Returns", "FAQ", "Size Guide"].map((item) => (
-                <li key={item}>
-                  <button
-                    onClick={() => toast({ title: item, description: `Our ${item.toLowerCase()} page is under development.` })}
-                    className="text-sm text-ivory/60 hover:text-ivory transition-colors"
-                  >
-                    {item}
-                  </button>
-                </li>
-              ))}
+              <li>
+                <Link to="/shop/support" className="text-sm text-ivory/60 hover:text-ivory transition-colors">
+                  Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/shop/policy/shipping-returns" className="text-sm text-ivory/60 hover:text-ivory transition-colors">
+                  Shipping & Returns
+                </Link>
+              </li>
+              <li>
+                <Link to="/shop/faq" className="text-sm text-ivory/60 hover:text-ivory transition-colors">
+                  FAQ
+                </Link>
+              </li>
+              <li>
+                <Link to="/shop/policy/size-guide" className="text-sm text-ivory/60 hover:text-ivory transition-colors">
+                  Size Guide
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

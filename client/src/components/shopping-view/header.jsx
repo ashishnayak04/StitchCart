@@ -1,14 +1,11 @@
-import { LogOut, Menu, Search, ShoppingBag, User, Heart } from "lucide-react";
 import {
-  Link,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+  LogOut, Menu, Search, ShoppingBag, User, Heart, ChevronDown,
+  HelpCircle, MessageSquare, Bell, Star, ClipboardList,
+} from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { shoppingViewHeaderMenuItems } from "@/config";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,39 +19,75 @@ import UserCartWrapper from "./cart-wrapper";
 import { useEffect, useState } from "react";
 import { fetchCartItems } from "@/store/shop/cart-slice";
 
-function MenuItems() {
+const categories = [
+  { id: "blazers", label: "Blazers" },
+  { id: "shirts", label: "Shirts" },
+  { id: "shoes", label: "Shoes" },
+  { id: "accessories", label: "Accessories" },
+  { id: "watches", label: "Watches" },
+  { id: "dresses", label: "Dresses" },
+];
+
+function NavLinks() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const [, setSearchParams] = useSearchParams();
 
-  function handleNavigate(getCurrentMenuItem) {
+  function handleCategoryNavigate(categoryId) {
     sessionStorage.removeItem("filters");
-    const currentFilter =
-      getCurrentMenuItem.id !== "home" &&
-      getCurrentMenuItem.id !== "products"
-        ? { category: [getCurrentMenuItem.id] }
-        : null;
-
-    sessionStorage.setItem("filters", JSON.stringify(currentFilter));
-
-    location.pathname.includes("listing") && currentFilter !== null
-      ? setSearchParams(
-          new URLSearchParams(`?category=${getCurrentMenuItem.id}`)
-        )
-      : navigate(getCurrentMenuItem.path);
+    sessionStorage.setItem("filters", JSON.stringify({ category: [categoryId] }));
+    navigate(`/shop/listing?category=${categoryId}`);
   }
 
   return (
-    <nav className="flex flex-col lg:flex-row lg:items-center gap-8">
-      {shoppingViewHeaderMenuItems.map((menuItem) => (
-        <button
-          key={menuItem.id}
-          onClick={() => handleNavigate(menuItem)}
-          className="text-xs font-medium text-muted hover:text-foreground transition-colors uppercase tracking-[0.12em]"
-        >
-          {menuItem.label}
-        </button>
-      ))}
+    <nav className="hidden lg:flex items-center gap-8">
+      <Link
+        to="/shop/home"
+        className="text-sm font-medium text-muted hover:text-foreground transition-colors"
+      >
+        Home
+      </Link>
+      <Link
+        to="/shop/listing"
+        onClick={() => {
+          sessionStorage.removeItem("filters");
+          sessionStorage.setItem("filters", JSON.stringify(null));
+        }}
+        className="text-sm font-medium text-muted hover:text-foreground transition-colors"
+      >
+        Shop
+      </Link>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button className="flex items-center gap-1 text-sm font-medium text-muted hover:text-foreground transition-colors">
+            Categories
+            <ChevronDown className="w-3.5 h-3.5" />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="w-44 mt-2">
+          {categories.map((cat) => (
+            <DropdownMenuItem key={cat.id} onClick={() => handleCategoryNavigate(cat.id)}>
+              {cat.label}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button className="flex items-center gap-1 text-sm font-medium text-muted hover:text-foreground transition-colors">
+            Help
+            <ChevronDown className="w-3.5 h-3.5" />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="w-48 mt-2">
+          <DropdownMenuItem onClick={() => navigate("/shop/faq")}>
+            <HelpCircle className="mr-2 h-4 w-4" />
+            FAQ
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => navigate("/shop/support")}>
+            <MessageSquare className="mr-2 h-4 w-4" />
+            Support
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </nav>
   );
 }
@@ -122,14 +155,26 @@ function HeaderRightContent() {
             </Avatar>
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-48 mt-2">
+        <DropdownMenuContent align="end" className="w-52 mt-2">
           <div className="px-3 py-2 text-xs text-muted">
             {user?.userName}
           </div>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => navigate("/shop/account")}>
+          <DropdownMenuItem onClick={() => navigate("/shop/profile")}>
             <User className="mr-2 h-4 w-4" />
-            Account
+            Profile
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => navigate("/shop/account")}>
+            <ClipboardList className="mr-2 h-4 w-4" />
+            My Orders
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => navigate("/shop/notifications")}>
+            <Bell className="mr-2 h-4 w-4" />
+            Notifications
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => navigate("/shop/loyalty")}>
+            <Star className="mr-2 h-4 w-4" />
+            Loyalty Points
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleLogout}>
@@ -139,6 +184,77 @@ function HeaderRightContent() {
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
+  );
+}
+
+function MobileNav() {
+  const navigate = useNavigate();
+
+  function handleCategoryNavigate(categoryId) {
+    sessionStorage.removeItem("filters");
+    sessionStorage.setItem("filters", JSON.stringify({ category: [categoryId] }));
+    navigate(`/shop/listing?category=${categoryId}`);
+  }
+
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="ghost" size="icon" className="lg:hidden">
+          <Menu className="h-5 w-5" />
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="left" className="w-72">
+        <div className="mt-8 flex flex-col gap-6">
+          <Link
+            to="/shop/home"
+            className="text-sm font-medium text-muted hover:text-foreground transition-colors"
+          >
+            Home
+          </Link>
+          <Link
+            to="/shop/listing"
+            onClick={() => {
+              sessionStorage.removeItem("filters");
+              sessionStorage.setItem("filters", JSON.stringify(null));
+            }}
+            className="text-sm font-medium text-muted hover:text-foreground transition-colors"
+          >
+            Shop
+          </Link>
+          <div className="flex flex-col gap-3">
+            <span className="text-sm font-medium text-muted">Categories</span>
+            <div className="flex flex-col gap-2 pl-2">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => handleCategoryNavigate(cat.id)}
+                  className="text-sm text-muted hover:text-foreground transition-colors text-left"
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="flex flex-col gap-3">
+            <span className="text-sm font-medium text-muted">Help</span>
+            <div className="flex flex-col gap-2 pl-2">
+              <button
+                onClick={() => navigate("/shop/faq")}
+                className="text-sm text-muted hover:text-foreground transition-colors text-left"
+              >
+                FAQ
+              </button>
+              <button
+                onClick={() => navigate("/shop/support")}
+                className="text-sm text-muted hover:text-foreground transition-colors text-left"
+              >
+                Support
+              </button>
+            </div>
+          </div>
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 }
 
@@ -160,28 +276,16 @@ function ShoppingHeader() {
       }`}
     >
       <div className="max-w-[1440px] mx-auto flex h-20 items-center justify-between px-6 lg:px-12">
-        <Link to="/shop/home" className="flex-shrink-0">
-          <h1 className="font-serif text-2xl font-semibold text-foreground tracking-tight">
-            StitchCart
-          </h1>
-        </Link>
-
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="lg:hidden">
-              <Menu className="h-5 w-5" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-72">
-            <div className="mt-8">
-              <MenuItems />
-            </div>
-          </SheetContent>
-        </Sheet>
-
-        <div className="hidden lg:flex items-center gap-12">
-          <MenuItems />
+        <div className="flex items-center gap-4">
+          <MobileNav />
+          <Link to="/shop/home" className="flex-shrink-0">
+            <h1 className="font-serif text-2xl font-semibold text-foreground tracking-tight">
+              StitchCart
+            </h1>
+          </Link>
         </div>
+
+        <NavLinks />
 
         <div className="flex items-center">
           <HeaderRightContent />

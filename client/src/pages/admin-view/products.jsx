@@ -41,7 +41,8 @@ function AdminProducts() {
   const [imageLoadingState, setImageLoadingState] = useState(false);
   const [currentEditedId, setCurrentEditedId] = useState(null);
 
-  const { productList } = useSelector((state) => state.adminProducts);
+  const [page, setPage] = useState(1);
+  const { productList, total, totalPages } = useSelector((state) => state.adminProducts);
   const dispatch = useDispatch();
   const { toast } = useToast();
 
@@ -53,7 +54,7 @@ function AdminProducts() {
           editProduct({ id: currentEditedId, formData })
         ).then((data) => {
           if (data?.payload?.success) {
-            dispatch(fetchAllProducts());
+            dispatch(fetchAllProducts({ page }));
             setFormData(initialFormData);
             setOpenCreateProductsDialog(false);
             setCurrentEditedId(null);
@@ -64,7 +65,7 @@ function AdminProducts() {
           addNewProduct({ ...formData, image: uploadedImageUrl })
         ).then((data) => {
           if (data?.payload?.success) {
-            dispatch(fetchAllProducts());
+            dispatch(fetchAllProducts({ page }));
             setOpenCreateProductsDialog(false);
             setImageFile(null);
             setFormData(initialFormData);
@@ -76,7 +77,7 @@ function AdminProducts() {
   function handleDelete(getCurrentProductId) {
     dispatch(deleteProduct(getCurrentProductId)).then((data) => {
       if (data?.payload?.success) {
-        dispatch(fetchAllProducts());
+        dispatch(fetchAllProducts({ page }));
         toast({ title: "Product deleted" });
       }
     });
@@ -90,8 +91,8 @@ function AdminProducts() {
   }
 
   useEffect(() => {
-    dispatch(fetchAllProducts());
-  }, [dispatch]);
+    dispatch(fetchAllProducts({ page }));
+  }, [dispatch, page]);
 
   return (
     <Fragment>
@@ -99,7 +100,7 @@ function AdminProducts() {
         <div>
           <h1 className="heading text-foreground">Products</h1>
           <p className="text-sm text-muted mt-1">
-            {productList?.length || 0} products
+            {total || 0} products
           </p>
         </div>
         <Button
@@ -135,6 +136,17 @@ function AdminProducts() {
           >
             Add your first product
           </Button>
+        </div>
+      )}
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between mt-8">
+          <p className="text-sm text-muted">Page {page} of {totalPages}</p>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage(page - 1)}>Prev</Button>
+            <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage(page + 1)}>Next</Button>
+          </div>
         </div>
       )}
 
